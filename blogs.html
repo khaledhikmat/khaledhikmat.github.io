@@ -1,0 +1,30 @@
+---
+layout: default
+title: BLOGS
+project: Symphony
+tagline: Symphony for .NET is an HMC Backend product
+---
+
+<div class="row clearfix">
+	<div class="col-md-12 column">
+		{% for post in site.posts %}
+		<div class="row">
+			<div class="col-md-2">
+				<img class="img-thumbnail" alt="140x140" src="http://lorempixel.com/140/140/" />
+			</div>
+			<div class="col-md-4" float>
+				<address> 
+					<a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a><br />
+					{{ post.date | date_to_string }}<br /> 
+					{{ post.summary }}<br /> 
+					Tags:<br />
+					<span class="label label-primary">{{ post.tags | array_to_sentence_string }}</span><br />
+				</address>
+			</div>
+			<div class="col-md-6" float>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+

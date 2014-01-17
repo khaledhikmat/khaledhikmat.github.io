@@ -1,0 +1,62 @@
+---
+layout: default
+title: USER STORIES
+project: Symphony
+tagline: Symphony for .NET is an HMC Backend product
+---
+
+<p>
+User stories are organized in different categories. Please tab the different categories to see the associated user stories.
+</p>
+
+<!-- Nav pills -->
+<ul class="nav nav-pills">
+  <li><a href="#Data_Service" data-toggle="pill">Data Service</a></li>
+  <li><a href="#Configurator" data-toggle="pill">Configurator</a></li>
+  <li><a href="#Web_API_Layer" data-toggle="pill">Web API Layer</a></li>
+  <li><a href="#Real_time_Communication_Hub" data-toggle="pill">Real-time Communication Hub</a></li>
+  <li><a href="#POS_Agent" data-toggle="pill">POS Agent</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="Data_Service">
+    The following players are participant in the data service layer:
+	<ul>
+	<li>Mosaic Database</li>
+	<li>WFC</li>
+	<li>Windows Azure Relay</li>
+	<li>Win API</li>
+	</ul>
+	
+	{% for story in site.data.userstories %}
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+		<h3 class="panel-title">{{ story.title }}</h3>
+		</div>
+		<div class="panel-body">
+		{{ story.description }}<br />
+		{% if story.criterias %}
+		<br>Story Criteria:<br><br>
+		{% for criteria in story.criterias %}
+			<div class="panel panel-default">
+				<div class="panel-body">
+				{{ criteria.description }}
+				</div>
+			</div>
+		{% endfor %}
+		{% endif %}
+		</div>
+		<div class="panel-footer">Owner: {{ story.owner }} - Estimated Story Points: {{ story.points }}</div>
+	</div>
+	{% endfor %}
+  </div>
+  <div class="tab-pane" id="Configurator">
+  </div>
+  <div class="tab-pane" id="Web_API_Layer">
+  </div>
+  <div class="tab-pane" id="Real_time_Communication_Hub">
+  </div>
+  <div class="tab-pane" id="POS_Agent">
+  </div>
+</div>

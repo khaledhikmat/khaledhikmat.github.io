@@ -1,0 +1,15 @@
+---
+layout: post
+title:  "iOS App"
+date:   2014-01-17 20:14:01
+summary: "Shows the POS Agent Macro Architecture and the Flow Diagram"
+categories: A description of the Android app
+tags: HMC Symphony Backend .NET POS Agent Architecture
+project: Symphony
+tagline: Symphony for .NET is an HMC Backend product
+---
+
+
+The iOS app is quite an experience.
+
+{% include post-navigation.html %}
