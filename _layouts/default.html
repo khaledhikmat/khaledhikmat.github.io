@@ -44,13 +44,8 @@
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						{% for pagex in site.pages %}
-							{% if pagex.title == page.title %}
-								<li class="active"><a href="{{ site.baseurl }}{{ pagex.url }}">{{ pagex.title }}</a></li>
-							{% else %}	
-								<li><a href="{{ site.baseurl }}{{ pagex.url }}">{{ pagex.title }}</a></li>
-							{% endif %}	
-						{% endfor %}
+						<li {% if 'HOME' == page.title %} class='active' {% endif %}><a href="{{ site.baseurl }}/index.html">HOME</a></li>
+						<li {% if 'ABOUT' == page.title %} class='active' {% endif %}><a href="{{ site.baseurl }}/about.html">ABOUT</a></li>
 					</ul>
 				</div>
 			</nav>
