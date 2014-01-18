@@ -2,4 +2,4 @@ name: Symphony Backend
 markdown: redcarpet
 pygments: true
 permalink: /:year-:month-:day/:title
-baseurl: /symphony4net
+baseurl: 
