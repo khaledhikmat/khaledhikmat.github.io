@@ -1,0 +1,35 @@
+{% assign illustrations = include.param  | split: "|" %}
+<div class="row">
+<div class="highslide-gallery">
+{% for illustration in illustrations %}
+{% assign myIllusration =  illustration | split: ";" %}
+<div 
+{% if illustrations.size == 1 %} 
+class="col-md-12" 
+{% elsif illustrations.size == 2 %} 
+class="col-md-6" 
+{% elsif illustrations.size == 3 %} 
+class="col-md-4" 
+{% elsif illustrations.size == 4 %} 
+class="col-md-3" 
+{% elsif illustrations.size == 5 %} 
+class="col-md-2" 
+{% elsif illustrations.size == 6 %} 
+class="col-md-2" 
+{% else %} 
+class="col-md-1" 
+{% endif %}
+>
+<a href="{{ site.baseurl }}{{ myIllusration[2] }}" class="highslide" onclick="return hs.expand(this)">
+	<img src="{{ site.baseurl }}{{ myIllusration[2] }}" alt="Highslide JS" title="Click to enlarge" height="150" width="120" />
+</a>
+<div class="highslide-caption">
+	{{ myIllusration[0] }}
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+
+<p>Other illustrations are shown <a href="#illustrations">below</a>.</p>
+

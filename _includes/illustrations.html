@@ -1,0 +1,40 @@
+{% assign illustrations = include.param  | split: "|" %}
+<div class="row">
+<div class="col-md-12"> 
+<table class="table table-hover table-condensed table-striped">
+<thead>
+	<tr>
+		<th>
+			#
+		</th>
+		<th>
+			Name
+		</th>
+		<th>
+			Description
+		</th>
+	</tr>
+</thead>
+<tbody>
+{% for illustration in illustrations %}
+{% assign myIllusration =  illustration | split: ";" %}
+<tr>
+	<td>
+		{{ forloop.index }}
+	</td>
+	<td>
+		<a href="{{ site.baseurl }}{{ myIllusration[2] }}" class="highslide" onclick="return hs.expand(this)">
+			{{ myIllusration[0] }}
+		</a>
+	</td>
+	<td>
+		{{ myIllusration[1] }}
+	</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+</div>
+</div>
+<hr>

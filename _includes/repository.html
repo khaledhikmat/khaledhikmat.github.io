@@ -1,0 +1,25 @@
+{% assign myRepIdentifier = include.param  | split: "," %}
+{% assign identifier = myRepIdentifier[0] %}
+{% assign thing = myRepIdentifier[1] %}
+
+{% for item in site.data.repositories %}
+	{% if item.identifier == identifier %}
+		{% assign rep = item %}
+	{% endif %}
+{% endfor %}
+
+<h4>{{ rep.name }}</h4>
+<p>{{ rep.purpose }}</p>
+{% if rep.url %}
+<p>Repository Remote URL: <a href="{{ rep.url }}" target="_blank">{{ rep.url }}</a></p>
+{% endif %}
+<a data-toggle="collapse" data-parent="#repository-{{ thing }}-{{ rep.identifier }}" href="#collapse-repository-{{ thing }}-{{ rep.identifier }}">More/Less Details</a>
+<div class="collapse" id="collapse-repository-{{ thing }}-{{ rep.identifier }}">
+Identifier: {{ rep.identifier }}<br/>
+Product: {{ rep.product }}<br/>
+Directory: {{ rep.directory }}<br/>
+Language: {{ rep.language  }}<br/>
+Type: {{ rep.type  }}<br/>
+Location: {{ rep.location }}<br/>
+</div>
+

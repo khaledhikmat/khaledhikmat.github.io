@@ -1,5 +1,6 @@
-name: Symphony Backend
+name: "Khaled Hikmat"
 markdown: redcarpet
 pygments: true
 permalink: /:year-:month-:day/:title
-baseurl: ""
+baseurl: /
+encoding: utf-8

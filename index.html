@@ -5,9 +5,132 @@ project: "Khaled Hikmat"
 tagline: An old time software technologist and architect!
 ---
 
-My site is hosted here: <a href="khaledhikmat.azurewebsites.net">khaledhikmat.azurewebsites.net</a>. Perhaps one day I will migrate my WordPress site to 
-Jekyll.
+<div class="row clearfix">
+	<div class="col-md-12 column">
+		<div class="row">
+			<div class="col-md-8">
 
-<a class="twitter-timeline"  href="https://twitter.com/KhaledHmat"  data-widget-id="429316369994117120">Tweets by @KhaledHmat</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+					<h3 class="panel-title">Latest Entries</h3>
+					</div>
+					<div class="panel-body">
+					<div class="list-group">
+					{% for post in site.posts limit:5 %}
+					<a href="{{ site.baseurl }}{{ post.url }}" class="list-group-item">
+						<h4 class="list-group-item-heading">{{ post.date | date_to_string }} - {{ post.title }}</h4>
+						<p class="list-group-item-text">{{ post.summary | truncatewords: 50 }}</p>
+					</a>
+					{% endfor %}
+					</div>
+					</div>
+				</div>
 
+				<div class="panel panel-default">
+					<div class="panel-heading">
+					<h3 class="panel-title">Entries by Month</h3>
+					</div>
+					<div class="panel-body">
+					{% assign sortedPostsByDate = site.posts | sort:"date" %}
+					{% for post in sortedPostsByDate %}
+					  {% capture currentyear %}{{post.date | date: "%B %Y"}}{% endcapture %}
+					  {% if currentyear != year %}
+						{% unless forloop.first %}</div>{% endunless %}
+						<a name="{{ currentyear }}">{{ currentyear }}</a>
+						<div class="list-group">
+						{% capture year %}{{currentyear}}{% endcapture %} 
+					  {% endif %}
+						<a href="{{ site.baseurl }}{{ post.url }}" class="list-group-item">
+							<h4 class="list-group-item-heading">{{ post.title }}</h4>
+							<p class="list-group-item-text">{{ post.summary }}</p>
+						</a>
+					{% endfor %}
+					</div>
+					</div>
+				</div>
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+					<h3 class="panel-title">Entries by Category</h3>
+					</div>
+					<div class="panel-body">
+					{% for category in site.categories %}
+					  <a name="{{ category | first }}">{{ category | first | capitalize }}</a>
+					  <div class="list-group">
+						{% for post in category[1] %}
+							<a href="{{ site.baseurl }}{{ post.url }}" class="list-group-item">
+								<h4 class="list-group-item-heading">{{ post.title }}</h4>
+								<p class="list-group-item-text">{{ post.summary }}</p>
+							</a>
+						{% endfor %}
+					  </div>
+					{% endfor %}
+					</div>
+				</div>
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+					<h3 class="panel-title">Entries by Tag</h3>
+					</div>
+					<div class="panel-body">
+					{% for tag in site.tags %}
+					  <a name="{{ tag | first }}">{{ tag | first | capitalize }}</a>
+					  <div class="list-group">
+						{% for post in tag[1] %}
+							<a href="{{ site.baseurl }}{{ post.url }}" class="list-group-item">
+								<h4 class="list-group-item-heading">{{ post.title }}</h4>
+								<p class="list-group-item-text">{{ post.summary }}</p>
+							</a>
+						{% endfor %}
+					  </div>
+					{% endfor %}
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+					<h3 class="panel-title">Entries by Month</h3>
+					</div>
+					<div class="panel-body">
+					<ul>
+					{% assign sortedPostsByDate = site.posts | sort:"date" %}
+					{% for post in sortedPostsByDate %}
+					  {% capture currentyear %}{{post.date | date: "%B %Y"}}{% endcapture %}
+					  {% if currentyear != year2 %}
+						<li><a href="#{{ currentyear }}">{{ currentyear}}</a></li>
+						{% capture year2 %}{{currentyear}}{% endcapture %} 
+					  {% endif %}
+					{% endfor %}
+					</ul>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+					<h3 class="panel-title">Entries by Category</h3>
+					</div>
+					<div class="panel-body">
+					<ul>
+					{% for category in site.categories %}
+					<li><a href="#{{ category | first }}">{{ category[0] | capitalize }}&nbsp;({{ category[1] | size }})</a></li>
+					{% endfor %}
+					</ul>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+					<h3 class="panel-title">Entries by Tag</h3>
+					</div>
+					<div class="panel-body">
+					<ul>
+					{% for tag in site.tags %}
+					<li><a href="#{{ tag | first }}">{{ tag[0] | capitalize }}&nbsp;({{ tag[1] | size }})</a></li>
+					{% endfor %}
+					</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

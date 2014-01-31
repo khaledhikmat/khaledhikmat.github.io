@@ -1,0 +1,6 @@
+<!-- Assign the variable 'story' based on the param -->
+{% for item in site.posts %}
+	{% if item.storyid == include.param %}
+		{% assign post = item %}
+	{% endif %}
+{% endfor %}
