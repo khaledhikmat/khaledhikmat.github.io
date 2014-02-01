@@ -67,7 +67,6 @@ tagline: An old time software technologist and architect!
 					{% endfor %}
 					</div>
 				</div>
-				<!--
 				<div class="panel panel-default">
 					<div class="panel-heading">
 					<h3 class="panel-title">Entries by Tag</h3>
@@ -86,13 +85,12 @@ tagline: An old time software technologist and architect!
 					{% endfor %}
 					</div>
 				</div>
-				-->
 			</div>
 
 			<div class="col-md-4">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-					<h3 class="panel-title">Entries by Month</h3>
+					<h3 class="panel-title">Archives</h3>
 					</div>
 					<div class="panel-body">
 					<ul>
@@ -109,7 +107,7 @@ tagline: An old time software technologist and architect!
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-heading">
-					<h3 class="panel-title">Entries by Category</h3>
+					<h3 class="panel-title">Categories</h3>
 					</div>
 					<div class="panel-body">
 					<ul>
@@ -119,21 +117,34 @@ tagline: An old time software technologist and architect!
 					</ul>
 					</div>
 				</div>
-				<!--
 				<div class="panel panel-default">
 					<div class="panel-heading">
-					<h3 class="panel-title">Entries by Tag</h3>
+					<h3 class="panel-title">Tags</h3>
 					</div>
 					<div class="panel-body">
-					<ul>
-					{% for tag in site.tags %}
-					<li><a href="#{{ tag | first }}">{{ tag[0] }}&nbsp;({{ tag[1] | size }})</a></li>
-					{% endfor %}
-					</ul>
+					<div id="tagcloud" data-maxfont="32" data-minfont="12">
+						{% for tag in site.tags %}
+						<span data-count="{{ tag[1] | size }}"><a href="#{{ tag | first }}">{{ tag[0] }}</a></span>
+						{% endfor %}
+					</div>
 					</div>
 				</div>
-				-->
+				<div class="panel panel-default">
+					<div class="panel-heading">
+					<h3 class="panel-title">My Tweets</h3>
+					</div>
+					<div class="panel-body">
+						<a class="twitter-timeline"  href="https://twitter.com/KhaledHmat"  data-widget-id="429316369994117120">Tweets by @KhaledHmat</a>
+						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script>
+	var tc = document.getElementById('tagcloud');
+	mainService.tagCloud(tc,'span');
+</script>
+
