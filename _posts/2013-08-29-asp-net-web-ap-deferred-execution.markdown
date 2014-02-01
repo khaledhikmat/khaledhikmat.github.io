@@ -9,6 +9,8 @@ project: "Khaled Hikmat"
 tagline: An old time software technologist and architect!
 ---
 
+{% include post-header.html param=page.tags %}
+
 {% include post-navigation.html %}
 
 I have an ASP.NET Web API project with a SignalR hub that I have been working for a while. One of the purposes of the SignalR hub is to deliver print jobs to remote printers via remote agents. The agents are SignalR .NET clients which receive the print job requests via a SignalR broadcast and determine whether the print job is intended for them by examining the 'printer' attribute of the print job.

@@ -9,6 +9,8 @@ project: "Khaled Hikmat"
 tagline: An old time software technologist and architect!
 ---
 
+{% include post-header.html param=page.tags %}
+
 {% include post-navigation.html %}
 
 In one component of a major project I am working on, it is required that we process a print job from a server. The .NET client component (i.e Windows Service) which receives the print jobs must convert the print job's HTML markup to PDF and print on one attached printers identified by name (in the print job).

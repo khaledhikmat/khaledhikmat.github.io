@@ -9,6 +9,8 @@ project: "Khaled Hikmat"
 tagline: An old time software technologist and architect!
 ---
 
+{% include post-header.html param=page.tags %}
+
 {% include post-navigation.html %}
 
 Unless you have been in a cave, you must have heard that Microsoft's Steve Ballmer has decided to step down and allow someone else to run the computer giant. Here is what he had to say:

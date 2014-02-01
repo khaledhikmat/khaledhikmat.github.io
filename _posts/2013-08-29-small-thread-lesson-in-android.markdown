@@ -9,6 +9,8 @@ project: "Khaled Hikmat"
 tagline: An old time software technologist and architect!
 ---
 
+{% include post-header.html param=page.tags %}
+
 {% include post-navigation.html %}
 
 If you find yourself doing something like this in Android, there is a better approach! Let us say you want to animate a map in an Android application after 2 seconds. I see lots of code samples resort to something like this:

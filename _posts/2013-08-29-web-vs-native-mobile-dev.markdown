@@ -9,6 +9,8 @@ project: "Khaled Hikmat"
 tagline: An old time software technologist and architect!
 ---
 
+{% include post-header.html param=page.tags %}
+
 {% include post-navigation.html %}
 
 Obviously this is a very hot question in the industry today! Whether to build native or web (using HTML5) really depends on the application being built, the available resources at the company and what you are willing to learn.

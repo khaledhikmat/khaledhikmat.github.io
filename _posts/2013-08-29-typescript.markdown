@@ -9,6 +9,8 @@ project: "Khaled Hikmat"
 tagline: An old time software technologist and architect!
 ---
 
+{% include post-header.html param=page.tags %}
+
 {% include post-navigation.html %}
 
 I have been using TypeScript with WebEssentials in Visual Studio 2012 for about 6-7 months and things are just great. For a non-JavaScript programmer, I love TypeScript! WebEssentials made it that much funner by integrating very well with the VS2012 and TypeScript environments.

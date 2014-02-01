@@ -9,6 +9,8 @@ project: "Khaled Hikmat"
 tagline: An old time software technologist and architect!
 ---
 
+{% include post-header.html param=page.tags %}
+
 {% include post-navigation.html %}
 
 I created a little sample to learn SignalR! This Collaborative White Board sample is obviously not an earth-shattering invention nor is it a demonstration of great code writing. It is simply a way to learn SignalR.
