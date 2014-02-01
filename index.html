@@ -31,7 +31,7 @@ tagline: An old time software technologist and architect!
 					<h3 class="panel-title">Entries by Month</h3>
 					</div>
 					<div class="panel-body">
-					{% assign sortedPostsByDate = site.posts | sort:"date" %}
+					{% assign sortedPostsByDate = site.posts | sort:"date" order:descending %}
 					{% for post in sortedPostsByDate %}
 					  {% capture currentyear %}{{post.date | date: "%B %Y"}}{% endcapture %}
 					  {% if currentyear != year %}
@@ -67,14 +67,14 @@ tagline: An old time software technologist and architect!
 					{% endfor %}
 					</div>
 				</div>
-
+				<!--
 				<div class="panel panel-default">
 					<div class="panel-heading">
 					<h3 class="panel-title">Entries by Tag</h3>
 					</div>
 					<div class="panel-body">
 					{% for tag in site.tags %}
-					  <a name="{{ tag | first }}">{{ tag | first | capitalize }}</a>
+					  <a name="{{ tag | first }}">{{ tag | first }}</a>
 					  <div class="list-group">
 						{% for post in tag[1] %}
 							<a href="{{ site.baseurl }}{{ post.url }}" class="list-group-item">
@@ -86,6 +86,7 @@ tagline: An old time software technologist and architect!
 					{% endfor %}
 					</div>
 				</div>
+				-->
 			</div>
 
 			<div class="col-md-4">
@@ -95,7 +96,7 @@ tagline: An old time software technologist and architect!
 					</div>
 					<div class="panel-body">
 					<ul>
-					{% assign sortedPostsByDate = site.posts | sort:"date" %}
+					{% assign sortedPostsByDate = site.posts | sort:"date" order:descending %}
 					{% for post in sortedPostsByDate %}
 					  {% capture currentyear %}{{post.date | date: "%B %Y"}}{% endcapture %}
 					  {% if currentyear != year2 %}
@@ -118,6 +119,7 @@ tagline: An old time software technologist and architect!
 					</ul>
 					</div>
 				</div>
+				<!--
 				<div class="panel panel-default">
 					<div class="panel-heading">
 					<h3 class="panel-title">Entries by Tag</h3>
@@ -125,11 +127,12 @@ tagline: An old time software technologist and architect!
 					<div class="panel-body">
 					<ul>
 					{% for tag in site.tags %}
-					<li><a href="#{{ tag | first }}">{{ tag[0] | capitalize }}&nbsp;({{ tag[1] | size }})</a></li>
+					<li><a href="#{{ tag | first }}">{{ tag[0] }}&nbsp;({{ tag[1] | size }})</a></li>
 					{% endfor %}
 					</ul>
 					</div>
 				</div>
+				-->
 			</div>
 		</div>
 	</div>
