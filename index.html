@@ -31,8 +31,8 @@ tagline: An old time software technologist and architect!
 					<h3 class="panel-title">Entries by Month</h3>
 					</div>
 					<div class="panel-body">
-					{% assign sortedPostsByDate = site.posts | sort:"date" order:descending %}
-					{% for post in sortedPostsByDate %}
+					{% assign sortedPostsByDate = site.posts | sort:"date" %}
+					{% for post in sortedPostsByDate reversed %}
 					  {% capture currentyear %}{{post.date | date: "%B %Y"}}{% endcapture %}
 					  {% if currentyear != year %}
 						{% unless forloop.first %}</div>{% endunless %}
@@ -96,8 +96,8 @@ tagline: An old time software technologist and architect!
 					</div>
 					<div class="panel-body">
 					<ul>
-					{% assign sortedPostsByDate = site.posts | sort:"date" order:descending %}
-					{% for post in sortedPostsByDate %}
+					{% assign sortedPostsByDate = site.posts | sort:"date" %}
+					{% for post in sortedPostsByDate reversed %}
 					  {% capture currentyear %}{{post.date | date: "%B %Y"}}{% endcapture %}
 					  {% if currentyear != year2 %}
 						<li><a href="#{{ currentyear }}">{{ currentyear}}</a></li>
