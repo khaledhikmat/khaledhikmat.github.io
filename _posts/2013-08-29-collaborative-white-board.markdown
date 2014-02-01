@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Collaborative While Board"
+title:  "Collaborative White Board"
 date:   2013-09-05 20:14:01
 summary: "A sample Web page that uses SignalR"
 categories: Technical
