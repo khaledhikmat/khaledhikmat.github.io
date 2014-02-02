@@ -29,6 +29,12 @@ body {
 	background: white;
 }
 
+a[name] {
+	padding-top: 70px;
+	  margin-top: -70px;
+	  display: inline-block;
+}
+
 .navbar {
 	margin: 0 auto !important;
 }

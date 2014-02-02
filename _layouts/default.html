@@ -33,6 +33,9 @@
 	<script type="text/javascript" src="{{ site.baseurl }}/libraries/bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="{{ site.baseurl }}/libraries/bootstrap/js/scripts.js"></script>
 	<script type="text/javascript" src="{{ site.baseurl }}/libraries/highslide/highslide-with-gallery.js"></script>
+	<script type="text/javascript" src="{{ site.baseurl }}/libraries/github/underscore-min.js"></script>
+	<script type="text/javascript" src="{{ site.baseurl }}/libraries/github/base64.js"></script>
+	<script type="text/javascript" src="{{ site.baseurl }}/libraries/github/github.js"></script>
 	<script type="text/javascript" src="{{ site.baseurl }}/javascripts/main.js"></script>
 </head>
 
@@ -105,39 +108,33 @@ if (hs.addSlideshow) hs.addSlideshow({
 </div>
 
 <div class="container box-shadow">
+	<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+		
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="{{ site.baseurl }}/index.html">Khaled Hikmat</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li {% if page.title == 'HOME' %} class='active' {% endif %}><a href="{{ site.baseurl }}/index.html">HOME</a></li>
+					<li {% if page.title == 'ABOUT' %} class='active' {% endif %}><a href="{{ site.baseurl }}/about.html">ABOUT</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<!-- Disable
+						<a href="javascript:mainService.deleteCredentials();">LOGOUT</a>
+						-->
+					</li>
+				</ul>
+			</div>
+	</nav>
 	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<div class="masthead">
 			<img src="http://lorempixel.com/g/800/100/technics"/>
 			</div>
-			<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
-				
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li {% if page.title == 'HOME' %} class='active' {% endif %}><a href="{{ site.baseurl }}/index.html">HOME</a></li>
-						<li {% if page.title == 'ABOUT' %} class='active' {% endif %}><a href="{{ site.baseurl }}/about.html">ABOUT</a></li>
-						<!--
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">SITES <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="#">CLIENT FACING</a></li>
-								<li><a href="#">INTERNAL</a></li>
-								<li class="divider"></li>
-								<li><a href="#">WEB SERVICES</a></li>
-							</ul>
-					    </li>
-						-->
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<!-- Disable
-							<a href="javascript:mainService.deleteCredentials();">LOGOUT</a>
-							-->
-						</li>
-					</ul>
-				</div>
-			</nav>
-
 			<blockquote>
 				<p>
 					{{ page.project }}
