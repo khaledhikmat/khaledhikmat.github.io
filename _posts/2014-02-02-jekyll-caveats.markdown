@@ -13,24 +13,24 @@ tagline: An old time software technologist and architect!
 
 {% include post-navigation.html %}
 
-Blog engines are bloated and they take a lot of effort to master. They also require setting up databases which is always not very easy. If you are developer, an easier approach 
-might be to deal your blog site in a similar fashion of how you deal with your source code repositories i.e. GitHub. In addition to source code branches, GitHub allows you to 
-publish [GitHub pages]() site for your account and a site for each one of your repositories or projects. Full explanation is available [here](http://pages.github.com).
+Blog engines are bloated and they take a lot of effort to master. They also require setting up databases which is always not very easy. If you are developer, an easier approach might be to deal with your blog site in a similar fashion to 
+how you deal with your source code repositories i.e. GitHub. In addition to source code branches, GitHub allows you to publish [GitHub pages]() site for your account and a site for each one of your repositories or projects. 
+Full explanation is available [here](http://pages.github.com).
 
-For the project sites, GitHub offers an autmomatic generator which produces a very nice looking site that allows folks to clone or download your source. The GitHub pages are available in thge gh-pages branch of the repository. 
+For the project sites, GitHub offers an autmomatic generator which produces a very nice looking site that allows folks to clone or download your source. The GitHub pages are available in the gh-pages branch of the repository. 
 So, for example, the master branch is for your source code while the gh-pages are dedicated for your github pages.
 
 The [GitHub pages documentation](https://help.github.com/categories/20/articles) tells you everything you need to know about GitHub pages. This post, however, assumes you are interested in building a blog site on Jekyll and goes through a few 
 caveats that I ran into when I started with this. It also provides a sample generic project site tou can enhance and use for your own purposes. 
 
-Just to recap, the advantages of using Jekyll and GitHub pages are summarized here:
+The advantages (that I see) for using Jekyll and GitHub pages are summarized here:
 
 * Rendering - static HTML pages render very fast.
 * Management - similar to our source code, the GitHub pages are stored in our source code in a different branch. This makes it very convenient for developers to manage their site content.
 * No database - databases are difficult to setup and host
 * GitHub hosting - comes for free using a GitHub account
 
-*The [sample generic site](https://github.com/khaledhikmat/GenericProjectSite) can be used as a reference implementation of this.*
+*This [sample generic site](https://github.com/khaledhikmat/GenericProjectSite) can be used as a reference implementation of this.*
 
 Jekyll Installation
 =====================
@@ -100,12 +100,12 @@ The way you would access these assets is via the site base url as follows:
 
 Markdown
 ========
-Markdown is that yoy would use to write your posts. This [site](http://daringfireball.net/projects/markdown/) describes the Markdown syntax and offers goos examples. I found Markdown to be reasonable but can use more tags and functionality. For example, 
+Markdown is what you would use to write your posts. This [site](http://daringfireball.net/projects/markdown/) describes the Markdown syntax and offers good examples. I found Markdown to be reasonable but can use more tags and functionality. For example, 
 there is no way to add simple things like tables or make a URL reference target a seperate tab!!
  
 Data
 ====
-Dats structures can be added to the data folder of the site. Say for example, you have a `Players` data structure defined as `.yml' this way:
+Dats structures can be added to the data folder of the site. Say for example, you have a `Players` data structure defined as `.yml` this way:
 
 ```
 - role: Unsigned User
@@ -169,7 +169,7 @@ The illustrations include can be written this way:
 <div class="row">
 <div class="highslide-gallery">
 {{"{% for illustration in include.param "}}%}
-{{"{% assign myIllusration =  illustration | split: "," "}}%} 
+{{"{% assign myIllusration =  illustration | split: ';' "}}%} 
 <div {{"{% if include.param.size == 1 "}}%} class="col-md-12" {{"{% elsif include.param.size == 2 "}}%} class="col-md-6" {{"{% else "}}%} class="col-md-4" {{"{% endif "}}%}>
 <a href="http://placehold.it/800/400/" class="highslide" onclick="return hs.expand(this)">
 	<img src="http://placehold.it/200/100/" alt="Highslide JS"
@@ -215,9 +215,9 @@ for (x in players) {
 
 The use of the `jsonify` tag in Jekyll makes the process quite easy. Now that the data is available to JavaScript, further processing via JS can be used i.e. charting.
 
-Posts data and its manipulation
-===============================
-Jekyll offers a nice data structure called `site.categories` which allows you to enumerate the posts for display purposes. For example, I wanted to show the categories and the number of posts in each category. This is how it looks like:
+Posts data manipulation
+=======================
+Jekyll offers a nice data structure called `site.categories` (and `site.tags`) which allows you to enumerate the posts for display purposes. For example, I wanted to show the categories and the number of posts in each category. This is how I did it:
 
 ```
 <div class="panel panel-primary">
@@ -236,7 +236,7 @@ Jekyll offers a nice data structure called `site.categories` which allows you to
 
 Please note that the `category` in the above code is actually a hash!! The first element of which is the category name and the second element is the array of posts. 
 
-Jekyll (via Liquid) offers very nice array manipulation such as sorting and reversing. This is an example of what I did to display post archives:
+Jekyll (via Liquid) offers very nice array manipulation such as sorting and reversing. This is an example of what I did to display the post archives by month:
 
 ```
 <div class="panel panel-primary">
@@ -272,15 +272,15 @@ baseurl: /GenericProjectSite
 encoding: utf-8
 ```
 
-All of these items are explained in the Jeklyy site, but the `baseurl` requires a little bit of explanation. Using this configuration file, I can push to GitHub and the pages will show properly and all my assets are loaded properly. However, when I use my localhost of testing, the 
-paths did not work properly because I do not have a GenericProjectSite as a virtual directory. To get around this, I would build and deploy my locahost server like this:
+All of these items are explained in the Jekyll site, but the `baseurl` requires a little bit of explanation. Using this configuration file, I can push to GitHub and the pages will show properly and all my assets are loaded properly. However, when I use my localhost of testing, the 
+paths did not work properly because I do not have a GenericProjectSite as a virtual directory. To get around this, I uses the following to build and deploy my locahost server:
 
 ```
 Jekyll build --watch
 jekyll serve --baseurl ''
 ```
 
-The 'serve --baseurl ""' is overrided at the command line to be blank which is suitable for localhost deployment. When I deploy to GitHub via a Git push, the baseurl of `GenericProjectSite` is suitable.
+The `serve --baseurl ""` is overrided at the command line to be blank which is suitable for localhost deployment. When I deploy to GitHub via a Git push, however, the baseurl of `GenericProjectSite` is suitable.
 
 Authentication
 ==============
@@ -363,13 +363,13 @@ Anamolies
 
 * I encountered many situations where Jekyll/Liquid produces weird bugs if the there are tabs or extra spaces in the {{"{% if "}}%} clauses. The output becomes very unpredictable. 
 * Similarly in Jekyll data files, the violated tab characteres is very annoying
-* Also writing posts that contain some Jekyll.Liquid code (like this post) requires that you use extra brackets. Otherwise Jekyll will misundertand the code and transforms it into HTML. Check out [this post](http://truongtx.me/2013/01/09/display-liquid-code-in-jekyll/) 
+* Also writing posts that contain some Jekyll/Liquid code (like this post) requires that you use extra brackets. Otherwise Jekyll will misundertand the code and transforms it into HTML!!! Check out [this post](http://truongtx.me/2013/01/09/display-liquid-code-in-jekyll/) 
 for further information.
 
 Conclusion
 ==========
 
-Overall I think Jekyll and Liquid are a very powerul combination suited for developers who want to produce some documentation quickly without having to worry about maintaining a WordPress site.
+Overall I think Jekyll and Liquid are a very powerul combination suited for developers who want to produce some documentation quickly without having to worry about maintaining a WordPress site and all the extra baggage that comes with it.
 
 References
 ==========
