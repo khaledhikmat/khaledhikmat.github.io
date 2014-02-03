@@ -161,10 +161,14 @@ tagline: An old time software technologist and architect!
 	mainService.tagCloud(tc,'span');
 	
 	// Get accces to my github account and get some stats
+	//var gh = new Github({
+		//username: "khaledhikmat",
+		//password: "-----",
+		//auth: "basic"
+	//});
 	var gh = new Github({
-		username: "khaledhikmat",
-		password: "-----",
-		auth: "basic"
+		token: "7e6ab7fb9ea6eeb1bc448e015d0c704419b4966a",
+		auth: "oauth"
 	});
 
 	var prvReps = 0;
