@@ -272,23 +272,27 @@ git lga
 ```
 
 Renaming a branch
+
 ```
 git branch -m fix1 bug1234
 ```
 
 Deleting a branch
+
 ```
 git branch -d bug 1234 (not allowed because it is not committed)
 git branch -D bug 1234 (force)
 ```
 
 Recover  a deleted branch
+
 ```
 git reflog
 git branch 
 ```
 
 Creating and checking out a branch (all in one):
+
 ```
 git chekout -b feature2
 ```
