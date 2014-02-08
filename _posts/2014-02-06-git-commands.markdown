@@ -17,6 +17,7 @@ Configuration
 =============
 
 Git provides 3 levels of configurations:
+
 * System-level:
 	* git config --system
 	* Stored in /etc/gitconfig or c:\Program Files (x86)\Git\etc\gitconfig
@@ -28,11 +29,13 @@ Git provides 3 levels of configurations:
 	* Stored in .git/config in each repo
 
 To list all global configuration options:
+
 ```
 git config --global --list	
 ```
 
 To add your your name, email, editor and help level:
+
 ```
 git config --global user.name "Khaled Hikmat"	
 git config --global user.email "khaled.hikmat@gmail.com"	
@@ -44,6 +47,7 @@ git config --global core.autocrlf input (for Mac)
 ```
 
 Aliasing:
+
 ```
 git config --global alias.co "checkout"
 ```
@@ -55,11 +59,13 @@ Working Locally
 ===============
 
 Create a new directory i.e. GitCommands
+
 ```
 mkdir GitCommands
 ```
 
 Initialize the directory for git
+
 ```
 cd GitCommands
 git init
@@ -67,11 +73,13 @@ ls -al
 ```
 
 Check status
+
 ```
 git status
 ```
 
 Create new files 
+
 ```
 echo "Hello World" > README.txt
 git add README.txt
@@ -81,6 +89,7 @@ git log
 ```
 
 Commits Management and difference between the head and previous commits
+
 ```
 git add -u (add all updated files)
 git commit -m "Added a second line"
@@ -90,6 +99,7 @@ git diff HEAD~1.. (same as above but abbreviated)
 ```
 
 New files 
+
 ```
 touch file1.txt file1.txt
 git add -A (add added files)
@@ -97,6 +107,7 @@ commit -m "Added new feature"
 ```
 
 Stage as two different commits
+
 ```
 git touch file3.txt
 vim README.txt
@@ -109,6 +120,7 @@ git commit -m "Updated README.txt"
 ``` 
 
 File deletions
+
 ```
 git rm file3.txt
 git status
@@ -116,6 +128,7 @@ git add -u
 ```
 
 File renaming
+
 ```
 mv file4.txt new_file.txt
 git add -A
@@ -124,6 +137,7 @@ git commit -m "Refactored code"
 ```
 
 Undo - revert changes
+
 ```
 git checkout README.txt
 git reset --hard (reset back to the head)
@@ -134,6 +148,7 @@ git clean -f (force)
 ```
 
 Ignore files
+
 ```
 vim .gitignore
 /logs/*.txt (/ is the root of my repository)
@@ -144,6 +159,7 @@ Working Remotely
 ================
 
 Cloning and examining logs - the entire history is available
+
 ```
 git clone https://github.com/jquery/jquery.git (clone jquery locally)
 cd jquery
@@ -157,6 +173,7 @@ git shortlog -sne (short + numerical + email)
 ```
 
 Exmaining changes
+
 ```
 git show HEAD
 git show HEAD~1
@@ -164,6 +181,7 @@ git show <SHAW1>
 ```
 
 Examining origin
+
 ```
 git remote
 git remote -v
@@ -243,7 +261,8 @@ git checkout master
 git lga (HEAD now points to the last master commit)
 ```
 
-You can get also base branches on a particlat shaw commoit
+You can get also base branches on a particlat shaw commit
+
 ```
 git branch Fix1 6993d83
 git chekout Fix1
