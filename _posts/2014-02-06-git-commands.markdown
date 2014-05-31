@@ -155,6 +155,8 @@ vim .gitignore
 logs/*.txt
 ```
 
+If you create a file in your repository named .gitignore git will use its rules when looking at files to commit. Note that git will not ignore a file that was already tracked before a rule was added to this file to ignore it. In such a case the file must be un-tracked, usually with git rm --cached filename
+
 Working Remotely
 ================
 
