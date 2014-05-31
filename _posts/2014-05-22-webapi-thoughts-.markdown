@@ -20,7 +20,9 @@ But there isn't much about setter injection in filters. I had to deal with this 
 via Nuget, here is what you have to do:
 
 In the Register method of the WebAPiConfig.cs, add this line of code:
+
 ```
+	// Unity iOC container filter registration (to allow setter injection)
 	config.Services.Add(typeof(IFilterProvider), new UnityWebApiFilterProvider(container));
 ``` 
 
