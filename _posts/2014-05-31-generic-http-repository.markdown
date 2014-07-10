@@ -159,6 +159,9 @@ The repository implementation
 
         private string ToQueryString(List<KeyValuePair<string, string>> queryStringParams)
         {
+			if (queryStringParams.Count == 0)
+				return "";
+				
             StringBuilder sb = new StringBuilder("?");
 
             bool first = true;
