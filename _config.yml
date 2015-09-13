@@ -1,6 +1,8 @@
 name: "Khaled Hikmat"
 markdown: kramdown
+kramdown: 
+  input: GFM
 permalink: /:year-:month-:day/:title
 baseurl: 
 encoding: utf-8
-highlighter: rouge
+highlighter: pygments
