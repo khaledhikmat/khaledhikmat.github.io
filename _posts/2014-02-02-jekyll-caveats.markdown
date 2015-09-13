@@ -358,18 +358,18 @@ var disqus_shortname = '<add-your-own>'; // required: replace example with your 
 
 This is basically taken from the `discqus` site. There is also some script loaded in the default.html.
 
-Anamolies
+Anomalies
 =========
 
 * I encountered many situations where Jekyll/Liquid produces weird bugs if the there are tabs or extra spaces in the {{"{% if "}}%} clauses. The output becomes very unpredictable. 
-* Similarly in Jekyll data files, the violated tab characteres is very annoying
+* Similarly in Jekyll data files, the violated tab characters is very annoying
 * Also writing posts that contain some Jekyll/Liquid code (like this post) requires that you use extra brackets. Otherwise Jekyll will misundertand the code and transforms it into HTML!!! Check out [this post](http://truongtx.me/2013/01/09/display-liquid-code-in-jekyll/) 
 for further information.
 
 Conclusion
 ==========
 
-Overall I think Jekyll and Liquid are a very powerul combination suited for developers who want to produce some documentation quickly without having to worry about maintaining a WordPress site and all the extra baggage that comes with it.
+Overall I think Jekyll and Liquid are a very powerful combination suited for developers who want to produce some documentation quickly without having to worry about maintaining a WordPress site and all the extra baggage that comes with it.
 
 References
 ==========

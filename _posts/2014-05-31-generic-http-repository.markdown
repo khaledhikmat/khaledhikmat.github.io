@@ -19,7 +19,8 @@ keys and values to a query string.
  
 The repository interface
 ========================
-```
+
+```csharp
     public interface IHttpRepository
     {
         Task<TResponse> Get<TResponse>(string token, string version, string userName, string apiString, string apiSlug, List<KeyValuePair<string, string>> queryStringParams);
@@ -31,7 +32,8 @@ The repository interface
 
 The repository implementation
 =============================
-```
+
+```csharp
     public class HttpRepository : IHttpRepository
     {
         private string _apiUrl;

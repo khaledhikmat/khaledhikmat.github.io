@@ -1,6 +1,6 @@
 name: "Khaled Hikmat"
-markdown: redcarpet
-pygments: true
+markdown: kramdown
 permalink: /:year-:month-:day/:title
 baseurl: 
 encoding: utf-8
+highlighter: rouge
