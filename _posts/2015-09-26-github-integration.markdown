@@ -1,0 +1,25 @@
+---
+layout: post
+title:  "GitHub Integration using C#"
+date:   2015-09-26 20:14:01
+summary: "Some notes on how to integrate GitHub using C#"
+categories: Technical
+tags: C#, GitHub
+project: "Khaled Hikmat"
+tagline: An old time software technologist and architect!
+---
+
+{% include post-header.html param=page.tags %}
+
+{% include post-navigation.html %}
+
+We have most of our source code and documentation on GitHub. They are organized in organizations with private repositories though. While this is really needed, our executives are not able to see what is going on unless they sign in to GitHub....something they are not particularly happy about. The following will be nice:
+
+* Provide some sort of analytics to show who is doing what and when to the source code and documentation repositories
+* Provide a listing of our source code and documentation repositories, status, last update, etc
+* Expose some of our non-sensitive documentation as HTML or PDF
+ 
+I wanted to provide this on a browser and make it available publicly so it will be really simple to view. Since GitHub allows organizations to have a public site running in Jekyll, this is exactly what I am going to use. The rest of the post will describe in details how I managed my goals as outlined above.
+
+
+  
