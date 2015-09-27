@@ -16,7 +16,7 @@ tagline: An old time software technologist and architect!
 We have most of our source code and documentation on GitHub. They are organized as organizations with private repositories. While the privacy is really needed, our executives are not able to see what is going on unless they sign in to GitHub, hop from one repository to another....something they are not particularly happy about. So the following are my objectives to change that and provide our executives a much easier view:
 
 * Provide some sort of analytics to show who is doing what and when to the source code and documentation repositories
-* Provide a listing of our source code and documentation repositories, status, last update, etc
+* Extract the source code and documentation repositories, status, last update from GitHub using APIs
 * Expose some of our non-sensitive documentation as HTML or PDF
 * Provide all of the above on a site available publicly so it will be really convenient to view
  
@@ -61,20 +61,150 @@ public override Task ExecuteAsync(string receiver, WebHookHandlerContext context
 }
 ```  
   
-Now that I am being notified whenever a push event takes place, I wanted to do something with this data to make it reportable. After some research, I found a really cool analytics company that allows me to send events and run some analytics queries against them. This is realy exactly what I needed. So I signed up to [Keen](https://keen.io), set up a project and started pumping my push events to Keen. This is what Keen said about themselves:
+Now that I am being notified whenever a push event takes place, I wanted to do something with this data to make it reportable. After some research, I found a really cool analytics company that allows me to send events and run some analytics queries against them. This is realy exactly what I needed. So I signed up to [Keen](https://keen.io), set up a project and started pumping my push events to Keen. This is what Keen says about themselves:
 
 _Deliver fast, flexible analytics to your teams & customers. With Keen’s developer-friendly APIs, it’s easy to embed custom dashboards and reports in any app or website._
 
-It is really quite simple as they have a .NET library that does most of the work. Querying the data turned out to be quite simple also. The great thing about their solution is you can embed your charts right into your web site via a very lightweight JavaScript library. They also have an explorer that you can experiment on your own. So I can produce something like this in no time:
+It is really quite simple to pump data as they have a .NET library that does most of the work. Querying the data turned out to be quite simple also. The great thing about their solution is that you can embed charts right into web sites via a very lightweight JavaScript library. They also have an explorer that one can experiment to fine tune the queries. So I can produce something like this in no time:
 
 ![Distribution by committer](http://i.imgur.com/KahPKkX.png)  
 
-Ah....looks great and it is exactly what I want. Of course, the GitHub push events that arrive at my handler contain a plothora of other useful information that we can use to chart and report on. But this is a great start.  
+Ah....looks great and it is exactly what I want. Of course, the GitHub push events that arrive at my handler contain a plothora of other useful information that I can use to chart and report on. But this is a great start.  
 
-### Listing
+### Extraction
 
+Because our repositories are mostly private, I needed a way to collect the repository information from GitHub using their APIs. Instead I opted to use an Azure Web Job that is triggered every day or so and update a JSON file that I host on a blob storage. This JSON file contains all the repository and organization information.
+
+In order to interact with GitHub APIs, I used the excellent [Octokit .NET libray](https://github.com/octokit/octokit.net). 
+
+The following is a code snippet that allows me to pull the repsitory information per an organization:
+
+```csharp
+var githubclient = new GitHubClient(new Octokit.ProductHeaderValue("some-cool-name"));
+githubclient.Credentials = new Credentials(personalCode);
+
+var user = await githubclient.User.Current();
+_logger.WriteLine("Logged in user : " + user.Login);
+
+var orgs = await githubclient.Organization.GetAllForCurrent();
+foreach (var org in orgs)
+{
+	_logger.WriteLine("Organization - URL: " + org.Url + " - Login: " + org.Login);
+
+	var orgObject = await githubclient.Organization.Get(org.Login);
+
+	var reps = await githubclient.Repository.GetAllForOrg(org.Login);
+	foreach (var rep in reps)
+	{
+		_logger.WriteLine("Repository : " + rep.Name + "-" + rep.FullName + " - Collaborators: " + rep.StargazersCount);
+	}
+}
+```
+
+Where `personalCode` is something I generated from my GitHub account setting to allow me programmtic access without having to do the oAUth authentication flow dance. You can read about them [here](https://github.com/blog/1509-personal-api-tokens).
+
+I collect the organization and repository structure into a .NET structure that looks like this:
+
+```csharp
+class MyGitHub
+{
+	public MyGitHub()
+	{
+		Organizations = new List<MyOrganization>();
+	}
+
+	public List<MyOrganization> Organizations { get; set; }
+}
+
+class MyOrganization
+{
+	public <MyOrganization()
+	{
+		Repositories = new List<Repository>();
+	}
+
+	public Organization Organization { get; set; }
+	public List<Repository> Repositories { get; set; }
+}
+```
+
+Where `Organization` and `Repository` are classes defined by the [Octokit .NET libray](https://github.com/octokit/octokit.net).
+
+Once I collect all the data, I then use Json.NET to serialize the object in JSON:
+
+```csharp
+string formattedJson = JsonConvert.SerializeObject(myGitHub, Formatting.Indented, new JsonSerializerSettings
+{
+	ContractResolver = new CamelCasePropertyNamesContractResolver()
+});
+```
+
+Finally, I send the serialized Json to a blob storage:
+
+```csharp
+CloudBlockBlob blob = _myBlobContainer.GetBlockBlobReference(blobName);
+blob.Properties.ContentType = "application/json; charset=utf-8";
+
+byte[] byteArray = Encoding.UTF8.GetBytes(formattedJson);
+MemoryStream memStream = new MemoryStream(byteArray);
+blob.UploadFromStream(memStream);
+return blob.Uri.ToString()
+```
+
+Now that I have a URL that I can use frpm JavaScript, for example, to bind the views to.
+    
 ### Exports
+
+Some of our documenation may need to be made available to the outside world. Perhaps we want to let a client or an internal user access to it. Again...because our documentation repositories are private, we needed a way to export to HTML and perhaps embed in some web site pages. 
+
+To do this, I create in each documentation repository two destination directories: `dest-html` and `dest-pdf` that are ignored by `git` (i.e. via `.gitignore`). I also provide two gulp tasks that will walk though all the .MD files and convert them to HTMLs and PDFs respectively.
+
+To do this, we need to have [Node](https://nodejs.org/en/) and [Gulp](http://gulpjs.com/) installed. Here are local commands to run a the root of the web site: 
+
+```
+npm install gulp --save-dev
+npm install gulp-markdown --save-dev
+npm install gulp-markdown-pdf --save-dev 
+```
+
+Once completed, you can now run a gulp task that creates the HTML or PDF files (following the same directory structure) in the `dest` folder:
+
+```
+gulp html
+gulp pdf
+```
+
+The `.gulpfile` might look something like this:
+
+```
+var gulp = require('gulp');
+var markdownpdf = require('gulp-markdown-pdf');
+var markdownhtml = require('gulp-markdown');
+
+gulp.task('pdf', function () {
+        return gulp.src(['**/*.md', '!node_modules/**/*.md'])
+        .pipe(markdownpdf())
+        .pipe(gulp.dest('dest-pdf'));
+});
+
+gulp.task('html', function () {
+        return gulp.src(['**/*.md', '!node_modules/**/*.md'])
+        .pipe(markdownhtml())
+        .pipe(gulp.dest('dest-html'));
+});
+```
 
 ### Web Site
 
-  
+Now that we have everthing we want to expose, I needed a web site tto host all of this stuff. It turned out that GitHub provides one public site per repository or per one organization. These web sites are hosted by GitHub and they are referred to as [GitHub pages](https://pages.github.com/) and they powered by [Jekyll](http://jekyllrb.com/). 
+
+I did not want to start making GitHub API calls directly from JavaScript as there are some security concerns. So the web site reads directly from the JSON file (that O prepared above) and bind the data to the views using any JavaScript binding library such as [Knockout](http://knockoutjs.com/) or full JavaScript framework such [AngularJS](https://angularjs.org/).
+
+The site might contain:
+
+* Orgaization information
+* Repository Information showing stats, etc
+* Selected Documentation
+* Blog posts
+* Analytic Charts
+
