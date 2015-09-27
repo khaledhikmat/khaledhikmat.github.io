@@ -69,7 +69,7 @@ It is really quite simple as they have a .NET library that does most of the work
 
 ![Distribution by committer](http://i.imgur.com/KahPKkX.png)  
 
-Ah....looks great and it is exactly what I want. Of course, the GitHub push events that arrive at my handler contain a plothora of other useful information that we can use to chart and report on. But this is a great stat.  
+Ah....looks great and it is exactly what I want. Of course, the GitHub push events that arrive at my handler contain a plothora of other useful information that we can use to chart and report on. But this is a great start.  
 
 ### Listing
 
