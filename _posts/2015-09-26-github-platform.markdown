@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "GitHub Integration using C#"
+title:  "GitHub Platform"
 date:   2015-09-26 20:14:01
-summary: "Some notes on how to integrate GitHub using C#"
+summary: "Some notes on how to make a good use of the GitHub platform"
 categories: Technical
-tags: C#, GitHub
+tags: C#, GitHub, Web API, Analytics, Keen
 project: "Khaled Hikmat"
 tagline: An old time software technologist and architect!
 ---
@@ -196,7 +196,7 @@ gulp.task('html', function () {
 
 ### Web Site
 
-Now that we have everthing we want to expose, I needed a web site tto host all of this stuff. It turned out that GitHub provides one public site per repository or per one organization. These web sites are hosted by GitHub and they are referred to as [GitHub pages](https://pages.github.com/) and they powered by [Jekyll](http://jekyllrb.com/). 
+Now that we have everthing we want to expose, I needed a web site to host all of this stuff. It turned out that GitHub provides one public site per repository or per one organization. These web sites are hosted by GitHub and they are referred to as [GitHub pages](https://pages.github.com/) and they powered by [Jekyll](http://jekyllrb.com/). 
 
 I did not want to start making GitHub API calls directly from JavaScript as there are some security concerns. So the web site reads directly from the JSON file (that O prepared above) and bind the data to the views using any JavaScript binding library such as [Knockout](http://knockoutjs.com/) or full JavaScript framework such [AngularJS](https://angularjs.org/).
 
@@ -208,3 +208,6 @@ The site might contain:
 * Blog posts
 * Analytic Charts
 
+### Conslusion 
+
+GitHub provides an excellent platform for source code and documentation. With a little bit of help from their Webhooks and Web APIs, we can build a useful public site that can be used by executives to monitor progress of out IT efforts without having to log in to GitHub.   
