@@ -202,12 +202,12 @@ I did not want to start making GitHub API calls directly from JavaScript as ther
 
 The site might contain:
 
-* Orgaization information
+* Organization information
 * Repository Information showing stats, etc
 * Selected Documentation
-* Blog posts
+* Blog Posts
 * Analytic Charts
 
 ### Conslusion 
 
-GitHub provides an excellent platform for source code and documentation. With a little bit of help from their Webhooks and Web APIs, we can build a useful public site that can be used by executives to monitor progress of out IT efforts without having to log in to GitHub.   
+GitHub provides an excellent platform for source code and documentation. With a little bit of help from their Webhooks and Web APIs, we can build a useful public site that can be used by executives to monitor progress of our IT efforts without having to log in to GitHub.   
