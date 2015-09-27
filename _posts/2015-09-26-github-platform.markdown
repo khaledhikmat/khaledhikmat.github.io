@@ -73,11 +73,11 @@ Ah....looks great and it is exactly what I want. Of course, the GitHub push even
 
 ### Extraction
 
-Because our repositories are mostly private, I needed a way to collect the repository information from GitHub using their APIs. Instead I opted to use an Azure Web Job that is triggered every day or so and update a JSON file that I host on a blob storage. This JSON file contains all the repository and organization information.
+Because our repositories are mostly private, I needed a way to collect the repository information from GitHub using their APIs. I opted to use an Azure Web Job that is triggered every day or so and update a JSON file that I host on a blob storage. This JSON file contains all the repository and organization information.
 
 In order to interact with GitHub APIs, I used the excellent [Octokit .NET libray](https://github.com/octokit/octokit.net). 
 
-The following is a code snippet that allows me to pull the repsitory information per an organization:
+The following is a code snippet that allows me to pull the user's organizations and repsitories:
 
 ```csharp
 var githubclient = new GitHubClient(new Octokit.ProductHeaderValue("some-cool-name"));
@@ -101,7 +101,7 @@ foreach (var org in orgs)
 }
 ```
 
-Where `personalCode` is something I generated from my GitHub account setting to allow me programmtic access without having to do the oAUth authentication flow dance. You can read about them [here](https://github.com/blog/1509-personal-api-tokens).
+Where `personalCode` is something I generated from my GitHub account setting to allow me to have a programmtic access without having to do the oAUth authentication flow dance. You can read about them [here](https://github.com/blog/1509-personal-api-tokens).
 
 I collect the organization and repository structure into a .NET structure that looks like this:
 
@@ -139,7 +139,7 @@ string formattedJson = JsonConvert.SerializeObject(myGitHub, Formatting.Indented
 });
 ```
 
-Finally, I send the serialized Json to a blob storage:
+Finally, I send the serialized JSON to a blob storage:
 
 ```csharp
 CloudBlockBlob blob = _myBlobContainer.GetBlockBlobReference(blobName);
@@ -151,7 +151,7 @@ blob.UploadFromStream(memStream);
 return blob.Uri.ToString()
 ```
 
-Now that I have a URL that I can use frpm JavaScript, for example, to bind the views to.
+Now that I have a URL that I can use from JavaScript, for example, to bind the views to.
     
 ### Exports
 
@@ -159,7 +159,7 @@ Some of our documenation may need to be made available to the outside world. Per
 
 To do this, I create in each documentation repository two destination directories: `dest-html` and `dest-pdf` that are ignored by `git` (i.e. via `.gitignore`). I also provide two gulp tasks that will walk though all the .MD files and convert them to HTMLs and PDFs respectively.
 
-To do this, we need to have [Node](https://nodejs.org/en/) and [Gulp](http://gulpjs.com/) installed. Here are local commands to run a the root of the web site: 
+To do this, we need to have [Node](https://nodejs.org/en/) and [Gulp](http://gulpjs.com/) installed. Here are local commands to run on the root of the web site: 
 
 ```
 npm install gulp --save-dev
@@ -167,13 +167,12 @@ npm install gulp-markdown --save-dev
 npm install gulp-markdown-pdf --save-dev 
 ```
 
-Once completed, you can now run a gulp task that creates the HTML or PDF files (following the same directory structure) in the `dest` folder:
+Once completed, we can now run a gulp task that creates the HTML or PDF files (following the same directory structure) in the said `dest` folder:
 
 ```
 gulp html
 gulp pdf
 ```
-
 The `.gulpfile` might look something like this:
 
 ```
@@ -208,6 +207,6 @@ The site might contain:
 * Blog Posts
 * Analytic Charts
 
-### Conslusion 
+### Conclusion 
 
 GitHub provides an excellent platform for source code and documentation. With a little bit of help from their Webhooks and Web APIs, we can build a useful public site that can be used by executives to monitor progress of our IT efforts without having to log in to GitHub.   
