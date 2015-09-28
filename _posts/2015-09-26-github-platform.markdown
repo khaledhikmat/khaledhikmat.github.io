@@ -138,7 +138,6 @@ string formattedJson = JsonConvert.SerializeObject(myGitHub, Formatting.Indented
 	ContractResolver = new CamelCasePropertyNamesContractResolver()
 });
 ```
-
 Finally, I send the serialized JSON to a blob storage:
 
 ```csharp
@@ -151,7 +150,42 @@ blob.UploadFromStream(memStream);
 return blob.Uri.ToString()
 ```
 
-Now that I have a URL that I can use from JavaScript, for example, to bind the views to.
+Now I have a URL that I can use from JavaScript, for example, to bind the views to. One more thing though...if you are planning to consume the JSON file from a browser JavaScript, you need to set the storage to honor CORS. One way of doing this programatically using the .NET storage SDK is something like [this](http://blogs.msdn.com/b/windowsazurestorage/archive/2014/02/03/windows-azure-storage-introducing-cors.aspx):
+
+```csharp
+// Get context object for working with blobs, and 
+// set a default retry policy appropriate for a web user interface.
+var blobClient = myStorageAccount.CreateCloudBlobClient();
+
+// CORS should be enabled once at service startup
+// Given a BlobClient, download the current Service Properties 
+ServiceProperties blobServiceProperties = blobClient.GetServiceProperties();
+
+// Enable and Configure CORS
+ConfigureCors(blobServiceProperties);
+
+// Commit the CORS changes into the Service Properties
+blobClient.SetServiceProperties(blobServiceProperties);
+``` 
+Where enabling CORS is defined as follows:
+
+```csharp
+private static void ConfigureCors(ServiceProperties serviceProperties)
+{
+	serviceProperties.Cors = new CorsProperties();
+	serviceProperties.Cors.CorsRules.Add(new CorsRule()
+	{
+		AllowedHeaders = new List<string>() { "*" },
+		AllowedMethods = CorsHttpMethods.Put | CorsHttpMethods.Get | CorsHttpMethods.Head | CorsHttpMethods.Post,
+		AllowedOrigins = new List<string>() { "*" },
+		ExposedHeaders = new List<string>() { "*" },
+		MaxAgeInSeconds = 1800 // 30 minutes
+	});
+}
+``` 
+
+
+
     
 ### Exports
 
