@@ -35,7 +35,6 @@
 	<script type="text/javascript" src="{{ site.baseurl }}/libraries/highslide/highslide-with-gallery.js"></script>
 	<script type="text/javascript" src="{{ site.baseurl }}/libraries/github/underscore-min.js"></script>
 	<script type="text/javascript" src="{{ site.baseurl }}/libraries/github/base64.js"></script>
-	<script type="text/javascript" src="{{ site.baseurl }}/libraries/github/github.js"></script>
 	<script type="text/javascript" src="{{ site.baseurl }}/javascripts/main.js"></script>
 </head>
 
@@ -79,34 +78,6 @@ if (hs.addSlideshow) hs.addSlideshow({
 </script>
 
 <body>
-<div id="mask"></div>
-
-<div class="modal fade" id="siteLoginDlg" role="dialog" aria-labelledby="siteLoginDlgLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" id="siteLoginDlgLabel">
-					This {{ site.name }} is protected! If you don't have a user id/pwd, you need to let us know. 
-				</h4>
-			</div>
-			<div class="modal-body">
-				<form role="form">
-					<div class="form-group">
-						 <label for="siteLoginDlgUserId">User Id</label><input class="form-control" id="siteLoginDlgUserId" type="text" />
-					</div>
-					<div class="form-group">
-						 <label for="siteLoginDlgPassword">Password</label><input class="form-control" id="siteLoginDlgPassword" type="password" />
-					</div>
-					<button id="siteLoginDlgSubmit" type="submit" class="btn btn-default">Submit</button>
-				</form>
-			</div>
-			<div class="modal-footer">
-			<!-- add something here -->
-			</div>
-		</div>
-	</div>
-</div>
-
 <div class="container box-shadow">
 	<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
 		
@@ -143,25 +114,7 @@ if (hs.addSlideshow) hs.addSlideshow({
 			</blockquote>
 		</div>
 	</div>
-	<!--<div>
-	<script>
-	(function() {
-		var cx = '011366492832065241597:1mhsqceffwu';
-		var gcse = document.createElement('script');
-		gcse.type = 'text/javascript';
-		gcse.async = true;
-		gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-			'//www.google.com/cse/cse.js?cx=' + cx;
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(gcse, s);
-	})();
-	</script>
-	<gcse:search></gcse:search>	
-	</div>-->
 	{{ content }}
 </div>
-<!-- Enforce the password on every page -->
-<!-- {% include enforce-password.html %}-->
-{% include do-not-enforce-password.html %}-->
 </body>
 </html>

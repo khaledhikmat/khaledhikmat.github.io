@@ -67,7 +67,7 @@ _Deliver fast, flexible analytics to your teams & customers. With Keen’s devel
 
 It is really quite simple to pump data as they have a .NET library that does most of the work. Querying the data turned out to be quite simple also. The great thing about their solution is that you can embed charts right into web sites via a very lightweight JavaScript library. They also have an explorer that one can experiment to fine tune the queries. So I can produce something like this in no time:
 
-![Distribution by committer](http://i.imgur.com/KahPKkX.png)  
+![Distribution by committer]({{ site.baseurl }}/images/2015-09-26/hmccode-analysis.png)  
 
 Ah....looks great and it is exactly what I want. Of course, the GitHub push events that arrive at my handler contain a plothora of other useful information that I can use to chart and report on. But this is a great start.  
 

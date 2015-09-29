@@ -135,8 +135,8 @@ tagline: An old time software technologist and architect!
 					</div>
 					<div class="panel-body">
 						<ul class="nav nav-pills">
-							<li class="active"><a href="https://github.com/khaledhikmat" target="_blank"><span id="mygithub-prv-reps" class="badge pull-right">0</span>Private Reps</a></li>
-							<li class="active"><a href="https://github.com/khaledhikmat" target="_blank"><span id="mygithub-pub-reps" class="badge pull-right">0</span>Public Reps</a></li>
+							<li class="active"><a href="https://github.com/khaledhikmat" target="_blank"><span id="mygithub-prv-reps" class="badge pull-right">0</span>Code Reps</a></li>
+							<li class="active"><a href="https://github.com/khaledhikmat" target="_blank"><span id="mygithub-pub-reps" class="badge pull-right">0</span>Doc Reps</a></li>
 						</ul>	
 					</div>
 				</div>
@@ -158,39 +158,16 @@ tagline: An old time software technologist and architect!
 	var tc = document.getElementById('tagcloud');
 	mainService.tagCloud(tc,'span');
 	
-	// Get accces to my github account and get some stats
-	//var gh = new Github({
-		//username: "khaledhikmat",
-		//password: "-----",
-		//auth: "basic"
-	//});
-	var gh = new Github({
-		token: "7e6ab7fb9ea6eeb1bc448e015d0c704419b4966a",
-		auth: "oauth"
-	});
-
-	var prvReps = 0;
-	var pubReps = 0;
-	var user = gh.getUser();
-	user.repos(function (err, repos) {
-		if (!err) {
-			for (x in repos) {
-				console.log("x : " + x + " = " +  repos[x]);
-				if (repos[x].private) 
-					prvReps++;
-				else
-					pubReps++;
-				for (y in repos[x]) {
-					console.log("y : " + y + " = " +  repos[x][y]);
-				}
-			}
-			
-			console.log('Private Reps: ' + prvReps);
-			console.log('Public Reps: ' + pubReps);
-			$('#mygithub-prv-reps').text("" + prvReps);
-			$('#mygithub-pub-reps').text("" + pubReps);
-		}
-	});
+	$.when(mainService.parseRepositories()).done(function(data) {
+		console.log("data arrived");
+		console.log(data);
+		var prvReps = data.organizations[0].repositories.length;
+		var pubReps = data.organizations[1].repositories.length;
+		console.log('Code Reps: ' + prvReps);
+		console.log('Doc Reps: ' + pubReps);
+		$('#mygithub-prv-reps').text("" + prvReps);
+		$('#mygithub-pub-reps').text("" + pubReps);
+    });
 	
 </script>
 

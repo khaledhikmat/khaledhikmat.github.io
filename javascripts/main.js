@@ -1,5 +1,7 @@
 var mainService = new function () {
-	var setCookie = function (cname,cvalue,exdays) {	
+	var organizations,
+	
+	setCookie = function (cname,cvalue,exdays) {	
 	    var d = new Date();
 		d.setTime(d.getTime()+(exdays*24*60*60*1000));
 		var expires = "expires="+d.toGMTString();
@@ -29,86 +31,23 @@ var mainService = new function () {
 			return false;
 	},
 
-	maskPage = function () {
-		$('#mask').show();
-	},
+	parseRepositories = function() {
+		var deferred = $.Deferred();
 
-	unmaskPage = function () {
-		$('#mask').hide();
-	},
-
-	setCredentials = function (uid, pwd, site) {
-		setCookie(site + '-uid', uid, 2);
-		setCookie(site + '-pwd', pwd, 2);
-		setCookie(site + '-site', site, 2);
-	},
-
-	isValidCredentials = function (site, success, failure) {
-		if (isCookie(site + '-uid') == '' || isCookie(site + '-pwd') == '' || isCookie(site + '-site') == '') {
-			failure();
+		if (organizations != null) {
+			console.log('parseRepositories cache hit');
+			deferred.resolve(organizations);
 		} else {
-			// Recover the uid and pwd from the cookie
-			var uid = getCookie(site + '-uid');
-			var pwd = getCookie(site + '-pwd');
-			var site = getCookie(site + '-site');
-			console.log('uid: ' + uid + ' - pwd: ' + pwd + ' - site: ' + site);
-			
-			// Use the uid/pwd and site in an AJAX call to check them against a remote service. Make sure you include the site name in the request.
-			// My remote service authenticates the request and returns OK or FORBIDDEN
-			// My remote service resets the password every 3 days via a scheduler and emails its users the new passwords
-			
-			var zumoUrl = "https://hmc-jekyll.azure-mobile.net/";
-			var zumoKey = "GYqgLmJgfmnJFGUJLmnDwyONmwBSPA51";
-            var url = zumoUrl + "api/authenticationmanager";
-            var headers = {};
-            headers["X-ZUMO-APPLICATION"] = zumoKey;
-            var self = this;
-
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: {
-		            userId: uid,
-                    password: pwd,
-                    site: site
-                },
-                dataType: 'json',
-                headers: headers
-            }).done(function() {
-                console.log('authenticationmanager');
-                success();
-            }).fail(function (message) {
-                console.log('authenticationmanager - error: ' + message);
-                for (var i in message)
-                    console.log('authenticationmanager - detailed error: ' + message[i]);
-                failure();
-            });
+			console.log('parseRepositories fetch from Internet');
+			$.getJSON("https://miscwebjobs.blob.core.windows.net/jsons/repositories.json", function(data) {
+				organizations = data;
+				deferred.resolve(data);
+			});
 		}
+		
+		return deferred.promise();
 	},
-
-	isValidCredentialsSuccess = function () {
-		$('#siteLoginDlg').modal('hide');
-		unmaskPage(); 
-	},
-
-	isValidCredentialsFailure = function () {
-		maskPage();
-		$('#siteLoginDlg').modal('show');
-	},
-
-	checkCredentials = function (site) {
-		// Initially hide the dialog and unmask the page
-		$('#siteLoginDlg').modal('hide');
-		unmaskPage(); 
-		isValidCredentials(site, isValidCredentialsSuccess, isValidCredentialsFailure);
-	},
-
-	deleteCredentials = function (site) {
-		deleteCookie(site + '-uid');
-		deleteCookie(site + '-pwd');
-		checkCredentials();
-	},
-
+	
 	tagCloud = function (dom,tag) {
 	   var highVal = 0;
 	   var lowVal = Number.MAX_VALUE;
@@ -143,11 +82,7 @@ var mainService = new function () {
 	};
 
     return {
-        setCredentials: setCredentials,
-        checkCredentials: checkCredentials,
-        deleteCredentials: deleteCredentials,
-		unmaskPage: unmaskPage,
-		maskPage: maskPage,
+		parseRepositories: parseRepositories,
 		tagCloud: tagCloud
 	};
 }();
