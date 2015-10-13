@@ -56,7 +56,6 @@ h1 {
 h2 {
   padding-bottom: 10px;
   font-size: 32px;
-  background: url('../images/bg_hr.png') repeat-x bottom;
 }
 
 h3 {
@@ -78,10 +77,11 @@ h6 {
 p {
   margin: 10px 0 15px 0;
 }
+
 pre, code {
   width: 100%;
-  color: #222;
-  background-color: #fff;
+  color: #fff;
+  background-color: #000;
 
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-size: 14px;
