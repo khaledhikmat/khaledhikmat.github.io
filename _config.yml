@@ -1,4 +1,10 @@
+# Site Settings
 name: "Khaled Hikmat"
+title: "Khaled Hikmat"
+tagline: "Coding Thoughts"
+sidebar_image: /images/cover.jpg
+
+# Build Settings
 markdown: kramdown
 kramdown: 
   input: GFM

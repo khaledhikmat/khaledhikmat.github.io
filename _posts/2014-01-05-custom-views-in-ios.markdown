@@ -5,13 +5,8 @@ date:   2014-01-05 20:14:01
 summary: "A sample of how to create custom views in iOS"
 categories: Technical
 tags: iOS Custom Views
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 Recently I started working on an iOS app ...so I had to learn the iOS platform and Objective C. For my experience on this, please check my post here.
 
@@ -19,27 +14,27 @@ In an effort to re-factor the code and make things more organized in my iOS app,
 
 Assuming you have an iOS app based on storyboards (I am using iOS7 and Xcode 5), start by adding a new UI View item in Xcode. Let us call this new XIB file 'HeaderView.xib':
 
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-05/Screenshot-2014-01-05-14.49.19.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-14.49.19.png)  
 
 My test custom view is quite simple...it should only have a label and a button. Drag a label and a button so that it looks like this:
 
-{% include illustration.html param="Label and a buttom;Label and a buttom;/images/2014-01-05/Screenshot-2014-01-05-14.52.17.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-14.52.17.png)  
 
 Add a new Objective C class and make it extend UIView. Let us call it HeaderView. So your project file hierarchy might look something like this:
 
-{% include illustration.html param="Header View;Header View;/images/2014-01-05/Screenshot-2014-01-05-15.15.50.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-15.15.50.png)  
 
 Now comes the tricky part.... open up your XIB file and assign the file owner (in the placeholder) to the newly created HeaderView custom class:
 
-{% include illustration.html param="Header View;Header View;/images/2014-01-05/Screenshot-2014-01-05-15.17.34.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-15.17.34.png)  
 
 But leave the View's custom class to UIView:
 
-{% include illustration.html param="Header View;Header View;/images/2014-01-05/Screenshot-2014-01-05-15.17.52.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-15.17.52.png)  
 
 This is really important and it the source of my confusion when I read how other people have done this. Anyway, let make the custom view do something by creating an action from the button:
 
-{% include illustration.html param="Header View;Header View;/images/2014-01-05/Screenshot-2014-01-05-14.54.58.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-14.54.58.png)  
 
 Now open up the Custom View .m file and add this method:
 
@@ -83,25 +78,25 @@ Your entire HeaderView.m file should look like something like this:
 
 Now that we have this nifty custom view designed, let us test it out in a view controller. Create a new ViewController class called `TestCustomViewController`:
 
-{% include illustration.html param="Header View;Header View;/images/2014-01-05/Screenshot-2014-01-05-15.22.32.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-15.22.32.png)  
 
 Drag in a new view controller to your storyboard. Assign the newly created view controller custom class to the view controller:
 
-{% include illustration.html param="Header View;Header View;/images/2014-01-05/Screenshot-2014-01-05-15.24.56.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-15.24.56.png)  
 
 Drag a UIView to the view controller, size it manually and give it a background color so it becomes recognizable:
 
-{% include illustration.html param="Header View;Header View;/images/2014-01-05/Screenshot-2014-01-05-15.27.30.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-15.27.30.png)  
 
 Now assign our custom view class i.e. HeaderView to this new UIView like so:
 
-{% include illustration.html param="Header View;Header View;/images/2014-01-05/Screenshot-2014-01-05-15.29.14.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-15.29.14.png)  
 
 This new UIView that you dragged onto the view controller is actually a place holder. We will place our custom view inside it in a bit.
 
 Now create an outlet in the TestCustomViewController.h for the new UIView:
 
-{% include illustration.html param="Header View;Header View;/images/2014-01-05/Screenshot-2014-01-05-15.32.43.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-15.32.43.png)  
 
 Your TestCustiomViewController.h should look something like this:
 
@@ -168,9 +163,9 @@ Great....now we have a way to create a custom view as XIB, load it in our view c
 
 one more thing left to do. Let us add a way to make the custom view pluggable in different view controllers. For example, we want to delegate processing the click handler to the view controller so it can do its thing. Let us define a new delegate like this:
 
-{% include illustration.html param="Header View;Header View;/images/2014-01-05/Screenshot-2014-01-05-16.16.12.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-16.16.12.png)  
 
-{% include illustration.html param="Header View;Header View;/images/2014-01-05/Screenshot-2014-01-05-16.16.32.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-05/Screenshot-2014-01-05-16.16.32.png)  
 
 Your HeaderViewDelegate.h file should look something like this:
 

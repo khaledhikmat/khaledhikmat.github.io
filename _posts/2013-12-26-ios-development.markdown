@@ -5,13 +5,8 @@ date:   2013-12-26 20:14:01
 summary: "My first exposure to iOS development"
 categories: Technical
 tags: iOS Native Development
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 In a recent trip across the globe, I flew for about 30 hours. Before the trip, I planned to take advantage of this long flight time and decided to learn something new. I have always wanted to learn iOS and Objective C …. but like everyone else, the thought is scary. The language and the platform are notorious for being offensive. My programming experience for the last 10 years has been server-side code in Java and C#. Just to be frank, I am not much of a front-end developer.
 
@@ -23,8 +18,7 @@ Anyway, I picked up two books in PDF format about Objective C, loaded them on my
 
 Six weeks later, I have finished my first app in iOS. It is not a ‘hello world!’ app ….it has bunch of stuff built in it. I will talk about my experience building my first iOS app here and try to compare it with Android and Windows Phone when applicable.
 
-Objective C:
-============
+### Objective C:
 
 Someone called Objective C the @ language! I could not agree more. It seems that everything you do has an @ sign somewhere. Example:
 
@@ -76,8 +70,7 @@ Notice the weird dispatch_once call and how it does not rhyme well with the rest
 
 Anyway, for an introductory book on Objective C and iOS, I used this [book](http://www.amazon.com/Learn-Objective-C-Mac-For-iOS/dp/1430241888) and I think it was reasonably good.
 
-XCode:
-======
+### XCode:
 
 This is the main tool in iOS and Mac development. It provides a similar role as Windows' Visual Studio and Android's Eclipse (and Android Studio). I started working on iOS using XCode 5 and iOS7. In a way, I feel lucky based on the horror stories I hear about pre-XCode 5.
 
@@ -105,7 +98,7 @@ Attaching and testing on a real device is lengthy, difficult and frustrating pro
 
 In Xcode, all the files are laid out in the same directory! XCode provides grouping of files so they can better organized in the IDE:
 
-{% include illustration.html param="XCode Directory1;XCode Directory1;/images/2013-12-26/Directory.png" %}
+![UI View Item]({{ site.baseurl }}/images/2013-12-26/Directory.png)  
 
 Initially I found this very frustrating but then I got used to it. I still prefer the VS or Eclipse way of doing things though.
 
@@ -115,8 +108,7 @@ I have a static library where I stash away all the common code and a UI project 
 
 Git support comes in bundled in ...so this was a great plus for me as I now use GitHub for almost everything.
 
-App Architecture:
-=================
+### App Architecture:
 
 Most of the sample code I have seen in iOS and Objective C tends to place most of the code in the View Controllers and the App Delegate classes. This might be acceptable in small apps that are usually created and maintained by one person. However, for slightly larger apps where maintainability is a must, the all-in-one-place architecture does not cut it. This is nothing specific to iOS and it also applies to Android and Windows Phone but the sample code and the general Apple literature encourage (or does not frown strong enough) on this behavior.
 
@@ -126,7 +118,7 @@ Being familiar with Windows Phone development which does encourage (but not enfo
 
 Here is the macro architecture my app:
 
-{% include illustration.html param="iOS App Architecture;iOS App Architecture;/images/2013-12-26/Symphony-iOS-App-Architecture.jpg" %}
+![iOS App Architecture]({{ site.baseurl }}/images/2013-12-26/Symphony-iOS-App-Architecture.jpg)  
 
 Ideally I should have added another layer of view models (to pair with the view controllers)! These view models will contain the actual code and interaction with the services and they will be the thing to test while the view controllers will contain interaction with UI elements only. Given the current architecture, the view controllers are doing UI controls and services orchestration which is too much and cause a mixture of concerns. However I voted against adding the view model layer for following reasons:
 
@@ -152,7 +144,7 @@ Briefly, I created 8 services to deal with the different aspect of the app funct
 
 In order to reduce the hard dependency of these services on the view controllers and the App delegate, I created protocols (i.e. delegates) to abstract away the actual implementation. Doing so also allows me to replace the actual services with mock-up services for testing.
 
-{% include illustration.html param="XCode Directory1;XCode Directory2;/images/2013-12-26/Directory2.png" %}
+![iOS App Architecture]({{ site.baseurl }}/images/2013-12-26/Directory2.png)  
 
 The view controllers and the app delegate use a home-brewed DI (Dependency Injector) that will property inject the services into their the view controllers and app delegate. I could not find many DIs in iOS ...and the ones that I found are a bit complicated. So I did my own...it is rudimentary ...but it does the job. Services can also rely on other services..so the DI can also inject in services.
 
@@ -221,8 +213,7 @@ So basically the view controller will use the data service to retrieve items. Th
 
 I really like that! It is quite powerful and clean.
 
-Conclusion:
-==========
+### Conclusion:
 
 Apple is very successful because they know how to package things well for the consumers and users. iOS developers are under the mercy of the users because Apple empowers the users by making sure they have the best experience. Android, on the other hand, seems to favor developers and does a fair job protecting the users. Windows Phone strikes a reasonable balance.
 
@@ -235,8 +226,7 @@ From a user's perspective, needless to mention that Apple rules because they cat
 
 Learning iOS and Objective C was well worth it for me. I encourage anyone who wants to create apps for Apple devices to do the same. HTML5 is still in the infancy stages but has a very bright future. Comparing the 3 different mobile mobile platforms (Apple's iOS, Google's Android and Microsoft's Windows Phone) gives you better perspectives on things.
 
-References:
-==========
+### References:
 
 * Storyboards Tutorial in iOS7: [http://www.raywenderlich.com/50308/storyboards-tutorial-in-ios-7-part-1](http://www.raywenderlich.com/50308/storyboards-tutorial-in-ios-7-part-1)
 * Static Libraries: [http://www.raywenderlich.com/41377/creating-a-static-library-in-ios-tutorial](http://www.raywenderlich.com/41377/creating-a-static-library-in-ios-tutorial)

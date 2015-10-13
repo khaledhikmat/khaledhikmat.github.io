@@ -5,11 +5,8 @@ date:   2013-08-28 20:14:01
 summary: "مجموعة مأكولات"
 categories: بالعربي
 tags: أكل
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-navigation.html %}
 
 طلبت وصفات بلا لحمة من شــــــخص عزيز جدا فوافاني .....فأحببت أن أهديها كما هي أولا للأمانة وثانيا لســــلاسة طرقها وحســـــن وصفها...... وصحة وهنا
 

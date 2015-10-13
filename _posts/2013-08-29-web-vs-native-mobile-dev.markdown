@@ -5,13 +5,8 @@ date:   2013-08-29 20:14:01
 summary: "Decisions about what platforms to target in mobile apps"
 categories: Technical
 tags: Native HTML5 Mobile
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 Obviously this is a very hot question in the industry today! Whether to build native or web (using HTML5) really depends on the application being built, the available resources at the company and what you are willing to learn.
 

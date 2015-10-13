@@ -5,13 +5,8 @@ date:   2013-11-07 20:14:01
 summary: "An easier and more efficient way to employ threads"
 categories: Technical
 tags: Android Thread
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 If you find yourself doing something like this in Android, there is a better approach! Let us say you want to animate a map in an Android application after 2 seconds. I see lots of code samples resort to something like this:
 

@@ -5,13 +5,8 @@ date:   2013-09-05 20:14:01
 summary: "A sample of application scripting"
 categories: Technical
 tags: Application Scripting
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 It is useful to be able to script a running app to affect its operation at runtime. This is really nothing new:
 

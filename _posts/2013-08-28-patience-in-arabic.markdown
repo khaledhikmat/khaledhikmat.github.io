@@ -5,11 +5,8 @@ date:   2013-08-28 20:14:01
 summary: "شــــــعر عربي يجســـــد ملحمة انســـــانية بين عصام وعليا"
 categories: بالعربي
 tags: شــــــعر
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-navigation.html %}
 
 رلى عرب قصورهم الخيام ومنزلهم حماة والشـــــآم
 

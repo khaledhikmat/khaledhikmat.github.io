@@ -5,16 +5,9 @@ date:   2014-05-22 20:14:01
 summary: "A list of thoughts and recommendations gathered while working on an ASP .NET Web API Project"
 categories: Technical
 tags: WebAPI
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
 
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
-
-Setter injection in filters using Unity
-=======================================
 There are plenty of documentations on how to do constructor injection using Unity in Web API projects. 
 But there isn't much about setter injection in filters. I had to deal with this last week, provided that you already have Unity installed 
 via Nuget, here is what you have to do:
@@ -56,8 +49,8 @@ The UnityWebApiFilterProvider class is defined like so:
     }
 ```
 
-JSON Only
-=========
+### JSON Only
+
 If you only want to support JSON (i.e. no negotiation) and you want the JSON payload to be as expected when 
 consumed by clients such as JavaScript, you can do this in the WebApiConfig.cs:
 
@@ -73,8 +66,8 @@ consumed by clients such as JavaScript, you can do this in the WebApiConfig.cs:
 
 The CamelCase contract resolver changes your C# models naming convention from Pascal to Camel.
 
-Version Support
-===============
+### Version Support
+
 To support controller versioning, one way to do it would be to intercept the controller selection in the Web API pipeline so we can direct the 
 selector to different versions based on some header. To do this first step, you can do this in the WebApiConfig.cs:
 

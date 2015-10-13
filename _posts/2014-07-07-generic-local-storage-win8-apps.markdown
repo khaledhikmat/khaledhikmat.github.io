@@ -1,23 +1,17 @@
 ---
 layout: post
-title:  "Generic Local Storage Class for Win8 apps"
+title:  "Generic Local Storage Class for Win8 Apps"
 date:   2014-07-07 20:14:01
 summary: "A simple C# class to handle local storage of complex objects in Windows 8 apps"
 categories: Technical
 tags: C#, Win8
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
 
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
-
-A class in C# that can be used to store and retrieve complex objects to/from Win8 local storage. The class requires JSON.NET Nuget library and of course it relies 
-on the Win8 StorageFile class (hence the Windows.Storage namespace).
+A class in C# that can be used to store and retrieve complex objects to/from Win8 local storage. The class requires JSON.NET Nuget library and of course it relies on the Win8 StorageFile class (hence the Windows.Storage namespace).
  
-The local storage interface
-===========================
+## The local storage interface
+
 Assuming you have a complex object represented here for simplicity by a Book. But it can be anything:
 
 ```
@@ -38,8 +32,8 @@ Let us create an interface for storing and retrieving a book from the local repo
     }
 ``` 
 
-The local storage implementation
-================================
+## The local storage implementation
+
 ```
 	public class LocalStorageService : ILocalStorageService
     {

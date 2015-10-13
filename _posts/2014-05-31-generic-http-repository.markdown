@@ -5,20 +5,14 @@ date:   2014-05-31 20:14:01
 summary: "A simple C# class to handle HTTP verbs using HttpClient"
 categories: Technical
 tags: C#, HTTP
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 This is a class that I used in my C# PCL library to target Web APIs written in ASP.NET Web API. I think it is quite helpful as it demonstrates 
 C# excellent generic capability and the HttpClient Async programming model. In addition, there is a nice `util` method that converts a list of  
 keys and values to a query string.
  
-The repository interface
-========================
+### The repository interface
 
 ```csharp
     public interface IHttpRepository
@@ -30,8 +24,7 @@ The repository interface
     }
 ``` 
 
-The repository implementation
-=============================
+### The repository implementation
 
 ```csharp
     public class HttpRepository : IHttpRepository

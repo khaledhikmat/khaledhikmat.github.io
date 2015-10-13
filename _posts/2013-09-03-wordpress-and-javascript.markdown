@@ -5,43 +5,34 @@ date:   2013-09-20 20:14:01
 summary: "How to embed your own JavaScript in a WordPress site"
 categories: Technical
 tags: WordPress JavaScript
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 I have always wanted a nice and easy-to-use CMS system! The good and easy ones are all in PHP and I have always dreaded learning PHP...nothing bad about it...it just does not suit me well especially that I come from Java and C# background. The ones that are written in Java or .NET are ok...but a little complicated for my purpose. I have tried many: Orchard CMS, .NET Nuke, Embraco, etc. They are all fine but, like I said, they felt like a sludge hammer.
 
 The right answer for me would be WordPress! Yes..it is PHP based but ..man...you can do stuff really quickly on it and there is a ton of help on the Internet. The problem is if I wanted to write some pages that access my database or back-end, PHP would be difficult for me. So instead of fiddling with PHP and server side code, I thought of loading JavaScript in my WP pages and do web service calls to my back-end to conjure up the pages. This seems to work quite well. While this is not earth shattering, it is helpful as I am able to use a PHP based CMS system and augment it with JavaScript to call my back-end. This post will explain the steps that I took to accomplish that.
 
-WordPress Installation and Hosting:
-===================================
+### WordPress Installation and Hosting:
 
 Well...that was quite simple...because  I have a Windows Azure account. If you don't have one, I definitely recommend signing up for Windows Azure. So I created a new Web Site from gallery and within minutes, my WordPress was up and ready with MYSQL database:
 
-{% include illustration.html param="WP Azure Gallery;WP Azure Gallery;/images/2013-09-03/WPGallery1.png" %}
+![Illustration]({{ site.baseurl }}/images/2013-09-03/WPGallery1.png)  
 
-{% include illustration.html param="WP Azure Gallery2;WP Azure Gallery2;/images/2013-09-03/WPGallery2.png" %}
+![Illustration]({{ site.baseurl }}/images/2013-09-03/WPGallery2.png)  
 
 I set up my admin password and I am in business.
 
-Set up FTP:
-===========
+### Set up FTP:
 
 In order to change the WP files on the Azure server, you need to setup the FTP. This [Windows Azure Article](http://www.windowsazure.com/en-us/develop/php/tutorials/website-w-mysql-and-ftp/) will help you figure out what you need to.
 
-FTP Client:
-===========
+### FTP Client:
 
 Since I am on Windows, I use FileZilla FTP [client](https://filezilla-project.org/) and it works really well. There a small trick you have to do in order to access the WP files stored on Azure. You must download the publish profile, open it in a text editor and copy the FTP user id and password as they are into the FTP client. This is mentioned in the above article but may not be very obvious.
 
-{% include illustration.html param="Fillder Bad Proxy1;Fillder Bad Proxy1;/images/2013-09-03/Profile.png" %}
+![Illustration]({{ site.baseurl }}/images/2013-09-03/Profile.png)  
 
-My JavaScript:
-==============
+### My JavaScript:
 
 Now that I have FTP connection, I actually downloaded the entire site onto my machine so I can examine the WP site file structure. All I had to do with to change my theme a little bit to allow my own JavaScript to be loaded. It turned out there is only one file called  functions.php (located in wp-content\themes\<your-theme>\functions.php. I placed the following a the end of it. Mine is located here:  wp-content\themes\twentythirteen\functions.php
 

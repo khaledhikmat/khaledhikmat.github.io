@@ -5,20 +5,14 @@ date:   2013-09-05 20:14:01
 summary: "A Procesing a print job from the server"
 categories: Technical
 tags: .NET HTML PDF PRINT
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 In one component of a major project I am working on, it is required that we process a print job from a server. The .NET client component (i.e Windows Service) which receives the print jobs must convert the print job's HTML markup to PDF and print on one attached printers identified by name (in the print job).
 
 Initially I thought, since we are on .NET, there must be zillions of free libraries to deal with this. It turned out this is not the case. I will explain the challenges that I ran into and then go on to describe one solution that worked well for me.
 
-The challenges:
----------------
+### The challenges:
 
 * Convert the HTML to PDF
 * Print to a non-default printer
@@ -63,8 +57,7 @@ if (MyPrinters.SetDefaultPrinter(printer))
 
 Ok...then...I wanted to be get the default printer, store it somewhere safe, set my print job's printer to be the default, print and then restore my original printer as default!! But I could not find out how to get the default printer...the Windows API does not have a 'GetDefaultPrinter'.
 
-The solution:
--------------
+### The solution:
 
 After searching on the Internet and trying numerous solutions, I found the only way to actually produce a faithful PDF from HTML in a very reasonable time is via EssentialObjects EO.PDF library for .NET! It is only a one line to convert the HTML markup to PDF and it is indeed great:
 

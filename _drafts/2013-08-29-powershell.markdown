@@ -5,13 +5,8 @@ date:   2013-09-05 20:14:01
 summary: "PowerShell perspective"
 categories: Technical
 tags: PowerShell
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 It is one of those things that I always wanted to know but did not have time to delve onto it. The other day I saw a little PowerShell script that made want to get to understand better. The script is created by Jim Christopher and modified slightly by me to fit my development environment. Here it is:
 

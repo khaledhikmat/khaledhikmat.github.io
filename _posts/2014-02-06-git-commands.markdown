@@ -5,16 +5,10 @@ date:   2014-02-06 20:14:01
 summary: "A list of useful 'git' commands one might need on a daily basis if you work with git-based repositories"
 categories: Technical
 tags: Git
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
 
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
-
-Configuration
-=============
+### Configuration
 
 Git provides 3 levels of configurations:
 
@@ -55,8 +49,7 @@ git config --global alias.co "checkout"
 Git configuration is heirarchical where the repo configuration overrides the global configuration and the global configuration overrides 
 the system's.
 
-Working Locally
-===============
+### Working Locally
 
 Create a new directory i.e. GitCommands
 
@@ -157,8 +150,7 @@ logs/*.txt
 
 If you create a file in your repository named .gitignore git will use its rules when looking at files to commit. Note that git will not ignore a file that was already tracked before a rule was added to this file to ignore it. In such a case the file must be un-tracked, usually with git rm --cached filename
 
-Working Remotely
-================
+### Working Remotely
 
 Cloning and examining logs - the entire history is available
 
@@ -188,16 +180,14 @@ Examining origin
 git remote
 git remote -v
 ```
-Protocols
-=========
+### Protocols
 
 * http and https, port 80 & 443, https://github.com/jquery/jquery.git
 * git, port 9418, git://github.com/jquery/jquery.git
 * ssh, port 22, git@github.com:jquery/jquery.git
 * File, n/a, /Users/James/code/jquery
 
-View Branches & tags
-====================
+### View Branches & tags
 
 ```
 cat .git/config
@@ -206,8 +196,7 @@ git branch -r
 git tag
 ```
 
-Create a new repository on the command line
-===========================================
+### Create a new repository on the command line
 
 ```
 touch README.md
@@ -218,16 +207,14 @@ git remote add origin git@github.com:khaledhikmat/GitCommands.git
 git push -u origin master
 ```
 
-Push an existing repository from the command line
-=================================================
+### Push an existing repository from the command line
 
 ```
 git remote add origin git@github.com:khaledhikmat/GitCommands.git
 git push -u origin master
 ```
 
-Tagging
-=======
+### Tagging
 
 Gives you stable points in your release!!
 
@@ -240,8 +227,7 @@ git tag -v v1.0_with_message (cannot verify)
 git push --tags
 ```
 
-Branch Visualizations
-======================
+### Branch Visualizations
 
 ```
 git log --oneline --graph --all --decorate
@@ -249,8 +235,7 @@ git config --global alias.lga "log --oneline --graph --all --decorate"
 git lga
 ```
 
-Branching, Merging and Rebasing
-===============================
+### Branching, Merging and Rebasing
 
 ```
 git branch feature1
@@ -299,8 +284,7 @@ Creating and checking out a branch (all in one):
 git chekout -b feature2
 ```
 
-Stashing
-========
+### Stashing
 
 Don't want to lose work in progress
 
@@ -332,8 +316,7 @@ git stash drop
 git stash branch feature2_advanced
 ```
 
-Merging
-=======
+### Merging
 
 ```
 git checkout master
@@ -354,8 +337,7 @@ rm README.txt.orig
 
 Checkout this [tutorial](http://jebaird.com/2013/07/08/setting-up-kdiff3-as-the-default-merge-tool-for-git-on-windows.html) to see how you setup kdiff3 as a merge tool for Windows.
 
-Rebasing
-========
+### Rebasing
 
 ```
 git branch feature3 v1.0
@@ -370,8 +352,7 @@ git checkout master
 git merge feature 3 
 ```
 
-Remote branching
-================
+### Remote branching
 
 ```
 git fetch
@@ -388,8 +369,7 @@ git push origin :v1.0_my_great_stuff
 git push origin :v1.0_fixes
 ```
 
-References
-==========
+### References
 
 * [Git Funamentals](http://pluralsight.com/training/Courses/TableOfContents/git-fundamentals) by James Kovacs
 * [Introduction to Git](http://pluralsight.com/training/Courses/TableOfContents/introduction-to-git) by Geoffrey Grosenbach 

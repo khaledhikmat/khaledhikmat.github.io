@@ -5,13 +5,8 @@ date:   2013-09-05 20:14:01
 summary: "A sample Web page that uses SignalR"
 categories: Technical
 tags: ASP.NET HTML5 SignalR
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 I created a little sample to learn SignalR! This Collaborative White Board sample is obviously not an earth-shattering invention nor is it a demonstration of great code writing. It is simply a way to learn SignalR.
 

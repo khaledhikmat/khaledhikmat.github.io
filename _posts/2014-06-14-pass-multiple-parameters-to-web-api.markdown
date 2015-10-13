@@ -5,31 +5,26 @@ date:   2014-06-14 20:14:01
 summary: "A good way to handle passing multiple parameters to a GET method in ASP .NET Web API"
 categories: Technical
 tags: C#, Web API, ASP .NET
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 I needed to pass multiple query string parameters to a GET method in an ASP .NET Web API. I wanted to receive the parameters as a complex argument 
 in the GET Method. This is how I wanted my Web API controller method to look like:
 
 ```
-        [Route("api/outlets", Name = "Outlets")]
-        public IHttpActionResult GetTry(OutletsSearchParameters params)
-        {
-            try
-            {
-				// Do stuff...
-                return Ok(params); // Just to see what I am getting
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
+[Route("api/outlets", Name = "Outlets")]
+public IHttpActionResult GetTry(OutletsSearchParameters params)
+{
+    try
+    {
+        // Do stuff...
+        return Ok(params); // Just to see what I am getting
+    }
+    catch (Exception e)
+    {
+        return BadRequest(e.Message);
+    }
+}
 ``` 
 
 Where the OutletsSearchParameters is defined as follows:

@@ -5,30 +5,24 @@ date:   2014-01-06 20:14:01
 summary: "A sample of how to create static libraries in iOS"
 categories: Technical
 tags: iOS Static Libraries
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 As you develop more and more iOS apps, you will realize you will need the same set of utilities and base classes in all your app projects. You can place this common or shared code in a shared static library and include it in all of your projects.
 
 In this post, I will explain how to create and use a very simple static library in IOS that contains some util functions. The main objective is to show how to create and use a static library so you don't have to jump through hoops like I did!! Hence the library itself will be quite simple.
 
-Creating a static library:
-==========================
+### Creating a static library:
 
 Let us start by creating a static library in Xcode:
 
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-06/Screenshot-2014-01-06-15.15.36.png" %}
+![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.15.36.png)  
 
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-06/Screenshot-2014-01-06-15.18.35.png" %}
+![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.18.35.png)  
 
 Once the library is created, let us create a Utils class that inherits from NSObject:
 
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-06/Screenshot-2014-01-06-15.20.25.png" %}
+![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.20.25.png)  
 
 Let us add code to the Utils.h file:
 
@@ -143,48 +137,47 @@ So now we have some static useful Util methods that are part of a static library
 
 Before we create a new project to use the newly created static library in, let us briefly discuss the library's output. There are two things: the include files (i.e. Utils.h) and the library binary. The library's binary is of type .a. In order to let the library know to include the Util.h that we just created, we need to tell it to include it in its output. Open the static library project settings and navigate to the Build Phases -> Copy Files:
 
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-06/Screenshot-2014-01-06-15.40.29.png" %}
+![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.40.29.png)  
 
 Click the little plus sign to add additional header files:
 
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-06/Screenshot-2014-01-06-15.40.38.png" %}
+![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.40.38.png)  
 
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-06/Screenshot-2014-01-06-15.40.56.png" %}
+![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.40.56.png)  
 
 At the end, your project's build phases should look like something like this:
 
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-06/Screenshot-2014-01-06-15.41.12.png" %}
+![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.41.12.png)  
 
 Now the library knows to include the Utils.h in its output. Having done that, make sure you re-compile the library and let us examine the actual output in Finder. Expand the 'Products' folder in Xcode and right-click the libMySharedLib.a:
 
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-06/Screenshot-2014-01-06-15.41.39.png" %}
+![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.41.39.png)  
 
 This launches the Finder to show the output:
 
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-06/Screenshot-2014-01-06-15.42.05.png" %}
+![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.42.05.png)  
 
 You will see that output consists of the .a file and the include files. By the way, Xcode includes the MySharedLib.h automatically in the output. I see lots of libraries that place all the headers in the main include file (i.e. MySharedLib.h), but I do prefer different header files.
 
 *IMPORTANT*:
 Please note that static libraries do not have universal binaries. In other words, if you compile the library while an iOS device is the target, you will get ARM object code. Otherwise, you will get x86 object code (for the simulators). If you want your library's output to support both architectures, you will have to use a tool called 'LIPO'. There is a reference at the end of this post that refers to another post that deals with this issue in a very clear way.
 
-Using the static library:
-========================
+### Using the static library:
 
 To use our newly created static library, let us create an iOS app...any thing will do. For this demo, I created a Single Page iOS App.
 
 Before we can use the library, let us create a folder in the App's directory with the name of 'MySharedLib'. This folder should contain the headers and the .a file from the library's output. The App folder might look something like this:
 
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-06/Screenshot-2014-01-06-18.57.06.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-18.57.06.png)  
 
 Now that we copied the library's output to the app's folder, we can tell the app to link it in statically and make its header files known to the app.
 
 Access the project settings (General -> Linked Frameworks and Libraries) and add the MySharedLib to the project's linking:
 
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-06/Screenshot-2014-01-06-17.03.05.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-17.03.05.png)  
 
 Click 'Add Others' to open up the additional menu. Navigate to the mySharedLib .a and choose it:
-{% include illustration.html param="UI View Item;UI View Item;/images/2014-01-06/Screenshot-2014-01-06-17.03.20.png" %}
+![UI View Item]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-17.03.20.png)  
 
 Access the project settings (Build Settings -> Search Paths ...make sure you are in the 'All' level not 'Basic'). Change both the header and library search path to be:
 

@@ -5,13 +5,8 @@ date:   2014-02-02 20:14:01
 summary: "Jekyll is a blog-aware platform that transforms your plain text into static websites. This post describes some caveats I ran into when I first started using it."
 categories: Technical
 tags: Jekyll
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 Blog engines are bloated and they take a lot of effort to master. They also require setting up databases which is always not very easy. If you are developer, an easier approach might be to deal with your blog site in a similar fashion to 
 how you deal with your source code repositories i.e. GitHub. In addition to source code branches, GitHub allows you to publish [GitHub pages]() site for your account and a site for each one of your repositories or projects. 
@@ -32,13 +27,13 @@ The advantages (that I see) for using Jekyll and GitHub pages are summarized her
 
 *This [sample generic site](https://github.com/khaledhikmat/GenericProjectSite) can be used as a reference implementation of this.*
 
-Jekyll Installation
-=====================
+### Jekyll Installation
+
 The installation process is documented on the [Jekyll](http://jekyllrb.com/docs/installation/) site quite well. In my case, I could not install it on my Mac! I kept in having issues with permissions and other issues. I am not versed in Macs...
 so this could be the reason. However, I was able to install it quite easily on my Windows 8.1 machine without any problem. Although the Windows installation is not officall supported by Jekyll, the instructions worked well for me. 
 
-Setup Repositories for gh-pages
-===============================
+### Setup Repositories for gh-pages
+
 At first, I was a little confused about how to create gh-pages branch for my repositories. Here is how I am doing them now. Assumong we already have a GitHub repo at <repo-url>. To add gh-pages branch, we do this:
 
 * Clone the repository
@@ -79,13 +74,13 @@ $ git commit -am "Blah blah blah"
 $ git push origin gh-pages
 ```
 
-Layouts
-=======
+### Layouts
+
 Layputs are like master pages that define the site structure. My [sample generic site](https://github.com/khaledhikmat/GenericProjectSite) uses Bootstrap and loads the required external JavaScript libraries and sets up the content area. I will get back 
 to this layout file as I will describe the different functionality.  
 
-Assets
-======
+### Assets
+
 In the [sample generic site](https://github.com/khaledhikmat/GenericProjectSite), I added the following directories to store my site assets:
 
 * Images
@@ -98,13 +93,13 @@ The way you would access these assets is via the site base url as follows:
 <script type="text/javascript" src="{{ site.baseurl }}/javascripts/main.js"></script>
 ```
 
-Markdown
-========
+### Markdown
+
 Markdown is what you would use to write your posts. This [site](http://daringfireball.net/projects/markdown/) describes the Markdown syntax and offers good examples. I found Markdown to be reasonable but can use more tags and functionality. For example, 
 there is no way to add simple things like tables or make a URL reference target a seperate tab!!
  
-Data
-====
+### Data
+
 Dats structures can be added to the data folder of the site. Say for example, you have a `Players` data structure defined as `.yml` this way:
 
 ```
@@ -145,8 +140,8 @@ You would then use this data structure in the site as follows:
 </div>
 ```
  
-Includes are very powerful
-==========================
+### Includes are very powerful
+
 Includes are used all over the place as they make sharing common behavior quite easy. Let us say, for example, you want to include attachments in your post, you will create a data entry in the post's  front-matter section (the stuff beteween the --- and ---):
 
 ```
@@ -185,8 +180,8 @@ The illustrations include can be written this way:
 <hr>
 ```
 
-JavaScript and External Libraries
-=================================
+### JavaScript and External Libraries
+
 You can include any Java Script code: external libraries and your own. In the sample project, I included Bootstrap, jQuery and highslide. These are all added to the `libraries` subfolder. My own JavaScript is in the `JavaScript` subfolder. 
 I reference all of these scripts in default.html like so:
 
@@ -215,8 +210,8 @@ for (x in players) {
 
 The use of the `jsonify` tag in Jekyll makes the process quite easy. Now that the data is available to JavaScript, further processing via JS can be used i.e. charting.
 
-Posts data manipulation
-=======================
+### Posts data manipulation
+
 Jekyll offers a nice data structure called `site.categories` (and `site.tags`) which allows you to enumerate the posts for display purposes. For example, I wanted to show the categories and the number of posts in each category. This is how I did it:
 
 ```
@@ -258,8 +253,7 @@ Jekyll (via Liquid) offers very nice array manipulation such as sorting and reve
 </div>
 ```
  
-Configuration
-=============
+### Configuration
 
 Jekyll uses a configuration file to control its operation. For the sample site, it is defined this way:
 
@@ -282,8 +276,8 @@ jekyll serve --baseurl ''
 
 The `serve --baseurl ""` is overrided at the command line to be blank which is suitable for localhost deployment. When I deploy to GitHub via a Git push, however, the baseurl of `GenericProjectSite` is suitable.
 
-Authentication
-==============
+### Authentication
+
 Jekyll does not offer built-in authentication! There are some plugins that do offer authentication but GitHub does not allow plugins in Jekyll and hence they cannot be used. In the sample project, I created a very simple JavaScript solution that needs to 
 be enhanced to be worth anything. The idea is that every page that requires authentication, you would an include that looks like this:
 
@@ -329,8 +323,8 @@ I think is necessary and here how it looks like:
 	},
 ```
  
-Comments
-========
+### Comments
+
 The pages or posts that require comments can include the comments include which is defined like this:
 
 ```
@@ -358,21 +352,18 @@ var disqus_shortname = '<add-your-own>'; // required: replace example with your 
 
 This is basically taken from the `discqus` site. There is also some script loaded in the default.html.
 
-Anomalies
-=========
+### Anomalies
 
 * I encountered many situations where Jekyll/Liquid produces weird bugs if the there are tabs or extra spaces in the {{"{% if "}}%} clauses. The output becomes very unpredictable. 
 * Similarly in Jekyll data files, the violated tab characters is very annoying
 * Also writing posts that contain some Jekyll/Liquid code (like this post) requires that you use extra brackets. Otherwise Jekyll will misundertand the code and transforms it into HTML!!! Check out [this post](http://truongtx.me/2013/01/09/display-liquid-code-in-jekyll/) 
 for further information.
 
-Conclusion
-==========
+### Conclusion
 
 Overall I think Jekyll and Liquid are a very powerful combination suited for developers who want to produce some documentation quickly without having to worry about maintaining a WordPress site and all the extra baggage that comes with it.
 
-References
-==========
+### References
 
 * Jekyll Tutorial: [http://net.tutsplus.com/tutorials/other/building-static-sites-with-jekyll/](http://net.tutsplus.com/tutorials/other/building-static-sites-with-jekyll/)
 * Markdown Syntax: [http://daringfireball.net/projects/markdown/](http://daringfireball.net/projects/markdown/)

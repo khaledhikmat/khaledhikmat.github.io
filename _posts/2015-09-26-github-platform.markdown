@@ -5,13 +5,8 @@ date:   2015-09-26 20:14:01
 summary: "Some notes on how to make a good use of the GitHub platform"
 categories: Technical
 tags: C#, GitHub, Web API, Analytics, Keen
-project: "Khaled Hikmat"
-tagline: An old time software technologist and architect!
+featured_image: /images/cover.jpg
 ---
-
-{% include post-header.html param=page.tags %}
-
-{% include post-navigation.html %}
 
 We have most of our source code and documentation on GitHub. They are organized as organizations with private repositories. While the privacy is really needed, our executives are not able to see what is going on unless they sign in to GitHub, hop from one repository to another....something they are not particularly happy about. So the following are my objectives to change that and provide our executives a much easier view:
 
