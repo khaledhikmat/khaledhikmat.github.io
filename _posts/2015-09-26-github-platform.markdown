@@ -29,7 +29,7 @@ The best part is they already have GitHub support in the box and the example the
 
 Essentially the ASP.NET Webhook solution is quite simple. You create a handler to receive the Webhook events and they handle everything else including security, choreography and anything else in between. Basically the code boils down to this:
 
-```csharp
+{% highlight csharp %}
 public override Task ExecuteAsync(string receiver, WebHookHandlerContext context)
 {
 	try
@@ -54,7 +54,7 @@ public override Task ExecuteAsync(string receiver, WebHookHandlerContext context
 
 	return Task.FromResult(true);
 }
-```  
+{% endhighlight %}
   
 Now that I am being notified whenever a push event takes place, I wanted to do something with this data to make it reportable. After some research, I found a really cool analytics company that allows me to send events and run some analytics queries against them. This is realy exactly what I needed. So I signed up to [Keen](https://keen.io), set up a project and started pumping my push events to Keen. This is what Keen says about themselves:
 
@@ -74,7 +74,7 @@ In order to interact with GitHub APIs, I used the excellent [Octokit .NET libray
 
 The following is a code snippet that allows me to pull the user's organizations and repsitories:
 
-```csharp
+{% highlight csharp %}
 var githubclient = new GitHubClient(new Octokit.ProductHeaderValue("some-cool-name"));
 githubclient.Credentials = new Credentials(personalCode);
 
@@ -94,13 +94,13 @@ foreach (var org in orgs)
 		_logger.WriteLine("Repository : " + rep.Name + "-" + rep.FullName + " - Collaborators: " + rep.StargazersCount);
 	}
 }
-```
+{% endhighlight %}
 
 Where `personalCode` is something I generated from my GitHub account setting to allow me to have a programmtic access without having to do the oAUth authentication flow dance. You can read about them [here](https://github.com/blog/1509-personal-api-tokens).
 
 I collect the organization and repository structure into a .NET structure that looks like this:
 
-```csharp
+{% highlight csharp %}
 class MyGitHub
 {
 	public MyGitHub()
@@ -121,21 +121,21 @@ class MyOrganization
 	public Organization Organization { get; set; }
 	public List<Repository> Repositories { get; set; }
 }
-```
+{% endhighlight %}
 
 Where `Organization` and `Repository` are classes defined by the [Octokit .NET libray](https://github.com/octokit/octokit.net).
 
 Once I collect all the data, I then use Json.NET to serialize the object in JSON:
 
-```csharp
+{% highlight csharp %}
 string formattedJson = JsonConvert.SerializeObject(myGitHub, Formatting.Indented, new JsonSerializerSettings
 {
 	ContractResolver = new CamelCasePropertyNamesContractResolver()
 });
-```
+{% endhighlight %}
 Finally, I send the serialized JSON to a blob storage:
 
-```csharp
+{% highlight csharp %}
 CloudBlockBlob blob = _myBlobContainer.GetBlockBlobReference(blobName);
 blob.Properties.ContentType = "application/json; charset=utf-8";
 
@@ -143,11 +143,11 @@ byte[] byteArray = Encoding.UTF8.GetBytes(formattedJson);
 MemoryStream memStream = new MemoryStream(byteArray);
 blob.UploadFromStream(memStream);
 return blob.Uri.ToString()
-```
+{% endhighlight %}
 
 Now I have a URL that I can use from JavaScript, for example, to bind the views to. One more thing though...if you are planning to consume the JSON file from a browser JavaScript, you need to set the storage to honor CORS. One way of doing this programatically using the .NET storage SDK is something like [this](http://blogs.msdn.com/b/windowsazurestorage/archive/2014/02/03/windows-azure-storage-introducing-cors.aspx):
 
-```csharp
+{% highlight csharp %}
 // Get context object for working with blobs, and 
 // set a default retry policy appropriate for a web user interface.
 var blobClient = myStorageAccount.CreateCloudBlobClient();
@@ -161,10 +161,11 @@ ConfigureCors(blobServiceProperties);
 
 // Commit the CORS changes into the Service Properties
 blobClient.SetServiceProperties(blobServiceProperties);
-``` 
-Where enabling CORS is defined as follows:
+{% endhighlight %}
 
-```csharp
+Where enabling `ConfigureCors` is defined as follows:
+
+{% highlight csharp %}
 private static void ConfigureCors(ServiceProperties serviceProperties)
 {
 	serviceProperties.Cors = new CorsProperties();
@@ -177,11 +178,8 @@ private static void ConfigureCors(ServiceProperties serviceProperties)
 		MaxAgeInSeconds = 1800 // 30 minutes
 	});
 }
-``` 
+{% endhighlight %}
 
-
-
-    
 ### Exports
 
 Some of our documenation may need to be made available to the outside world. Perhaps we want to let a client or an internal user access to it. Again...because our documentation repositories are private, we needed a way to export to HTML and perhaps embed in some web site pages. 
@@ -190,21 +188,22 @@ To do this, I create in each documentation repository two destination directorie
 
 To do this, we need to have [Node](https://nodejs.org/en/) and [Gulp](http://gulpjs.com/) installed. Here are local commands to run on the root of the web site: 
 
-```
+{% highlight node %}
 npm install gulp --save-dev
 npm install gulp-markdown --save-dev
 npm install gulp-markdown-pdf --save-dev 
-```
+{% endhighlight %}
 
 Once completed, we can now run a gulp task that creates the HTML or PDF files (following the same directory structure) in the said `dest` folder:
 
-```
+{% highlight node %}
 gulp html
 gulp pdf
-```
+{% endhighlight %}
+
 The `.gulpfile` might look something like this:
 
-```
+{% highlight jscript %}
 var gulp = require('gulp');
 var markdownpdf = require('gulp-markdown-pdf');
 var markdownhtml = require('gulp-markdown');
@@ -220,7 +219,7 @@ gulp.task('html', function () {
         .pipe(markdownhtml())
         .pipe(gulp.dest('dest-html'));
 });
-```
+{% endhighlight %}
 
 ### Web Site
 
