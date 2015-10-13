@@ -188,7 +188,7 @@ To do this, I create in each documentation repository two destination directorie
 
 To do this, we need to have [Node](https://nodejs.org/en/) and [Gulp](http://gulpjs.com/) installed. Here are local commands to run on the root of the web site: 
 
-{% highlight node %}
+{% highlight ruby %}
 npm install gulp --save-dev
 npm install gulp-markdown --save-dev
 npm install gulp-markdown-pdf --save-dev 
@@ -196,14 +196,14 @@ npm install gulp-markdown-pdf --save-dev
 
 Once completed, we can now run a gulp task that creates the HTML or PDF files (following the same directory structure) in the said `dest` folder:
 
-{% highlight node %}
+{% highlight ruby %}
 gulp html
 gulp pdf
 {% endhighlight %}
 
 The `.gulpfile` might look something like this:
 
-{% highlight jscript %}
+{% highlight ruby %}
 var gulp = require('gulp');
 var markdownpdf = require('gulp-markdown-pdf');
 var markdownhtml = require('gulp-markdown');
