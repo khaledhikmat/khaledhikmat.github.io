@@ -8,7 +8,7 @@ tags: Azure, Logic Apps, Push Trigger
 featured_image: /images/cover.jpg
 ---
 
-Have been toying with Azure Logic Apps for a project I am working on. I wanted to be able to 
+Have been toying with Azure Logic Apps for a project I am working on. I wanted to run a Cloud-based workflow triggered by some events within some web app. This post discusses things I had to to go through to get push triggers working as triggered from web events.
  
 ## The local storage interface
 
