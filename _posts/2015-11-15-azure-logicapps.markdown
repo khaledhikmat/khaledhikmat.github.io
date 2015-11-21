@@ -145,12 +145,12 @@ Here is an illustration of the trigger phases:
  
 Finally, using the Azure portal editor, you drop the trigger APP App in the editor and choose one of the triggers available in the API App (as mentioned, one API App may support multiple triggers). You fill out the configuration information:
 
-![Trigger Configuration Info](http://i.imgur.com/I0vmHaP.png)
+![Trigger Configuration Info](http://i.imgur.com/xCrLweb.png)
 
 and see the expected input from the trigger source:
 
-![Trigger Input](http://i.imgur.com/wm9VNll.png)
-  
+![Trigger Input](http://i.imgur.com/5ACczU2.png)  
+
 ## References
 
 * Nicholas Hauenstein - 2015 Azure Con session on [https://azure.microsoft.com/en-us/documentation/videos/azurecon-2015-processing-nfc-tag-reads-in-an-azure-app-service-logic-app/](Processing NFC tag reads in an Azure APP service service)
