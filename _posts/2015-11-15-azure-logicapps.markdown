@@ -145,7 +145,7 @@ Here is an illustration of the trigger phases:
  
 Finally, using the Azure portal editor, you drop the trigger APP App in the editor and choose one of the triggers available in the API App (as mentioned, one API App may support multiple triggers). You fill out the configuration information:
 
-![Trigger Configuration Info](http://i.imgur.com/xCrLweb.png)
+![Trigger Configuration Info](http://i.imgur.com/vP76X5O.png)
 
 and see the expected input from the trigger source:
 
