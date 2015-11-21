@@ -141,6 +141,8 @@ Here is an illustration of the trigger phases:
 
 ![Trigger Phases](http://i.imgur.com/TM0MHgZ.png) 
 
+Please note that during the trigger phase, the API App is no longer involved. The trigger source reads the callback info from its database and calls upon the logic app  without any involvement from the API App.
+
 ## Logic App
  
 Finally, using the Azure portal editor, you drop the trigger APP App in the editor and choose one of the triggers available in the API App (as mentioned, one API App may support multiple triggers). You fill out the configuration information:
@@ -150,6 +152,7 @@ Finally, using the Azure portal editor, you drop the trigger APP App in the edit
 and see the expected input from the trigger source:
 
 ![Trigger Input](http://i.imgur.com/5ACczU2.png)  
+
 
 ## References
 
