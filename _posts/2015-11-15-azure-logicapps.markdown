@@ -8,109 +8,137 @@ tags: Azure, Logic Apps, Push Trigger
 featured_image: /images/cover.jpg
 ---
 
-Have been toying with Azure Logic Apps for a project I am working on. I wanted to run a Cloud-based workflow triggered by some events within some web app. This post discusses things I had to to go through to get push triggers working as triggered from web events.
+I have been toying with Azure Logic Apps for a project I am working on. I wanted to run a Cloud-based work flow triggered by some events within some web app. This post discusses things I had to to go through to get push triggers working as triggered from web events.
+
+*_Please refer to Nicholas Hauenstein's Azure session referenced below in the reference section for a great introduction_*
+
+## Use Case
+
+As part of a loyalty program system, membership voucher redemption requests arrive to a server via software agents installed at different hotels. Here is how the hotel POS Agent communicates with our Web API:
+
+![POS Architecture](http://i.imgur.com/xquyGYG.png)
+
+The Web API validates, processes the validation requests and updates a legacy database. It has been requested to enhance this functionality to add the following things when a voucher redemption takes place:
+
+* Notify the member via SMS that a voucher has been successfully redeemed at certain hotel  
+* Notify the member via push notification that a voucher has been redeemed
+* Notify customer support via Email that member so and so has successfully redeemed a voucher at certain hotel  
+* Register an event with the analytic server
+
+Instead of building all the functionality in the Web API layer, we decided to trigger an Azure Logic app work flow that handles all these events in a Cloud service.
  
-## The local storage interface
+## Push Triggers
 
-Assuming you have a complex object represented here for simplicity by a Book. But it can be anything:
+Logic Apps can be triggered using many different mechanisms. In our use case, we would like to use a push trigger so that the Web API can trigger the Logic App whenever a voucher request is successfully processed.
 
-```
-	public class Book
-	{
-        public string Title { get; set; }
-        public string Author { get; set; }
-	}
-```
+![Trigger Architecture](http://i.imgur.com/VzqsehB.png)
 
-Let us create an interface for storing and retrieving a book from the local repository:
+But how does the Web API know how to trigger the Logic App? It turned out that there is a need to create a special purpose API App whose main job is to receive callback registrations from the Logic apps so that when a service or a piece of software needs to trigger the logic app, it would look up the callback URL and trigger the logic app. 
 
-```
-    public interface ILocalStorageService
+![Callback Architecture](http://i.imgur.com/bu9XEze.png)
+
+Ok....great...but more questions come to mind. How does the logic app register its callback URL with the the API App? It turned out that the minute you drop a push trigger API App in the Logic App overflow (via the designer or the JSON template), the logic app would register its callback URL by putting (using HTTP PUT verb) against the API App. This happens the second you save the work flow and also every hour (just to make sure that API App is aware of the callback URL).
+
+*_This is one thing that took me a while to figure out. In order to make sure that the logic app re-registers the callback, you need to remove the push trigger API from the work flow, save and then put it back and re-save._* 
+
+What does the API App have to do to be considered as a push trigger API App? Well...it has to support a PUT verb with something similar to this signature:
+
+```csharp
+[HttpPut]
+[Metadata("Mosaic Voucher Redemption Trigger")]
+[Trigger(TriggerType.Push, typeof(VoucherRedemptionPushTriggerOutput))]
+[Route("api/mosaic/voucherredemption/callbacks/{triggerId}", Name = "MosaicVoucherRedemptionTriggerCallback")]
+public HttpResponseMessage RegisterMosaicVoucherRedemptionCallback(
+    string triggerId,
+    [FromBody]TriggerInput<VoucherRedemptionPushTriggerConfiguration, VoucherRedemptionPushTriggerOutput> parameters)
+{
+    try
     {
-        Task<Book> RetrieveBook();
-        Task<bool> StoreBook(Book book);
+        // TODO: Add things here
+        
+        // Report back to the logic app that everything is happy
+        return Request.PushTriggerRegistered(parameters.GetCallback());
     }
-``` 
-
-## The local storage implementation
-
-```
-	public class LocalStorageService : ILocalStorageService
+    catch (Exception e)
     {
-        const string BookFileName = "localBook.json";
-
-        public async Task<Book> RetrieveBook()
-        {
-            return await RetrieveObject<Book>(BookFileName);
-        }
-
-        public async Task<bool> StoreBook(Book book)
-        {
-            return await StoreObject<Book>(book, BookFileName);
-        }
-
-        /*** PRIVATE METHODS */
-        private async Task<T> RetrieveObject<T>(string storageFileName)
-        {
-            StorageFile storageFile;
-
-            try
-            {
-                storageFile = await ApplicationData.Current.LocalFolder.GetFileAsync(storageFileName);
-            }
-            catch (FileNotFoundException ex)
-            {
-                storageFile = null;
-            }
-
-            if (storageFile != null)
-            {
-                string data = await FileIO.ReadTextAsync(storageFile);
-                return FromJson<T>(data);
-            }
-
-            return default(T);
-        }
-
-        private async Task<bool> StoreObject<T>(T requestObject, string storageFileName)
-        {
-            try
-            {
-                var data = ToJson<T>(requestObject);
-                StorageFile localFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(storageFileName, CreationCollisionOption.ReplaceExisting);
-                await FileIO.WriteTextAsync(localFile, data);
-                return true;
-            }
-            catch (FileNotFoundException ex)
-            {
-            }
-
-            return false;
-        }
-
-        private string ToJson<T>(T requestObject)
-        {
-            var data = "";
-
-            try
-            {
-                data = JsonConvert.SerializeObject(requestObject,
-                                                      new JsonSerializerSettings()
-                                                      {
-                                                          NullValueHandling = NullValueHandling.Ignore
-                                                      });
-            }
-            catch (Exception ex)
-            {
-            }
-
-            return data;
-        }
-
-        private T FromJson<T>(string data)
-        {
-            T returnObject = JsonConvert.DeserializeObject<T>(data);
-            return returnObject;
-        }
+        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e.Message);
     }
-``` 
+}
+```
+
+The `triggerId` is usually the name of the Logic App. This allows the API App to serve multiple Logic Apps using multiple trigger ids. The `VoucherRedemptionPushTriggerConfiguration` defines the API App configuration model and finally the `VoucherRedemptionPushTriggerOutput` is the API app output model (i.e. input to the Logic app). In our case, here is how the configuration is defined:
+
+```csharp
+public class VoucherRedemptionPushTriggerConfiguration
+{
+    [Metadata("Web API Url")]
+    public string Url { get; set; }
+
+    [Metadata("Web API User Id")]
+    public string UserId { get; set; }
+
+    [Metadata("Web API Password")]
+    public string Password { get; set; }
+
+    [Metadata("Is Restricted?")]
+    public bool IsRestricted { get; set; }
+
+    [Metadata("Permitted agent codes (comma delimited)")]
+    public string PermittedAgentCodes { get; set; }
+}
+```    
+The above shows the configuration properties that are available for the push trigger API App to control the workflow.
+
+```csharp
+public class VoucherRedemptionPushTriggerOutput
+{
+    [Metadata("Activation Code")]
+    public string ActivationCode { get; set; }
+
+    [Metadata("Voucher Code")]
+    public string VoucherCode { get; set; }
+
+    [Metadata("Card Number")]
+    public string CardNumber { get; set; }
+
+    [Metadata("Transaction Date")]
+    public DateTime TransactionDate { get; set; }
+
+    [Metadata("Hotel")]
+    public string Hotel { get; set; }
+
+    [Metadata("Outlet")]
+    public string Outlet { get; set; }
+
+    [Metadata("City")]
+    public string City { get; set; }
+
+    [Metadata("Country")]
+    public string Country { get; set; }
+
+    [Metadata("First Name")]
+    public string FirstName { get; set; }
+
+    [Metadata("Last Name")]
+    public string LastName { get; set; }
+
+    [Metadata("Email")]
+    public string Email { get; set; }
+
+    [Metadata("Mobile Number")]
+    public string MobileNumber { get; set; }
+}
+```   
+ 
+The above shows the API App output properties (which is an input to the logic app).
+
+## Logic App
+ 
+Finally, using the Azure portal editor, this is how the logic app might look like:
+
+
+  
+## References
+
+* Nicholas Hauenstein - 2015 Azure Con session on [https://azure.microsoft.com/en-us/documentation/videos/azurecon-2015-processing-nfc-tag-reads-in-an-azure-app-service-logic-app/](Processing NFC tag reads in an Azure APP service service)
+
