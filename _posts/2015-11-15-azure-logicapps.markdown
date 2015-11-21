@@ -10,7 +10,7 @@ featured_image: /images/cover.jpg
 
 I have been toying with Azure Logic Apps for a project I am working on. I wanted to run a Cloud-based work flow triggered by some events within some web app. This post discusses things I had to to go through to get push triggers working as triggered from web events.
 
-*_Please refer to Nicholas Hauenstein's Azure session referenced below in the reference section for a great introduction_*
+_Please refer to Nicholas Hauenstein's Azure session referenced below in the reference section for a great introduction_
 
 ## Use Case
 
@@ -37,11 +37,11 @@ But how does the Web API know how to trigger the Logic App? It turned out that t
 
 ![Callback Architecture](http://i.imgur.com/bu9XEze.png)
 
-Ok....great...but more questions come to mind. How does the logic app register its callback URL with the the API App? It turned out that the minute you drop a push trigger API App in the Logic App overflow (via the designer or the JSON template), the logic app would register its callback URL by putting (using HTTP PUT verb) against the API App. This happens the second you save the work flow and also every hour (just to make sure that API App is aware of the callback URL).
+Ok....great...but more questions come to mind. How does the logic app register its callback URL with the the API App? It turned out that the minute you drop a push trigger API App in the Logic App overflow (via the designer or the JSON template), the logic app would register its callback URL by putting (using HTTP `PUT` verb) against the API App. This happens the second you save the work flow and also every hour (just to make sure that API App is aware of the callback URL).
 
-*_This is one thing that took me a while to figure out. In order to make sure that the logic app re-registers the callback, you need to remove the push trigger API from the work flow, save and then put it back and re-save._* 
+_This is one thing that took me a while to figure out. In order to make sure that the logic app re-registers the callback, you need to remove the push trigger API from the work flow, save and then put it back and re-save._
 
-What does the API App have to do to be considered as a push trigger API App? Well...it has to support a PUT verb with something similar to this signature:
+What does the API App have to do to be considered as a push trigger API App? Well...it has to support at least one PUT verb with something similar to this signature:
 
 ```csharp
 [HttpPut]
@@ -66,6 +66,8 @@ public HttpResponseMessage RegisterMosaicVoucherRedemptionCallback(
 }
 ```
 
+An API App can contain multiple PUT signatures and hence it will be able to support multiple trigger callback registration endpoints.
+  
 The `triggerId` is usually the name of the Logic App. This allows the API App to serve multiple Logic Apps using multiple trigger ids. The `VoucherRedemptionPushTriggerConfiguration` defines the API App configuration model and finally the `VoucherRedemptionPushTriggerOutput` is the API app output model (i.e. input to the Logic app). In our case, here is how the configuration is defined:
 
 ```csharp
@@ -129,14 +131,25 @@ public class VoucherRedemptionPushTriggerOutput
     public string MobileNumber { get; set; }
 }
 ```   
- 
 The above shows the API App output properties (which is an input to the logic app).
+
+So in summary, the logic app calls the PUT method of the Api APP and provides configuration structure (based on `VoucherRedemptionPushTriggerConfiguration`) and then expects to receive a call back from the trigger source providing data that matches the `VoucherRedemptionPushTriggerOutput`. The API App is not the trigger source...in our case, the trigger source is the Web API. Hence whenever the API App receives a callback registration from the a logic app, it posts the callback info to the Web API via an endpoint and return to the Logic app. In this case, the API App is nothing but a middle man that receives a callback info and knows how to distribute it to its intended recipients. This is because the logic app cannot communicate directly to the Web API. 
+
+Of course, the API App may send the callback info to multiple trigger sources. All of them will become eligible to trigger the logic app.
+
+Here is an illustration of the trigger phases:
+
+![Trigger Phases](http://i.imgur.com/TM0MHgZ.png) 
 
 ## Logic App
  
-Finally, using the Azure portal editor, this is how the logic app might look like:
+Finally, using the Azure portal editor, you drop the trigger APP App in the editor and choose one of the triggers available in the API App (as mentioned, one API App may support multiple triggers). You fill out the configuration information:
 
+![Trigger Configuration Info](http://i.imgur.com/I0vmHaP.png)
 
+and see the expected input from the trigger source:
+
+![Trigger Input](http://i.imgur.com/wm9VNll.png)
   
 ## References
 
