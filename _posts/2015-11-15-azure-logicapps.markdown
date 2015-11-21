@@ -145,14 +145,21 @@ Please note that during the trigger phase, the API App is no longer involved. Th
 
 ## Logic App
  
-Finally, using the Azure portal editor, you drop the trigger APP App in the editor and choose one of the triggers available in the API App (as mentioned, one API App may support multiple triggers). You fill out the configuration information:
+Finally, you must deploy the API App to the same resource group in which the logic app resides in. This will make the API App available as a selection in the available connectors:
+
+![Available Connectors](http://i.imgur.com/ufzzZQN.png)
+
+Ysing the Azure portal editor, uou simply drop in the trigger API App and choose one of the triggers available in the API App (as mentioned, one API App may support multiple triggers). You fill out the configuration information:
 
 ![Trigger Configuration Info](http://i.imgur.com/vP76X5O.png)
 
-and see the expected input from the trigger source:
+and see the expected input from the trigger source (this will you to use the Logic App expression language to read the available properties):
 
 ![Trigger Input](http://i.imgur.com/5ACczU2.png)  
 
+## Conclusion
+
+There are many many scenarios where Logic Apps can be extremely useful. I recommend watching Nicholas Hauenstein presentation (below) to see a great use case for logic apps.
 
 ## References
 
