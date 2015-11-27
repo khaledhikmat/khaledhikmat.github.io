@@ -149,7 +149,7 @@ Finally, you must deploy the API App to the same resource group in which the log
 
 ![Available Connectors](http://i.imgur.com/ufzzZQN.png)
 
-Ysing the Azure portal editor, uou simply drop in the trigger API App and choose one of the triggers available in the API App (as mentioned, one API App may support multiple triggers). You fill out the configuration information:
+Using the Azure portal editor, you simply drop in the trigger API App and choose one of the triggers available in the API App (as mentioned, one API App may support multiple triggers). You fill out the configuration information:
 
 ![Trigger Configuration Info](http://i.imgur.com/vP76X5O.png)
 
@@ -160,6 +160,8 @@ and see the expected input from the trigger source (this will you to use the Log
 ## Conclusion
 
 There are many many scenarios where Logic Apps can be extremely useful. I recommend watching Nicholas Hauenstein presentation (below) to see a great use case for logic apps.
+
+Some people may try to compare IFTTT (If this, then that) or Zapier with Logic Apps! They are substantially different. IFTTT and Zapier are meant for individuals creating cloud-based (two-step-only) scenarios to handle their day-to-day workflows. Logic Apps on the other hand are general-purpose Cloud-based work flows that have a sophisticated definition and work flow languages.
 
 ## References
 
