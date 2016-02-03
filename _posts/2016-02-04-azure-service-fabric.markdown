@@ -61,5 +61,4 @@ _*If we have 30 weeks in the system and week number 1 was changed, all 30 weeks 
 
 ## Architecture
 
-![Overall Architecture](http://i.imgur.com/sHw2u2J.png)
-
+![Architecture](http://i.imgur.com/Y4BUHxU.png)
