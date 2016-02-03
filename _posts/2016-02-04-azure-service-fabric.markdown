@@ -43,21 +43,19 @@ For example, when the backend system records a sale for a Dallas revenue unit, f
 * Recalculate the measures in the affected quarter i.e. first quarter of 2016
 * Recalculate the measures in the affected year i.e. 2016
 
-Assuming we have weeks 1 through 5 in the system and we are re-processing week 4 of 2016, the self & parent recalculation is depicted like this:
+Assuming we have weeks 1 through 5 in the system and we are re-processing week 4 of 2016, the self & parent recalculation is depicted like this (in BLUE arrows):
 
-![Parent Reprocessing ](http://i.imgur.com/7X6GT7Z.png)
-  
-There is also a challenge in re-calculating the measures for the quarter and the year. This is because each week has to determine the weeks that it must include for its quarter and year. For example, if we are re-processing week 4 of 2016, weeks 1 through 4 must be included in the query to re-calculate the quarter to date and the year to date measures.
+![Parent Week Reprocessing](http://i.imgur.com/Xkpq7xO.png)
 
-In addition to the above re-calculation, another level of calculation is needed if the re-processed week has any forward week. For example, the forward weeks of week 4 of 2016 id week 5 of 2016 and its QTD and YTD measures will be affected and therefore must be re-calculated. The forward week re-processing is depicted like this (in RED arrows):
+There is also a challenge in re-calculating the measures for the quarter and year. This is because each week has to determine the weeks that it must include for its quarter and year to date processing. For example, if we are re-processing week 4 of 2016, weeks 1 through 4 must be included in the query to re-calculate the quarter to date and the year to date measures.
+
+In addition to the above re-calculation, another level of calculation is needed if the re-processed week has any forward week. For example, the forward weeks of week 4 of 2016 is week 5 of 2016 and its QTD and YTD measures will be affected if changes take place in week 4 and therefore must be re-calculated. The forward week re-processing is depicted like this (in RED arrows):
 
 ![Forward Week Reproessing](http://i.imgur.com/e56hn60.png) 
 
-If we have 30 weeks in the system and week number 1 was changed, all 30 weeks must be re-processed as forward weeks.
+_*If we have 30 weeks in the system and week number 1 was changed, all 30 weeks must be re-processed as forward weeks.*_
 
 ## Architecture
 
 ![Overall Architecture](http://i.imgur.com/sHw2u2J.png)
-
-## Challenges
 
