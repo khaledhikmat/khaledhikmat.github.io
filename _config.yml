@@ -11,4 +11,4 @@ kramdown:
 permalink: /:year-:month-:day/:title
 baseurl: 
 encoding: utf-8
-highlighter: pygments
+highlighter: rouge
