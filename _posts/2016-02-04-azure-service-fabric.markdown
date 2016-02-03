@@ -37,19 +37,23 @@ Using Azure Service Fabric, I wanted to see if I can build a solution that repla
 
 Sales and other transactions happen against our main transactional legacy system. Usually transactions target a specific revenue unit in a specific week of the year. 
 
+#### Self & Parent Re-processing
+
 For example, when the backend system records a sale for a Dallas revenue unit, for example, on Jan 23, 2016, we need to post an event to this system (that we are building) to indicate that a re-process is needed for the revenue unit in the said week and year. The system must then perform the following for the affected revenue unit and all of its parents (i.e. call center, country, region and global):
 
 * Recalculate the measures (net revenue, net sales and others) in the affected week/year (i.e. Week 4 of 2016)
 * Recalculate the measures in the affected quarter i.e. first quarter of 2016
 * Recalculate the measures in the affected year i.e. 2016
 
-Assuming we have weeks 1 through 5 in the system and we are re-processing week 4 of 2016, the self & parent recalculation is depicted like this (in BLUE arrows):
+Assuming we have weeks 1 through 5 in the system and we are re-processing week 4 of 2016, the self & parent re-processing is depicted like this (in BLUE arrows):
 
 ![Parent Week Reprocessing](http://i.imgur.com/Xkpq7xO.png)
 
 There is also a challenge in re-calculating the measures for the quarter and year. This is because each week has to determine the weeks that it must include for its quarter and year to date processing. For example, if we are re-processing week 4 of 2016, weeks 1 through 4 must be included in the query to re-calculate the quarter to date and the year to date measures.
 
-In addition to the above re-calculation, another level of calculation is needed if the re-processed week has any forward week. For example, the forward weeks of week 4 of 2016 is week 5 of 2016 and its QTD and YTD measures will be affected if changes take place in week 4 and therefore must be re-calculated. The forward week re-processing is depicted like this (in RED arrows):
+#### Forward weeks Re-processing
+
+In addition to the above self & parent re-processing, another level of calculation is needed if the re-processed week has any forward week. For example, the forward weeks of week 4 of 2016 is week 5 of 2016 and its QTD and YTD measures will be affected if changes take place in week 4 and therefore must be re-calculated. The forward weeks re-processing is depicted like this (in RED arrows):
 
 ![Forward Week Reproessing](http://i.imgur.com/e56hn60.png) 
 
