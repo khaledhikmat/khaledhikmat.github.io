@@ -51,8 +51,6 @@ Assuming we have weeks 1 through 5 in the system and we are re-processing week 4
 
 ![Parent Week Reprocessing](http://i.imgur.com/Xkpq7xO.png)
 
-There is also a challenge in re-calculating the measures for the quarter and year. This is because each entity has to determine the weeks that it must include for its quarter and year to date processing. For example, if we are re-processing week 4 of 2016, weeks 1 through 4 must be included in the query to re-calculate the quarter to date and the year to date measures.
-
 #### Forward Week Re-processing
 
 In addition to the above self & parent re-processing, another level of calculation is needed if the re-processed week has any forward weeks. For example, the forward week of 4/2016 is week 5/2016. Week 5/2016 QTD and YTD measures must be re-calculated because they are affected by the changes that took place to week 4/2016. The forward week re-processing is depicted like this (in RED arrows):
@@ -61,7 +59,15 @@ In addition to the above self & parent re-processing, another level of calculati
 
 _*If we have 30 weeks in the system and week number 1 was changed, all 30 weeks must be re-processed as forward weeks. This domino effect is needed to maintain the system up-to-date.*_
 
-Now that we have a general idea of the system we are trying to build, let us take a look at its proposed architecture.
+### QTD & TYD Calculations
+
+To calculate the QTD and YTD measures, each entity must determine the previous weeks that make up the quarter and year. For example: 
+
+* If the re-processed week is 4/2016, then weeks 1/2016, 2/2016, 3/2016 and 4/2016 must be included in the query to produce the QTD and YTD values.  
+* If the re-processed week is 2/2016, then only weeks 1/2016 and 2/2016 must be included in the query to produce the QTD and YTD values.
+* If the re-processed week is 15/2016, however, then weeks 14/2016 and 15/2016 (assuming that week 4/2016 is the start of the 2nd quarter) must be included in the query to produce QTD, but weeks 1/2016 through 15/2016 must be included in the query to produce the YTD values.
+
+Now that we have a general idea of the system we are trying to build, let us take a look at the proposed architecture.
  
 ## Architecture
 
