@@ -37,6 +37,8 @@ Historically we have solved this problem by using a typical business intelligenc
 
 Sales and other transactions happen in our main transactional legacy system. Every transaction in the system is tagged with a specific revenue unit in a specific week of the year. In essence we are weekly company as sales, revenue & profit need to be reported weekly. 
 
+There are two processing that must take place to keep the system up-to-date:
+
 #### Self & Parent Re-processing
 
 When our main transactional system records a sale for a Dallas revenue unit on Jan 23, 2016, for example, we need to post an event to this new system to indicate that a re-process is needed for the revenue unit in the said week and year. The system must then perform the following for the affected revenue unit and all of its parents (i.e. call center, country, region and global):
@@ -51,14 +53,17 @@ Assuming we have weeks 1 through 5 in the system and we are re-processing week 4
 
 There is also a challenge in re-calculating the measures for the quarter and year. This is because each entity has to determine the weeks that it must include for its quarter and year to date processing. For example, if we are re-processing week 4 of 2016, weeks 1 through 4 must be included in the query to re-calculate the quarter to date and the year to date measures.
 
-#### Forward weeks Re-processing
+#### Forward Week Re-processing
 
-In addition to the above self & parent re-processing, another level of calculation is needed if the re-processed week has any forward weeks. For example, the forward week of week 4 of 2016 is week 5 of 2016 and its QTD and YTD measures will be affected if a changes takes place in week 4 and therefore must be re-calculated. The forward weeks re-processing is depicted like this (in RED arrows):
+In addition to the above self & parent re-processing, another level of calculation is needed if the re-processed week has any forward weeks. For example, the forward week of 4/2016 is week 5/2016. Week 5/2016 QTD and YTD measures must be re-calculated because they are affected by the changes that took place to week 4/2016. The forward week re-processing is depicted like this (in RED arrows):
 
 ![Forward Week Reproessing](http://i.imgur.com/e56hn60.png) 
 
-_*If we have 30 weeks in the system and week number 1 was changed, all 30 weeks must be re-processed as forward weeks. This domino effect is needed to maintain the system up-to-date*_
+_*If we have 30 weeks in the system and week number 1 was changed, all 30 weeks must be re-processed as forward weeks. This domino effect is needed to maintain the system up-to-date.*_
 
+Now that we have a general idea of the system we are trying to build, let us take a look at its proposed architecture.
+ 
 ## Architecture
 
 ![Architecture](http://i.imgur.com/Y4BUHxU.png)
+
