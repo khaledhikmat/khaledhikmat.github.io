@@ -37,11 +37,11 @@ Historically we have solved this problem by using a typical business intelligenc
 
 Sales and other transactions happen in our main transactional legacy system. Every transaction in the system is tagged with a specific revenue unit in a specific week of the year. In essence we are weekly company as sales, revenue & profit need to be reported weekly. 
 
-There are two processing that must take place to keep the system up-to-date:
+There are several different processors that must take place to keep the system up-to-date:
 
 #### Self & Parent Re-processing
 
-When our main transactional system records a sale for a Dallas revenue unit on Jan 23, 2016, for example, we need to post an event to this new system to indicate that a re-process is needed for the revenue unit in the said week and year. The system must then perform the following for the affected revenue unit and all of its parents (i.e. call center, country, region and global):
+When our main transactional system records a sale for a particular revenue unit on Jan 23, 2016, for example, we need to post an event to this new system to indicate that a re-process is needed for the revenue unit in the week 4/2016. The system must then perform the following calculations for the revenue unit and all of its parents (i.e. call center, country, region and global):
 
 * Recalculate the measures (net revenue, net sales and others) in the affected week/year (i.e. Week 4 of 2016)
 * Recalculate the measures in the affected quarter i.e. first quarter of 2016
@@ -53,7 +53,7 @@ Assuming we have weeks 1 through 5 in the system and we are re-processing week 4
 
 #### Forward Week Re-processing
 
-In addition to the above self & parent re-processing, another level of calculation is needed if the re-processed week has any forward weeks. For example, the forward week of 4/2016 is week 5/2016. Week 5/2016 QTD and YTD measures must be re-calculated because they are affected by the changes that took place to week 4/2016. The forward week re-processing is depicted like this (in RED arrows):
+In addition to the above self & parent re-processing, another level of calculation is needed if the re-processed week has any forward weeks. For example, the forward week of 4/2016 is week 5/2016. Therefore week 5/2016 QTD and YTD measures must be re-calculated because they are affected by the changes that took place to week 4/2016. The forward week re-processing is depicted like this (in RED arrows):
 
 ![Forward Week Reproessing](http://i.imgur.com/e56hn60.png) 
 
@@ -65,7 +65,7 @@ To calculate the QTD and YTD measures, each entity must determine the previous w
 
 * If the re-processed week is 4/2016, then weeks 1/2016, 2/2016, 3/2016 and 4/2016 must be included in the query to produce the QTD and YTD values.  
 * If the re-processed week is 2/2016, then only weeks 1/2016 and 2/2016 must be included in the query to produce the QTD and YTD values.
-* If the re-processed week is 15/2016, however, then weeks 14/2016 and 15/2016 (assuming that week 4/2016 is the start of the 2nd quarter) must be included in the query to produce QTD, but weeks 1/2016 through 15/2016 must be included in the query to produce the YTD values.
+* If the re-processed week is 15/2016, however, then only weeks 14/2016 and 15/2016 (assuming that week 14/2016 is the start of the 2nd quarter) must be included in the query to produce QTD values, but weeks 1/2016 through 15/2016 must be included in the query to produce YTD values.
 
 Now that we have a general idea of the system we are trying to build, let us take a look at the proposed architecture.
  
