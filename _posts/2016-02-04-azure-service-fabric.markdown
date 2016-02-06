@@ -8,9 +8,11 @@ tags: Azure, Service Fabric, Actor Model, Stateful Service
 featured_image: /images/cover.jpg
 ---
 
-As we have identified a need to decompose our monolithic legacy application into little modules to make it easier to update and delegate work on, I have been exploring different options of doing this including the very popular Container approach using [Docker](https://www.docker.com/). The idea of Docker is really superb ....it took me a while to wrap my head around it ....but in order to use it right now requires some good experience with Linux...something we don't currently have as we are mostly Windows shop. There is also a lot of work being done on Docker including a port to Windows. So this space is a moving target right now. I am sure when the dust settles, we will have better tools that allows everyone to use Containers quite easily. 
+As we have identified a need to decompose our monolithic legacy application into little modules to make it easier to update and delegate work on, I have been exploring Microservices as a possible solution. I have listened to many talks and read many articles on the subject. While I could understand the business and technical value, I could not wrap my head around how would one actually go about implementing something like. What tools would I use? What programming language? What environment? I also explored the very popular Container approach using [Docker](https://www.docker.com/). It is indeed fascinating......but I felt overwhelmed with the Linux-like commands and the system admin knowledge that one must have to be able to deploy/use something like this. There is also a lot of work being done on Docker including a port to Windows. So this space is a moving target right now. I am sure when the dust settles, we will have better tools that allows everyone to use Containers quite easily. 
 
-Reading about Microservices led me to Azure [Azure Service Fabric](https://azure.microsoft.com/en-us/services/service-fabric/)! A new platform that allows developers to develop and update microservice-based application. It was not long before I downloaded Azure Service Fabric and kicked its tires. But then I wanted to try something meaningful and solve a specific business problem for us.
+Eventually I heard about Azure [Azure Service Fabric](https://azure.microsoft.com/en-us/services/service-fabric/)! A new platform that allows developers to develop and update microservice-based application. I downloaded Azure Service Fabric and started looking into it. Having spent 2-3 weeks on the subject in my evenings and weekends, I finally feel there is some concrete implementation I can relate to and that I can now see things in perspective.   
+
+With an ability to run and deploy clusters locally in my laptop, I wanted to try something meaningful and solve a specific business problem for my company. This post describes this process.
 
 ## Problem Description
 
@@ -18,7 +20,7 @@ Our executives and accounting team would like to view sales and revenue by geogr
 
 ![Entity Hierarchy](http://i.imgur.com/POkG8aP.png)
 
-The revenue unit is a virtual entity that sells a specific product. There could be many revenue units under the same physical call center. Of course, every call center belongs in a country and every country belongs to a region and every region belongs to global. The sales and revenue measures must be aggregated in two dimensions: geographic and time to show a complete picture to executives and accounting.  
+In our terms, the revenue unit is a virtual entity that sells a specific product. There could be many revenue units under the same physical call center. Of course, every call center belongs in a country and every country belongs to a region and every region belongs to global. The sales and revenue measures must be aggregated in two dimensions: geographic and time to show a complete picture to executives and accounting.  
 
 A sample of how the data is to be laid out is shown here:
 
@@ -51,9 +53,9 @@ Assuming we have weeks 1 through 5 in the system and we are re-processing week 4
 
 ![Parent Week Reprocessing](http://i.imgur.com/Xkpq7xO.png)
 
-#### Forward Week Re-processing
+#### Forward Period Re-processing
 
-In addition to the above self & parent re-processing, another level of calculation is needed if the re-processed week has any forward weeks. For example, the forward week of 4/2016 is week 5/2016. Therefore week 5/2016 QTD and YTD measures must be re-calculated because they are affected by the changes that took place to week 4/2016. The forward week re-processing is depicted like this (in RED arrows):
+In addition to the above self & parent re-processing, another level of calculation is needed if the re-processed week has any forward weeks. For example, the forward week of 4/2016 is week 5/2016. Therefore week 5/2016 QTD and YTD measures must be re-calculated because they are affected by the changes that took place in week 4/2016. The forward week re-processing is depicted like this (in RED arrows):
 
 ![Forward Week Reproessing](http://i.imgur.com/e56hn60.png) 
 
