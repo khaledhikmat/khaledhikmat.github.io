@@ -424,12 +424,11 @@ This actor provides entities and time slots management. The API Gateway, the Enq
 IActorLocationService actorLocator = new ActorLocationService();
 IHierarchyActor controlActor = actorLocator.Create<IHierarchyActor>("control", ApplicationName);
 
-PeriodParams pParams = controlActor.GetPeriodParams(year, period).Result;
+PeriodParams pParams = await controlActor.GetPeriodParams(year, period);
 if (pParams == null)
     throw new Exception(string.Format("Period does not exist for year/period: {0}/{1}", year, period));
 
 var entityActorId = await controlActor.GetEntityActorId(type, businesskey, pParams);
-Console.WriteLine("Entity Actor Id: {0}", entityActorId);
 IEntityActor entityActor = actorLocator.Create<IEntityActor>(entityActorId, ApplicationName);
 EntityView view = await entityActor.GetEntityView();
 
