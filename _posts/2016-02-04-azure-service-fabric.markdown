@@ -267,5 +267,200 @@ The return looks like this:
 
 #### Enqueuer Service
 
-This is a stateful service that implements a queue 
-      
+This is a stateful service that implements a queue to store the reprocess requests that arrive via the API Gateway. When an item arrives in the queue, the service dequeues it, locates the associated [entity actor](#entity-actor) and calls upon its `Reprocess` method. 
+
+#### Entity Actor
+
+This is a stateful actor that represents an entity. An entity is basically the following:
+
+* Entity Type i.e. Global, Region, Country, Call Center or Revenue Unit
+* Business Key: correlation id with the legacy system
+* Name: Entity Name
+* Year
+* Period i.e. Week or Month
+
+Each enity actor holds the following state:
+
+* Entity Type i.e. Global, Region, Country, Call Center or Revenue Unit
+* Business Key: correlation id with the legacy system
+* Name: Entity Name
+* Year
+* Period i.e. Week or Month
+* Week to Date measures
+* Quarter to Date measures
+* Year to Date measures
+
+The entity actor exposes the following simple interface:
+
+```csharp
+public interface IEntityActor : IActor, IActorEventPublisher<IEntityActorEvents>
+{
+    Task Reprocess();
+    Task<List<MeasureCalculation>> GetWtdMeasureCalculations();
+    Task<List<MeasureCalculation>> GetQtdMeasureCalculations();
+    Task<List<MeasureCalculation>> GetYtdMeasureCalculations();
+    Task<EntityView> GetEntityView();
+}
+```
+
+###### Reprocess
+
+`Reprocess` is called from the enqueuer service to reprocess an entity when a change takes place in the transactional system. Basically `reproces` performs the following:
+
+* Registers a reminder and returns quickly to the caller
+* When the reminder goes off, it re-calculates the WTD, QYD and YTD measures
+* Locates the next period (or week) entity actor, if available it calls upon its `Reprocess` method
+* Locates the parent entity actor, if available it calls upon its `Reprocess` method
+
+The entity actor relies on an injected OLTP connector that handles the communication with the legacy system. This is a mock up implementation for now. The OLTP interface looks like this:
+
+```csharp
+public interface IOltpConnectorService
+{
+    Task<List<Entity>> GetEntities();
+    Task<List<PeriodParams>> GetPeriodParams();
+    Task<List<MeasureCalculation>> GetPeriodMeasureCalculations(EntityTypes entityType, int entityId, int year, int period);
+    Task<List<MeasureCalculation>> GetQuarterMeasureCalculations(EntityTypes entityType, int entityId, int year, int period, List<KeyValuePair<int, int>> periods);
+    Task<List<MeasureCalculation>> GetYearMeasureCalculations(EntityTypes entityType, int entityId, int year, int period, List<KeyValuePair<int, int>> periods);
+}
+```
+Once the entity actor is done reprocessing, it emits an event `IEntityActorEvents`. Currently the enqueuer service registers interest in this event but it really does not do anything with it. The purpose of it is to test the event handling and understand how they work. The event is defined like this:
+
+```csharp
+public interface IEntityActorEvents : IActorEvents
+{
+    void MeasuresRecalculated(EntityId entity, List<MeasureCalculation> wtdMeasures, List<MeasureCalculation> qtdMeasures, List<MeasureCalculation> ytdMeasures);
+}
+```
+ 
+###### Entity View
+
+This is a simple method that returns the state of the entity actor. It is mainly called from the API Gateway to return actor state as a view. The view is basically the WTD, QTD and YTD measures:
+
+```csharp
+[DataMember]
+public List<MeasureCalculation> WtdMeasures { get; set; }
+
+[DataMember]
+public List<MeasureCalculation> QtdMeasures { get; set; }
+
+[DataMember]
+public List<MeasureCalculation> YtdMeasures { get; set; }
+```
+
+This is mainly a convenience class to return data to clients.
+
+#### Hierarchical Actor
+
+The hierarchical actor exposes this functionality:
+
+```csharp
+public interface IHierarchyActor : IActor
+{
+    /// <summary>
+    /// Returns the parent entity id of the provided entity id and type
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="entityId"></param>
+    /// <returns></returns>
+    Task<Entity> GetParentEntity(EntityTypes type, int entityId);
+
+    /// <summary>
+    /// Returns the actor id given its type, id and period parameters (which are needed
+    /// to address the actor.
+    /// 
+    /// This also returns the actor id by converting to string. The returned string
+    /// must be reversable to allow the state to be initialized.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="businessKey"></param>
+    /// <param name="periodParams"></param>
+    /// <returns></returns>
+    Task<string> GetEntityActorId(EntityTypes type, int businessKey, PeriodParams periodParams);
+
+    /// <summary>
+    /// Returns a collection of children for the provided parent
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="entityId"></param>
+    /// <returns></returns>
+    Task<List<Entity>> GetChildren(EntityTypes type, int entityId);
+
+    /// <summary>
+    /// Used to return the period parameters so we can use it to address actors.
+    /// 
+    /// Given year, and period, this returns the actual parameters.
+    /// Example:
+    /// Input: Year = 2015, Week = 19 => Output: Year = 2015, Quarter = 1, Month = 3, Week = 19
+    /// 
+    /// </summary>
+    /// <param name="year"></param>
+    /// <param name="period"></param>
+    /// <returns></returns>
+    Task<PeriodParams> GetPeriodParams(int year, int period);
+
+    /// <summary>
+    /// Given a year and a week/month (i.e. period), this returns all the quarter or year periods
+    /// </summary>
+    /// <param name="year"></param>
+    /// <param name="period"></param>
+    /// <returns></returns>
+    Task<List<KeyValuePair<int, int>>> GetQuarterPeriods(int year, int period);
+    Task<List<KeyValuePair<int, int>>> GetYearPeriods(int year, int period);
+
+    /// <summary>
+    /// Given a year and a week/month i.e.period, this returns whether the next period is available in the OLTP system
+    /// </summary>
+    /// <param name="year"></param>
+    /// <param name="period"></param>
+    /// <returns></returns>
+    Task<KeyValuePair<int, int>> IsNextPeriodAvailable(int year, int period);
+}
+```
+
+This actor provides entities and time slots management. The API Gateway, the Enqueuer service and the entity actors use the hieararchical actor to locate actors. For example, this is what the API gateway does to retrueve the related entity actors to return their view to their client:
+
+```csharp
+IActorLocationService actorLocator = new ActorLocationService();
+IHierarchyActor controlActor = actorLocator.Create<IHierarchyActor>("control", ApplicationName);
+
+PeriodParams pParams = controlActor.GetPeriodParams(year, period).Result;
+if (pParams == null)
+    throw new Exception(string.Format("Period does not exist for year/period: {0}/{1}", year, period));
+
+var entityActorId = await controlActor.GetEntityActorId(type, businesskey, pParams);
+Console.WriteLine("Entity Actor Id: {0}", entityActorId);
+IEntityActor entityActor = actorLocator.Create<IEntityActor>(entityActorId, ApplicationName);
+EntityView view = await entityActor.GetEntityView();
+
+EntityView parentView = null;
+var parent = await controlActor.GetParentEntity(type, businesskey);
+if (parent != null)
+{
+    var parentActorId = await controlActor.GetEntityActorId(parent.Type, parent.BusinessKey, pParams);
+    IEntityActor parentActor = actorLocator.Create<IEntityActor>(parentActorId, ApplicationName);
+    parentView = await parentActor.GetEntityView();
+}
+
+Dictionary<string, EntityView> childrenViews = new Dictionary<string, EntityView>();
+var children = await controlActor.GetChildren(type, businesskey);
+foreach (var child in children)
+{
+    var childActorId = await controlActor.GetEntityActorId(child.Type, child.BusinessKey, pParams);
+    IEntityActor childActor = actorLocator.Create<IEntityActor>(childActorId, ApplicationName);
+    childrenViews.Add(child.Name, await childActor.GetEntityView());
+}
+
+return Ok(new
+{
+    ParentName = parent.Name,
+    ParentView = parentView,
+    ThisView = view,
+    ChildrenViews = childrenViews
+});
+```
+
+In essense, the hierarchical actor:
+* Maintains the backend system entities and time slots (i.e. periods) available in its state for fast and easy querying. 
+* Employs a daily reminder to keep its state refreshed from the backend.
+
