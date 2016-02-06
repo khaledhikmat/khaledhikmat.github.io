@@ -12,15 +12,15 @@ As we have identified a need to decompose our monolithic legacy application into
 
 Eventually I heard about Azure [Azure Service Fabric](https://azure.microsoft.com/en-us/services/service-fabric/)! A new platform that allows developers to develop and update microservice-based application. I downloaded Azure Service Fabric and started looking into it. Having spent 2-3 weeks on the subject in my evenings and weekends, I finally feel there is some concrete implementation I can relate to and that I can now see things in perspective.   
 
-With an ability to run and deploy clusters locally in my laptop, I wanted to try something meaningful and solve a specific business problem for my company. This post describes this process.
+With the ability to run and deploy clusters locally in my laptop, I wanted to try something meaningful and solve a specific business problem for my company. This post describes this process.
 
 ## Problem Description
 
-Our executives and accounting team would like to view sales and revenue by geographical hierarchy where entities are laid out from the top level (i.e. Global) all the way down to the bottom. Of course the ability for users to see different entities is controlled by a fine-grained security:
+Our company executives and accounting team would like to view sales and revenue by geographical hierarchy where entities are laid out from the top level (i.e. Global) all the way down to the bottom. Of course the ability for users to see different entities is controlled by a fine-grained security:
 
 ![Entity Hierarchy](http://i.imgur.com/POkG8aP.png)
 
-In our terms, the revenue unit is a virtual entity that sells a specific product. There could be many revenue units under the same physical call center. Of course, every call center belongs in a country and every country belongs to a region and every region belongs to global. The sales and revenue measures must be aggregated in two dimensions: geographic and time to show a complete picture to executives and accounting.  
+In our terms, revenue units are virtual entities that sell a specific product. There could be many revenue units under the same physical call center. Of course, every call center belongs in a country and every country belongs to a region and every region belongs to global. The sales and revenue measures must be aggregated in two dimensions: geographic and time to show a complete picture to executives and accounting.  
 
 A sample of how the data is to be laid out is shown here:
 
@@ -39,6 +39,8 @@ Historically we have solved this problem by using a typical business intelligenc
 
 Sales and other transactions happen in our main transactional legacy system. Every transaction in the system is tagged with a specific revenue unit in a specific week of the year. In essence we are weekly company as sales, revenue & profit need to be reported weekly. 
 
+*_We actually have several sub-systems that can use this solution! While the one we are sampling here is based on years and weeks, others are based on years and months. So the solution has to be able to support entity hierarchy and time slot variations.*_ 
+
 There are several different processors that must take place to keep the system up-to-date:
 
 #### Self & Parent Re-processing
@@ -51,9 +53,9 @@ When our main transactional system records a sale for a particular revenue unit 
 
 Assuming we have weeks 1 through 5 in the system and we are re-processing week 4 of 2016, the self & parent re-processing is depicted like this (in BLUE arrows):
 
-![Parent Week Reprocessing](http://i.imgur.com/Xkpq7xO.png)
+![Self & Parent Reprocessing](http://i.imgur.com/JzvgV3z.png)
 
-#### Forward Period Re-processing
+#### Forward Week Re-processing
 
 In addition to the above self & parent re-processing, another level of calculation is needed if the re-processed week has any forward weeks. For example, the forward week of 4/2016 is week 5/2016. Therefore week 5/2016 QTD and YTD measures must be re-calculated because they are affected by the changes that took place in week 4/2016. The forward week re-processing is depicted like this (in RED arrows):
 
@@ -73,5 +75,5 @@ Now that we have a general idea of the system we are trying to build, let us tak
  
 ## Architecture
 
-![Architecture](http://i.imgur.com/Y4BUHxU.png)
+![Architecture](http://i.imgur.com/5mOHjmJ.png)
 
