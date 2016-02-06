@@ -305,7 +305,7 @@ public interface IEntityActor : IActor, IActorEventPublisher<IEntityActorEvents>
 
 ###### Reprocess
 
-`Reprocess` is called from the enqueuer service to reprocess an entity when a change takes place in the transactional system. Basically `reproces` performs the following:
+`Reprocess` is called from the enqueuer service to reprocess an entity when a change takes place in the transactional system. Basically `Reproces` performs the following:
 
 * Registers a reminder and returns quickly to the caller
 * When the reminder goes off, it re-calculates the WTD, QYD and YTD measures
@@ -418,7 +418,7 @@ public interface IHierarchyActor : IActor
 }
 ```
 
-This actor provides entities and time slots management. The API Gateway, the Enqueuer service and the entity actors use the hieararchical actor to locate actors. For example, this is what the API gateway does to retrueve the related entity actors to return their view to their client:
+This actor provides entities and time slots management. The API Gateway, the Enqueuer service and the entity actors use the hieararchical actor to locate actors and periods. For example, this is what the API gateway does to retrieve the related entity actors to return their view to their client:
 
 ```csharp
 IActorLocationService actorLocator = new ActorLocationService();
@@ -461,6 +461,23 @@ return Ok(new
 ```
 
 In essense, the hierarchical actor:
+
 * Maintains the backend system entities and time slots (i.e. periods) available in its state for fast and easy querying. 
+* Provides convenient methods to the other services and actors in the system to retrieve actor ids and manage periods
 * Employs a daily reminder to keep its state refreshed from the backend.
+
+## Configuration 
+
+As we mentioned earlier in the post, the app must be flexible to allow different entities and periods (i.e. week vs. month). So I made the hierchical actor configurable to load different `IOltpConnector` connector and process periods differently depending on configuration keys i.e. weekly or monthly. Similarly the entity actor plugs diferent `IOltpConnector` connector based on configuration. 
+
+## Closing thoughts
+
+* The app works well with deployed locally on my laptop. I also deployed it to the [party cluster](http://tryazureservicefabric.eastus.cloudapp.azure.com/).
+* I tried to abstract most of the app functionality using interfaces.   
+* I could not figure out how to send the API Gateway (managed ASP .NET 5 Web Project) logs to the diagnostic events. In fact, I am not really sure what the best way is to handle logging in production. 
+* Eventually the Service Fabric will allow the apps to deploy to Docker containers. This will be quite interesting.
+* If a solution spans multiple Service Fabric apps, not sure the best way to orchestrate.
+* How do I know the number of Actor instances in each partition?
+* The Hierarchy actor now has a lot of crucial functionality and it is singleton
+		
 
