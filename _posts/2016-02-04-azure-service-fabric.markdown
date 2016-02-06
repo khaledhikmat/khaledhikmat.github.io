@@ -5,7 +5,7 @@ date:   2016-02-04 20:14:01
 summary: "Notes on Azure Service Fabric"
 categories: Technical
 tags: Azure, Service Fabric, Actor Model, Stateful Service
-featured_image: /images/2016-02-04/cover.png
+featured_image: /images/cover.png
 ---
 
 As we have identified a need to decompose our monolithic legacy application into little modules to make it easier to update and delegate work on, I have been exploring Microservices as a possible solution. I have listened to many talks and read many articles on the subject. While I could understand the business and technical value, I could not wrap my head around how would one actually go about implementing something like this. What tools would I use? What programming language? What environment? What messages? I also explored the very popular Container approach using [Docker](https://www.docker.com/). It is indeed fascinating......but I felt overwhelmed with the Unix-like commands and the system admin knowledge that one must have to be able to deploy/use something like this. There is also a lot of work being done on Docker including a port to Windows. So this space is a moving target right now. I am sure when the dust settles, we will have better tools that allows everyone to use Containers quite easily. 
