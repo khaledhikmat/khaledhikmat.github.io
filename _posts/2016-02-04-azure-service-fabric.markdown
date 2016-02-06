@@ -59,7 +59,7 @@ Assuming we have weeks 1 through 5 in the system and we are re-processing week 4
 
 In addition to the above self & parent re-processing, another level of calculation is needed if the re-processed week has any forward weeks. For example, the forward week of 4/2016 is week 5/2016. Therefore week 5/2016 QTD and YTD measures must be re-calculated because they are affected by the changes that took place in week 4/2016. The forward week re-processing is depicted like this (in RED arrows):
 
-![Forward Week Reproessing](http://i.imgur.com/e56hn60.png) 
+![Forward Week Reprocessing](http://i.imgur.com/iVY07nB.png)
 
 _*If we have 30 weeks in the system and week number 1 was changed, all 30 weeks must be re-processed as forward weeks. This domino effect is needed to maintain the system up-to-date.*_
 
