@@ -77,3 +77,195 @@ Now that we have a general idea of the system we are trying to build, let us tak
 
 ![Architecture](http://i.imgur.com/5mOHjmJ.png)
 
+The following are the elements of this architecture:
+
+#### API Gateway
+
+Included with the Service Fabric App is an ASP .NET 5 managed Web API. It exposes a couple of APIs to allow the external systems to communicate with the Service Fabric app:
+
+* Re-process: Anytime, there is a change in the transactional system, a post message is sent to the API Gateway to re-process the entity for the provided week and year. The post data looks like this:
+
+```csharp
+public class EntityReprocessModel
+{
+    public EntityTypes Type { get; set; }
+    public int BusinessKey { get; set; }
+    public int Year { get; set; }
+    public int Period { get; set; }
+}
+```
+ 
+_*Please note that I am using a more generic term (i.e. period) to refer to weeks. This is because, as mentioned earlier, the solution must adapt to other systems that rely on month as opposed to weeks*_
+
+* Retrieve entity measures: This is to serve the app clients! Clients issue a GET request to retrieve the measures. For example, this is a sample API:
+
+```
+api/entities/{type}/{businesskey}/{year}/{period}
+```
+
+The return looks like this:
+
+```
+{
+  "ParentName": "North America",
+  "ParentView": {
+    "WtdMeasures": [
+      {
+        "Measure": 0,
+        "Type": 0,
+        "Value": 400
+      },
+      {
+        "Measure": 1,
+        "Type": 1,
+        "Value": 100000
+      }
+    ],
+    "QtdMeasures": [
+      {
+        "Measure": 0,
+        "Type": 0,
+        "Value": 800
+      },
+      {
+        "Measure": 1,
+        "Type": 1,
+        "Value": 200000
+      }
+    ],
+    "YtdMeasures": [
+      {
+        "Measure": 0,
+        "Type": 0,
+        "Value": 6000
+      },
+      {
+        "Measure": 1,
+        "Type": 1,
+        "Value": 1500000
+      }
+    ]
+  },
+  "ThisView": {
+    "WtdMeasures": [
+      {
+        "Measure": 0,
+        "Type": 0,
+        "Value": 300
+      },
+      {
+        "Measure": 1,
+        "Type": 1,
+        "Value": 75000
+      }
+    ],
+    "QtdMeasures": [
+      {
+        "Measure": 0,
+        "Type": 0,
+        "Value": 600
+      },
+      {
+        "Measure": 1,
+        "Type": 1,
+        "Value": 150000
+      }
+    ],
+    "YtdMeasures": [
+      {
+        "Measure": 0,
+        "Type": 0,
+        "Value": 4500
+      },
+      {
+        "Measure": 1,
+        "Type": 1,
+        "Value": 1125000
+      }
+    ]
+  },
+  "ChildrenViews": {
+    "CC1": {
+      "WtdMeasures": [
+        {
+          "Measure": 0,
+          "Type": 0,
+          "Value": 200
+        },
+        {
+          "Measure": 1,
+          "Type": 1,
+          "Value": 50000
+        }
+      ],
+      "QtdMeasures": [
+        {
+          "Measure": 0,
+          "Type": 0,
+          "Value": 400
+        },
+        {
+          "Measure": 1,
+          "Type": 1,
+          "Value": 100000
+        }
+      ],
+      "YtdMeasures": [
+        {
+          "Measure": 0,
+          "Type": 0,
+          "Value": 3000
+        },
+        {
+          "Measure": 1,
+          "Type": 1,
+          "Value": 750000
+        }
+      ]
+    },
+    "CC2": {
+      "WtdMeasures": [
+        {
+          "Measure": 0,
+          "Type": 0,
+          "Value": 200
+        },
+        {
+          "Measure": 1,
+          "Type": 1,
+          "Value": 50000
+        }
+      ],
+      "QtdMeasures": [
+        {
+          "Measure": 0,
+          "Type": 0,
+          "Value": 400
+        },
+        {
+          "Measure": 1,
+          "Type": 1,
+          "Value": 100000
+        }
+      ],
+      "YtdMeasures": [
+        {
+          "Measure": 0,
+          "Type": 0,
+          "Value": 3000
+        },
+        {
+          "Measure": 1,
+          "Type": 1,
+          "Value": 750000
+        }
+      ]
+    }
+  }
+}
+```
+
+#### Enqueuer Service
+
+This is a stateful service that implements a queue 
+      
