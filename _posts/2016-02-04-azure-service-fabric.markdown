@@ -39,7 +39,7 @@ Historically we have solved this problem by using a typical business intelligenc
 
 Sales and other transactions happen in our main transactional legacy system. Every transaction in the system is tagged with a specific revenue unit in a specific week of the year. In essence we are weekly company as sales, revenue & profit need to be reported weekly. 
 
-*_We actually have several sub-systems that can use this solution! While the one we are sampling here is based on years and weeks, others are based on years and months. So the solution has to be able to support entity hierarchy and time slot variations.*_ 
+_*We actually have several sub-systems that can use this solution! While the one we are sampling here is based on years and weeks, others are based on years and months. So the solution has to be able to support entity hierarchy and time slot variations.*_
 
 There are several different processors that must take place to keep the system up-to-date:
 
