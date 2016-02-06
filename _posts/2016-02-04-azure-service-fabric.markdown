@@ -467,13 +467,13 @@ In essense, the hierarchical actor:
 
 ## Configuration 
 
-As we mentioned earlier in the post, the app must be flexible to allow different entities and periods (i.e. week vs. month). So I made the hierchical actor configurable to load different `IOltpConnector` connector and process periods differently depending on configuration keys i.e. weekly or monthly. Similarly the entity actor plugs diferent `IOltpConnector` connector based on configuration. 
+As we mentioned earlier in the post, the app must be flexible to allow different entities and periods (i.e. week vs. month). So I made the hierchical actor configurable to load different `IOltpConnector` connector and process periods differently depending on configuration keys i.e. weekly or monthly. Similarly the entity actor plugs different `IOltpConnector` connector based on configuration. 
 
 ## Closing thoughts
 
-* The app works well with deployed locally on my laptop. I also deployed it to the [party cluster](http://tryazureservicefabric.eastus.cloudapp.azure.com/).
+* The app works well when deployed locally on my laptop. I also deployed it on the [party cluster](http://tryazureservicefabric.eastus.cloudapp.azure.com/) provided by Microsoft.
 * I tried to abstract most of the app functionality using interfaces.   
-* I could not figure out how to send the API Gateway (managed ASP .NET 5 Web Project) logs to the diagnostic events. In fact, I am not really sure what the best way is to handle logging in production. 
+* I could not figure out how to send the API Gateway (managed ASP .NET 5 Web Project) logs to the diagnostic events. In fact, I am not really sure what the best way to handle logging in production is. 
 * Eventually the Service Fabric will allow the apps to deploy to Docker containers. This will be quite interesting.
 * If a solution spans multiple Service Fabric apps, not sure the best way to orchestrate.
 * How do I know the number of Actor instances in each partition?
