@@ -105,7 +105,7 @@ api/entities/{type}/{businesskey}/{year}/{period}
 
 The return looks like this:
 
-```jscript
+```javascript
 {
   "ParentName": "North America",
   "ParentView": {
