@@ -478,5 +478,6 @@ As we mentioned earlier in the post, the app must be flexible to allow different
 * If a solution spans multiple Service Fabric apps, not sure the best way to orchestrate.
 * How do I know the number of Actor instances in each partition?
 * The Hierarchy actor now has a lot of crucial functionality and it is singleton
+* The source code is [here](https://github.com/khaledhikmat/EntityAggregatorsApp)
 		
 
