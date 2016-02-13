@@ -477,9 +477,9 @@ For logging, I used the ETW events that can be viewed in the diagnostics viewer.
 
 ## Closing thoughts
 
-* The app works well when deployed locally on my laptop. I also deployed it on the [party cluster](http://tryazureservicefabric.eastus.cloudapp.azure.com/) provided by Microsoft. However, I was not able to deploy on a realy cluster in Azure. The error message I was getting is timeout!
-* I tried to abstract most of the app functionality using interfaces.   
-* If the Service Fabric will allow the apps to deploy to Docker containers (i.e. both Linux and Windows), it will be great. It will also be useful if this will eventually deploy on a regular Windows Server (may 2016).
+* The app works well when deployed locally on my laptop. However, I was not able to deploy on a real cluster in Azure. The error message I was getting is timeout! Attempts to deploy it on Microsoft [party cluster](http://tryazureservicefabric.eastus.cloudapp.azure.com/) did not succeed as they ignored my several join requests to deploy!!  
+* I tried to abstract most of the app functionality using interfaces. 
+* If the Service Fabric will allow the apps to deploy to Docker containers (i.e. both Linux and Windows), it will be great. It will also be useful if this will eventually deploy on a regular Windows Server (may be 2016).
 * If a solution spans multiple Service Fabric apps, not sure the best way to orchestrate.
 * How do I know the number of Actor instances in each partition?
 * The Hierarchy actor now has a lot of crucial functionality and it is singleton
