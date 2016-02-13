@@ -485,6 +485,6 @@ For logging, I used the ETW events that can be viewed in the diagnostics viewer.
 * The Hierarchy actor now has a lot of crucial functionality and it is singleton
 * The source code is [here](https://github.com/khaledhikmat/EntityAggregatorsApp)
 
-I think Microsoft is on something with this platform. I really like it and I think it has a future. Hopefully Microsoft will be able to port this ti Linux and make it available on Containers.
+I think Microsoft is on something with this platform. I really like it and I think it has a future. Hopefully Microsoft will be able to port this to Linux and make it available on Containers.
  
 
