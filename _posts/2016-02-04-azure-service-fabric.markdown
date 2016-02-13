@@ -279,7 +279,7 @@ This is a stateful actor that represents an entity. An entity is basically the f
 * Year
 * Period i.e. Week or Month
 
-Each enity actor holds the following state:
+Each entity actor holds the following state:
 
 * Entity Type i.e. Global, Region, Country, Call Center or Revenue Unit
 * Business Key: correlation id with the legacy system
@@ -469,15 +469,22 @@ In essense, the hierarchical actor:
 
 As we mentioned earlier in the post, the app must be flexible to allow different entities and periods (i.e. week vs. month). So I made the hierchical actor configurable to load different `IOltpConnector` connector and process periods differently depending on configuration keys i.e. weekly or monthly. Similarly the entity actor plugs different `IOltpConnector` connector based on configuration. 
 
+The configuration is handled by an abstract `ISettingService` that serves configuration items to services and actors. There is a separate implementation of `ISettingService` for the ASP.NET API Gateway. 
+
+## Logging & Instrumentation
+
+For logging, I used the ETW events that can be viewed in the diagnostics viewer. However, I did abstract its functionality by using `ILoggerService`. However, I could not figure out how to send the API Gateway (managed ASP .NET 5 Web Project) logs to the diagnostic events. So I ended using [Application Insights](https://azure.microsoft.com/en-us/documentation/articles/app-insights-overview/) to track events, traces and exceptions which would probably be very useful in a production environment. 
+
 ## Closing thoughts
 
-* The app works well when deployed locally on my laptop. I also deployed it on the [party cluster](http://tryazureservicefabric.eastus.cloudapp.azure.com/) provided by Microsoft.
+* The app works well when deployed locally on my laptop. I also deployed it on the [party cluster](http://tryazureservicefabric.eastus.cloudapp.azure.com/) provided by Microsoft. However, I was not able to deploy on a realy cluster in Azure. The error message I was getting is timeout!
 * I tried to abstract most of the app functionality using interfaces.   
-* I could not figure out how to send the API Gateway (managed ASP .NET 5 Web Project) logs to the diagnostic events. In fact, I am not really sure what the best way to handle logging in production is. 
-* Eventually the Service Fabric will allow the apps to deploy to Docker containers. This will be quite interesting.
+* If the Service Fabric will allow the apps to deploy to Docker containers (i.e. both Linux and Windows), it will be great. It will also be useful if this will eventually deploy on a regular Windows Server (may 2016).
 * If a solution spans multiple Service Fabric apps, not sure the best way to orchestrate.
 * How do I know the number of Actor instances in each partition?
 * The Hierarchy actor now has a lot of crucial functionality and it is singleton
 * The source code is [here](https://github.com/khaledhikmat/EntityAggregatorsApp)
-		
+
+I think Microsoft is on something with this platform. I really like it and I think it has a future. Hopefully Microsoft will be able to port this ti Linux and make it available on Containers.
+ 
 
