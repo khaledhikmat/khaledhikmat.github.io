@@ -473,7 +473,7 @@ The configuration is handled by an abstract `ISettingService` that serves config
 
 ## Logging & Instrumentation
 
-For logging, I used the ETW events that can be viewed in the diagnostics viewer. However, I did abstract its functionality by using `ILoggerService`. However, I could not figure out how to send the API Gateway (managed ASP .NET 5 Web Project) logs to the diagnostic events. So I ended using [Application Insights](https://azure.microsoft.com/en-us/documentation/articles/app-insights-overview/) to track events, traces and exceptions which would probably be very useful in a production environment. 
+For logging, I used the ETW events that can be viewed in the diagnostics viewer. However, I did abstract its functionality by using `ILoggerService`. I also could not figure out how to send the API Gateway (managed ASP .NET 5 Web Project) logs to the diagnostic events. So I ended up using [Application Insights](https://azure.microsoft.com/en-us/documentation/articles/app-insights-overview/) to track events, traces and exceptions which would probably be very useful in a production environment. 
 
 ## Closing thoughts
 
