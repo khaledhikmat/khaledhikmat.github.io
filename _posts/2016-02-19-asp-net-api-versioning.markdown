@@ -205,5 +205,5 @@ if (!actionContext.Request.Properties.TryGetValue("sone-key", out accessToken))
 }
 ```
 
-I hope someone finds this post helpful. Having multiple versions has provided me with a way to transition my mobile app from basic authentication to token authentication without breaking existing mobile app versions.
+I hope someone finds this post helpful. Having multiple versions has provided me with a way to transition my mobile apps from basic authentication to token authentication without breaking the existing mobile app versions.
  
