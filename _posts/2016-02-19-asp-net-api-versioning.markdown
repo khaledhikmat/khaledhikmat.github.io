@@ -188,7 +188,7 @@ public class StatsV2Controller : StatsV1Controller
 * The V1 controller uses basic authorization (as decorated by the attribute on top of the controller class) and V2 uses token authentication as decorated. 
 * The V2 controller inherits from the V1 controller so there is no need to re-implement the methods.
 * However, there is a need to supply a different route name for the V2 controller otherwise we will get a conflict. This is done by giving the V2 controller a route name that ends with V1 i.e. StatsV2. This is a little unfortunate but this is how it is. Had it not been for this, we could have simply inherited from V1 without having to repeat any method.
-* Since V2 inherits from V1, I noticed that both authentication filters run per request. This means that when V2 is desired, token authorize filer will run first and then followed by the basic authorize filter. This can cause problems. So what I did is at the end of the token authorize filter, I inject a value in the request properties. In the basic authorize, I check if the value exists, I will abort the basic authorize filter because the token filter has already run.
+* Since V2 inherits from V1, I noticed that both authentication filters run per request. This means that when V2 is picked, the token authorize filer will run first and then followed by the basic authorize filter. This can cause problems. So what I did is at the end of the token authorize filter, I inject a value in the request properties. In the basic authorize filter, I check if the value exists, and, it if it does, I abort the basic authorize filter since the token filter has already run.
 
 
 ## Request Property
@@ -207,5 +207,5 @@ if (!actionContext.Request.Properties.TryGetValue("sone-key", out accessToken))
 }
 ```
 
-I hope someone finds this post helpful. Having multiple versions has provided me with a way to transition my mobile app users from basic authentication to token authentication without breaking the existing mobile app versions.
+I hope someone finds this post helpful. Having multiple versions has provided me with a way to transition my mobile app users from basic authentication to token authentication without breaking the existing mobile apps.
  
