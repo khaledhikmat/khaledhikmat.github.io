@@ -10,7 +10,7 @@ featured_image: /images/cover.jpg
 
 A while back, I created an ASP.NET Web API 2 to be a back-end for a mobile app. I used basic authentication to make it easier for mobile apps to consume the Web API. I now decided to provide better security so I wanted to move to a token-based authentication. The problem is that if I change the Web API to a token-based, all existing mobile apps in the field will not function as they will be refused Web API connection. 
 
-The answer is to use Web API versioning! This way existing mobile users can continue to use the current version that uses basic authentication until the app is upgraded. The update app version will switch over to use the new version which is based on token authentication. This post will discuss how I accomplished this versioning scheme.
+The answer is to use Web API versioning! This way existing mobile users can continue to use the current version that uses basic authentication until the app is upgraded. The updated app version will switch over to use the new version which is based on token authentication. This post will discuss how I accomplished this versioning scheme.
 
 ## Controller Selector
 
