@@ -477,7 +477,7 @@ For logging, I used the ETW events that can be viewed in the diagnostics viewer.
 
 ## Closing thoughts
 
-* The app works well when deployed locally on my laptop. However, I was not able to deploy on a real cluster in Azure. The error message I was getting is timeout! Attempts to deploy it on Microsoft [party cluster](http://tryazureservicefabric.eastus.cloudapp.azure.com/) did not succeed as they ignored my several join requests to deploy!!  
+* The app works well when deployed locally on my laptop. Attempts to deploy it on Microsoft [party cluster](http://tryazureservicefabric.eastus.cloudapp.azure.com/) did not succeed as they ignored my several join requests to deploy!!  
 * I tried to abstract most of the app functionality using interfaces. 
 * If the Service Fabric will allow the apps to deploy to Docker containers (i.e. both Linux and Windows), it will be great. It will also be useful if this will eventually deploy on a regular Windows Server (may be 2016).
 * If a solution spans multiple Service Fabric apps, not sure the best way to orchestrate.
@@ -485,6 +485,6 @@ For logging, I used the ETW events that can be viewed in the diagnostics viewer.
 * The Hierarchy actor now has a lot of crucial functionality and it is singleton
 * The source code is available [here](https://github.com/khaledhikmat/EntityAggregatorsApp)
 
-I think Microsoft is on something with this platform. I really like it and I think it has a future. Hopefully Microsoft will be able to port this to Linux and make it available on Containers.
+I think Microsoft is on to something with this platform. I really like it and I think it has a future. Hopefully Microsoft will be able to port this to Linux and make it available on Containers.
  
 
