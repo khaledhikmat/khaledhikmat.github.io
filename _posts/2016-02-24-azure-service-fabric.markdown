@@ -463,7 +463,7 @@ In essense, the hierarchical actor:
 
 * Maintains the backend system entities and time slots (i.e. periods) available in its state for fast and easy querying. 
 * Provides convenient methods to the other services and actors in the system to retrieve actor ids and manage periods
-* Employs a daily reminder to keep its state refreshed from the backend.
+* Employs a daily reminder to keep its state refreshed from the back-end.
 
 ## Configuration 
 
