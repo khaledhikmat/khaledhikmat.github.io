@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Entity Aggregation in Azure Service Fabric"
-date:   2016-02-24 20:14:01
+date:   2016-02-24 01:01:01
 summary: "Notes on Azure Service Fabric"
 categories: Technical
 tags: Azure, Service Fabric, Actor Model, Stateful Service
