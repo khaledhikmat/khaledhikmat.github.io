@@ -483,7 +483,7 @@ For logging, I used the ETW events that can be viewed in the diagnostics viewer.
 * If a solution spans multiple Service Fabric apps, not sure the best way to orchestrate.
 * How do I know the number of Actor instances in each partition?
 * The Hierarchy actor now has a lot of crucial functionality and it is singleton
-* The source code is [here](https://github.com/khaledhikmat/EntityAggregatorsApp)
+* The source code is available [here](https://github.com/khaledhikmat/EntityAggregatorsApp)
 
 I think Microsoft is on something with this platform. I really like it and I think it has a future. Hopefully Microsoft will be able to port this to Linux and make it available on Containers.
  
