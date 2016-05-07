@@ -26,7 +26,7 @@ So I wanted the ability to navigate to the same screen in PowerApps but with dif
 
 I created two screens: the first is an initial page to present the users certain options and allows them to start viewing the sales data and the second one is the sales data screen that will be navigated to and from in order to view the drill through sales data.
 
-In order to manage the navigation, I created a Stack collection (in PowerApps it is called a collection...but it is like a table) that holds the navigation history of each screen. Upon initial navigation from the initial scree, I clear the collection. When the user drills down, I push (i.e. add) to the collection the screen id of the screen that I just navigated from. When the user drills up, I pop (i.e. remove the last item) from the collection the screen id that I must navigate to. For this app, the only column that I have in this collection is the screen id:
+In order to manage the navigation, I created a Stack collection (in PowerApps it is called a collection...but it is like a table) that holds the navigation history of each screen. Upon initial navigation from the initial screen, I clear the collection. When the user drills down, I push (i.e. add) to the collection the screen id of the screen that I just navigated from. When the user drills up, I pop (i.e. remove the last item) from the collection the screen id that I must navigate to. For this app, the only column that I have in this collection is the screen id:
 
 ![Navigation Scheme](http://i.imgur.com/Ky1EmUL.png)
   
@@ -46,7 +46,7 @@ This script consists of 3 main things:
 
 - `Clear(Stack);` clears the navigation collection that I named `Stack`.
 - `Navigate(Screen2, ScreenTransition.Fade, {Screen:{Id: 1}})` navigates to screen2 (which is the data screen) with a fade
-- `{Screen:{Id: 1}}` add a context variable called `Screen` with a single column called `Id` that contains the value 1 i.e. Level 1   
+- `{Screen:{Id: 1}}` adds a context variable called `Screen` with a single column called `Id` that contains the value 1 i.e. Level 1   
 
 This [context variable](https://powerapps.microsoft.com/en-us/tutorials/function-updatecontext/) is short-lived as it is only available within the boundary of a single screen. I use it to pass the screen id from one screen to another.
 
@@ -66,7 +66,7 @@ This script consists of 3 main things:
 
 - `Collect(Stack, {Id: Screen.Id});` adds (i.e. collects in PowerApps terminology) the screen id that was passed from the initial screen or the screen that I navigated from. The collection stores the screen ID. 
 - `Navigate(Screen2, ScreenTransition.Fade, {Screen:{Id: Last(Stack).Id + 1}})` navigates to the same screen (screen2) with a fade
-- `{Screen:{Id: Last(Stack).Id + 1}}` add a context variable called `Screen` with a single column called `Id` that contains the value of the last item in the Stack i.e. `Last(Stack).Id` plus one! This what makes the context variable so powerful.   
+- `{Screen:{Id: Last(Stack).Id + 1}}` adds a context variable called `Screen` with a single column called `Id` that contains the value of the last item in the Stack i.e. `Last(Stack).Id` plus one! This what makes the context variable so powerful.   
 
 ### Data Screen - Drill Up
 
@@ -83,8 +83,8 @@ Navigate(Screen2, ScreenTransition.Fade, {Screen:{Id: Last(Stack).Id}}); Remove(
 This script consists of 3 main things:
 
 - `Navigate(Screen2, ScreenTransition.Fade, {Screen:{Id: Last(Stack).Id}});` navigates to the same screen (screen2) with a fade
-- `{Screen:{Id: Last(Stack).Id}}` add a context variable called `Screen` with a single column called `Id` that contains the value of the last item in the Stack i.e. `Last(Stack).Id`. 
-- `Remove(Stack, Last( Stack))` finally we are removing the last item from the Stack! Effectively we are doing a pop.   
+- `{Screen:{Id: Last(Stack).Id}}` adds a context variable called `Screen` with a single column called `Id` that contains the value of the last item in the Stack i.e. `Last(Stack).Id`. 
+- `Remove(Stack, Last( Stack))` removes the last item from the Stack! Effectively we are doing a pop.   
 
 In order to prevent un-supported drill ups, the drill up icon has a visibility property that is controlled by the following script:
 
@@ -92,6 +92,6 @@ In order to prevent un-supported drill ups, the drill up icon has a visibility p
 If (CountRows(Stack) > 0, true)
 ```  
 
-So as long as there are items in the Stack collection, make the drill-up icon visible. 
+So as long as there are items in the Stack collection, the drill-up icon is visible. 
 
 I hope this is a helpful short post to show how powerful and useful PowerApps can be. I am hoping to be able to add more posts about PowerApps in future posts.
