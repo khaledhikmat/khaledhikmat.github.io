@@ -124,12 +124,12 @@ If you to compile a Service Fabric solution that has an interface that looks lik
 
 What? What is that? Why? After hours, it turned out you can actually [turn off](http://stackoverflow.com/questions/35820191/how-to-ignore-a-servicetype-from-servicefabric-manifest-file-on-build-deploy) this error. From the above Stack Overflow post:
 
-*By changing the project file .csproj of the project containing the actors and setting property:
+By changing the project file .csproj of the project containing the actors and setting property:
 
 ```
 <UpdateServiceFabricManifestEnabled>false</UpdateServiceFabricManifestEnabled>
 ```
-*
+
 
 So this tool can be disabled!! But still why is this happening? It turned out that the actor interfaces may not have overridden methods!! So the tool was complaining about the interface containing just that i.e. overridden methods. If the above interface is changed to the below, everything will work well:
 
