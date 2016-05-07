@@ -10,9 +10,9 @@ featured_image: /images/cover.jpg
 
 PowerApps is a newly released platform/service to build Line-of-business applications from Microsoft. Reading some documentation and attending some online webcasts, I think the PowerApps product is well positioned for LOB! There is definitely a need to create LOB mobile apps at the enterprise level and distribute them seamlessly without the friction of the app stores.
 
-The thing is that the last two (at least) platforms that Microsoft created to build LOB applications were eventually abandoned i.e. SilverLight and LightSwitch. Hence there could some resistance from some developers to start learning this new platform knowing that it might also have the same fate as its predecessors. However, from the first couple of hours that I spent on PowerApps, it seems to be a very capable environment and really easy to do stuff in. So I wanted to show off a very simple app that demonstrates some simple but important capabilities. 
+The thing is that the last two (at least) platforms that Microsoft created to build LOB applications were eventually abandoned i.e. SilverLight and LightSwitch. Hence there could be some resistance from some developers to start learning this new platform knowing that it might also have the same fate as its predecessors. However, from the first couple of hours that I spent on PowerApps, it seems to be a very capable environment and really easy to do stuff in. So I wanted to show off a very simple app that demonstrates some simple but important capabilities. 
 
-Another thing to note is that although, at the time of writing, the product had just made it to public preview from a gated preview, the documentation looks really complete and actually quite good. There also seems to be strong and engaging community!!
+Another thing to note is that although, at the time of writing, the product had just made it to public preview from a gated preview, the [documentation](https://powerapps.microsoft.com/en-us/tutorials/getting-started/) looks really complete and actually quite good. There also seems to be strong and engaging community!!
  
 ### Simple App
 
