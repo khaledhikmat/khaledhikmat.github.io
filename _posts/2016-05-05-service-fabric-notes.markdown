@@ -18,7 +18,7 @@ If you create a Service Fabric project using Visual Studio, it creates separate 
 
 ### Where is the Microservice in Service Fabric?
 
-I know a little bit about Microservices before I started learning Service Fabric. In fact, it turned out we actually have been employing Microservices concepts all along except we did not know they are called Microservices!! When I started looking into Service Fabric, the first thing that I had a question about was: **in the Service Fabric context, where is the boundary of a Microservice? Is each Fabric service we create (whether it is Stateless, Stateful or Actor) a Microservice?** I don't think so! A simple check against the Microservice characteristics will definitely prove this point. So I argue that, in Service Fabric context, the Microservice is actually the Service Fabric App. The individual SF Services that make up the SF App are really internal implementation of the Microservice i.e. SF App.
+I knew a little bit about Microservices before I started learning Service Fabric. In fact, it turned out we actually have been employing Microservices concepts all along except we did not know they are actually called Microservices!! When I started looking into Service Fabric, the first thing that I had a question about was: **in the Service Fabric context, where is the boundary of a Microservice? Is each Fabric service we create (whether it is Stateless, Stateful or Actor) a Microservice?** I don't think so! A simple check against the Microservice characteristics will definitely prove this point. So I argue that, in Service Fabric context, the Microservice is actually the Service Fabric App. The individual SF Services that make up the SF App are really internal implementation of the Microservice i.e. SF App.
 
 I further think that the Service Fabric services that make up the SF App should be called something more descriptive. I am leaning towards something like `Nanoservice` but the term `nano` is overloaded and might be confused with `Nano server` for example. In any case, naming them something different than services would make things less confusing for folks who are new to Service Fabric.  
 
@@ -34,7 +34,7 @@ In addition to firing a future event, they do allow me to pack an item or object
   
 The best way I found out to schedule reminders to fire immediately is something like this:
 
-```
+```csharp
 public async Task Process(SomeItem item)
 {
 	var error = "";
@@ -65,7 +65,7 @@ public async Task Process(SomeItem item)
 ``` 
 When the reminder triggers, `ReprocessReminder` is called to process the item that was packed within the reminder: `ObjectToByteArray(item)`. Here are possible implementation of packing and unpacking the item:
 
-```
+```csharp
 private byte[] ObjectToByteArray(Object obj)
 {
     if (obj == null)
@@ -114,7 +114,7 @@ From this [article](https://azure.microsoft.com/en-us/documentation/articles/ser
 
 In my actor interface, I had many methods and everything was working great until I added these two methods:
 
-```
+```csharp
 Task<SomeView> GetView(int year, int month);
 Task<SomeView> GetView(int year);
 ```
@@ -131,16 +131,16 @@ What? What is that? Why? After hours, it turned out you can actually [turn off](
 ```
 *
 
-So this tool can be disabled!! But still why is this happening? It turned out that the actor interfaces may not have overridden methods!! So the tool was complaining about the interface containing overridden methods. If the above interface is changed to the below, everything will work well:
+So this tool can be disabled!! But still why is this happening? It turned out that the actor interfaces may not have overridden methods!! So the tool was complaining about the interface containing just that i.e. overridden methods. If the above interface is changed to the below, everything will work well:
 
-```
+```csharp
 Task<SomeView> GetViewByYearNMonth(int year, int month);
 Task<SomeView> GetViewByYear(int year);
 ```
 
 In addition, the actor event methods may not return anything but `void`. So if you have something like this, you will get the same `FabActUtil.exe` error:
 
-```
+```csharp
 public interface IMyActorEvents : IActorEvents
 {
 	Task MeasuresRecalculated(....);
