@@ -10,23 +10,23 @@ featured_image: /images/cover.jpg
 
 I am learning [Service Fabric](https://azure.microsoft.com/en-us/services/service-fabric/) from the folks at Microsoft! Given the capabilities it provides right out of the box, it is really a strong environment to build microservice-based solution at scale. In this post, I will enumerate a few things that I ran into which I think might be helpful to others who are learning the environment as well. This will not be a complete list ....so I will add to it as I go along.
 
-### Solution Layout
+### Actor Turn-based Concurrency
 
-If you create a Service Fabric project using Visual Studio, it creates separate projects for the service and its interfaces. This makes the solution quite verbose and difficult to manage. Instead I effectively used this VS solution layout where I bundle all the service interfaces in a contracts project and all the common code in a shared library:
+Actors are single threaded! They only allow one thread to be acting on them at any given time. In fact, in the Service Fabric terminology, this is referred to as Turn-based treading. From my observation, it seems that this is how the platform and the actors 
 
-![Solution Layout](http://i.imgur.com/W5Iiz2e.png)     
+This applies to Reminders as well. So if you are thinking to use reminder to simulate background processing in actors, this does not work. 
 
-### Where is the Microservice in Service Fabric?
+In fact, reminders can be tricky as they could be missed! If you fire a reminder right away, it is really the same as doing the cpu-bound operation on your own. If two consecutive reminders arrive which carry stuff in them, they might be missed!! Anomaly in reminders if the fire time is like 1 second and I am pounding really hard on the actor. 
 
-I knew a little bit about Microservices before I started learning Service Fabric. In fact, it turned out we actually have been employing Microservices concepts all along except we did not know they are actually called Microservices!! When I started looking into Service Fabric, the first thing that I had a question about was: **in the Service Fabric context, where is the boundary of a Microservice? Is each Fabric service we create (whether it is Stateless, Stateful or Actor) a Microservice?** I don't think so! A simple check against the Microservice characteristics will definitely prove this point. So I argue that, in Service Fabric context, the Microservice is actually the Service Fabric App. The individual SF Services that make up the SF App are really internal implementation of the Microservice i.e. SF App.
+What happens to the clients who are calling the actors? The platform seems to step in and provides a queue which ensures that the actor is working on one thing at a time. This works quite well as long as the method does not return any data. From my observation, if the method requires that the actor returns data, the client has to wait. 
 
-I further think that the Service Fabric services that make up the SF App should be called something more descriptive. I am leaning towards something like `Nanoservice` but the term `nano` is overloaded and might be confused with `Nano server` for example. In any case, naming them something different than services would make things less confusing for folks who are new to Service Fabric.  
+distinguish between two types of actors: processing and aggregation. The processing actors
+ 
+This leads to a conclusion that processing actors should really not be queried. Actors should employ several things:
+- Backup state to an external store such as DocumentDB or others
+- Aggregate result externally perhaps via Azure Function into some outside store so queries could run against this store, or
+- Aggregate result to an aggregator actor that can quickly respond to queries which will relieve the processing actors from worrying about query requests.
 
-Hence each Service Fabric App must have exposed Endpoints (i.e. HTTP, WCF) where other Microservices or clients can communicate with the Service Fabric App. Therefore this design pattern for Service Fabric Apps must be enforced:
-
-![SF Apps Design Pattern](http://i.imgur.com/3SCdCRp.png)
-
-### Actor Reminder
 
 [Actor Reminders](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-actors-timers-reminders/) are really nice to have. In the sample app that I am working on, I use them to schedule processing after I return to the caller. Effectively they seem to give me the ability to run things asynchronously and return to the caller right away. Without this, the actor processing throughput may not be at best if the the processing takes a while to complete. 
    
