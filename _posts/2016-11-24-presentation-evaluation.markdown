@@ -12,7 +12,7 @@ I am new to Xamarin development and I also wanted to try the newly announced VS 
 
 So in essence, a user uses the app to take a selfie with a smile or a frown to indicate whether the presentation was good or a not so good. For example, if the user submitted a picture that looks like this:
 
-![Selfie Evaluation](http://i.imgur.com/oes51Aw.jpg)
+![Evaluation](http://i.imgur.com/QPF0LI8.png)
 
 The cognitive result might look like this:
 
