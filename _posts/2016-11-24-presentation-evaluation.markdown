@@ -223,9 +223,9 @@ else
 
 ### PowerBI
 
-Once I get the result back from the cognitive function, I send it to [PowerBI real-time](https://powerbi.microsoft.com/en-us/documentation/powerbi-service-real-time-streaming/) very useful feature which displays visualizations in real-time:
+Once I get the result back from the cognitive function, I create a real time event (and refer to the smile range as score after I multiply it by 10) and send it to [PowerBI real-time](https://powerbi.microsoft.com/en-us/documentation/powerbi-service-real-time-streaming/) very useful feature which displays visualizations in real-time:
 
-```
+```csharp
 using (var httpClient = new HttpClient())
 {
 	var realTimeEvent = new
@@ -248,12 +248,12 @@ using (var httpClient = new HttpClient())
 }
 ```
 
-where PowerBIApi is the real-time dataset API that you must post it. You will get this from PowerPI service when you create your own Real-Time dataset.
+where PowerBIApi is the real-time API that you must post it. You will get this from PowerPI service when you create your own Real-Time dataset.
 
 This allows people to watch the presentation evaluation result in real-time:
 
 ![PowerBI](http://i.imgur.com/XvnGaVs.png)
 
-That was nice! I liked the ease of developing stuff in Xamarin forms as it shields me almost completely from Android and iOS. Visual Studio for mac (in preview) has a lot of room of improvement though...it feels heavy, clunky and a bit buggy. Finally I would like to say that, in non-demo situations, it is probably better to send the picture to an Azure storage which will trigger an Azure Function that will send to cognitive and PowerBI. 
+That was a nice exercise! I liked the ease of developing stuff in Xamarin forms as it shields me almost completely from Android and iOS. Visual Studio for mac (in preview), however, has a lot of room of improvement...it feels heavy, clunky and a bit buggy. Finally I would like to say that, in non-demo situations, it is probably better to send the picture to an Azure storage which will trigger an Azure Function that will send to cognitive and PowerBI. 
 
 The code is available in GitHub [here](https://github.com/khaledhikmat/presentation-evaluation)
