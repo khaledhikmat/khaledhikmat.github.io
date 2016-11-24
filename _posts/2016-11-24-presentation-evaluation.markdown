@@ -10,7 +10,7 @@ featured_image: /images/cover.jpg
 
 I am new to Xamarin development and I also wanted to try the newly announced VS for mac! So I created a little Camera app that can be used to evaluate presentations. The app allows the user to take a `selfie`. When committed, the picture is sent to an Azure cognitive function to extract the gender, male and smile (a measure of emotion). The app then displays the taken picture and returned result in the app. It also sends the result to PowerBI real-time stream to allow the visualization of the evaluation results.
 
-So in essence, a user uses the app to take a selfie with a smile or a frown to indicate whether the presentation was good or a not so good. For example, if the user submitted a picture that looks like this:
+So in essence, a user uses the app to take a selfie with a smile or a frown to indicate whether the presentation was good, not so good or somewhere in between. For example, if the user submitted a picture that looks like this:
 
 ![Evaluation](http://i.imgur.com/QPF0LI8.png)
 
@@ -254,6 +254,6 @@ This allows people to watch the presentation evaluation result in real-time:
 
 ![PowerBI](http://i.imgur.com/XvnGaVs.png)
 
-That was nice! I liked the ease of developing stuff in Xamarin forms as it shields me almost completely from Android and iOS. Visual Studio for mac (in preview) has a lot of room of improvement though...it feels heavy, clunky and a bit buggy.
+That was nice! I liked the ease of developing stuff in Xamarin forms as it shields me almost completely from Android and iOS. Visual Studio for mac (in preview) has a lot of room of improvement though...it feels heavy, clunky and a bit buggy. Finally I would like to say that, in non-demo situations, it is probably better to send the picture to an Azure storage which will trigger an Azure Function that will send to cognitive and PowerBI. 
 
 The code is available in GitHub [here](https://github.com/khaledhikmat/presentation-evaluation)
