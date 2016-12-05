@@ -16,7 +16,7 @@ For the purpose of this demo, we are going to develop a very basic guest executa
 
 The Guest service is a very basic console app that does this:
 
-```
+```csharp
 class Program
 {
     static void Main(string[] args)
@@ -143,11 +143,13 @@ New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceType
 The key commands are the last two where we:
 
 - Create a named application name from the registered application type and version:
+
 ```
 # Create a named application from the registered app type/version
 New-ServiceFabricApplication -ApplicationTypeName $appTypeName -ApplicationTypeVersion "1.0.0" -ApplicationName $appName 
 ```
 - Create a named service within the named app from the service type:
+
 ```
 # Create a named service within the named app from the service's type
 New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceTypeName -ServiceName $serviceName -Stateless -PartitionSchemeSingleton -InstanceCount 1
@@ -155,11 +157,11 @@ New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceType
 
 This is extremely significant as it allows us to create multiple application instances within the same cluster and each names application instance has its own set of services. This is how the named application and services are related to the cluster (taken from Service Fabric team presentation):
 
-![Naming Stuff](http://i.imgur.com/P4V2acF.png)
+![Naming Stuff](http://i.imgur.com/1K3PlbX.png)
 
 Once the named application and the named service are deployed, the Service Fabric explorer shows it like this:
 
-![Success Deployment](http://i.imgur.com/4htT4ih.png)
+![Success Deployment](http://i.imgur.com/1X8ecrh.png)
 
 ## Availability
  
@@ -167,7 +169,7 @@ One of the major selling points of Service Fabric is its ability to make service
 
 Regardless of whether the service is guest executable or Service Fabric cognizant service, Service Fabric monitors the service to make sure it runs correctly. In our case, the service will crash after 2 minutes.....so once you issue the PowerShell commands to deploy the cluster (in this case to the local one), you will see that Service fabric detects the failure and reports a bad health on the Service Fabric Explorer:
 
-![Error Deployment](http://i.imgur.com/iYLsimO.png)
+![Error deployment](http://i.imgur.com/7CriFFb.png)
 
 ## Cleanup
 
@@ -297,11 +299,11 @@ Start-ServiceFabricApplicationUpgrade -ApplicationName $appName -ApplicationType
 
 The upgrade takes place rolls in using a concept called Upgrade Domains which makes ure that the service that is being upgraded does not ever become unavailable:
 
-![Upgrade Domains](http://i.imgur.com/kp1uMor.png)
+![Upgrade Domains](http://i.imgur.com/eEZmOjO.png)
 
 Once the upgrade is done, the new application and service version is `ProductionV1`:
 
-![Production V1](http://i.imgur.com/k4FpO1H.png)
+![Production V1](http://i.imgur.com/XgKT0Zj.png)
 
 ## Updates
 
