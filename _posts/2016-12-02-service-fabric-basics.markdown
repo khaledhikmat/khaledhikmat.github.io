@@ -157,11 +157,11 @@ New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceType
 
 This is extremely significant as it allows us to create multiple application instances within the same cluster and each names application instance has its own set of services. This is how the named application and services are related to the cluster (taken from Service Fabric team presentation):
 
-![Naming Stuff](http://i.imgur.com/1K3PlbX.png)
+![Naming Stuff](http://i.imgur.com/377RP4J.png)
 
 Once the named application and the named service are deployed, the Service Fabric explorer shows it like this:
 
-![Success Deployment](http://i.imgur.com/1X8ecrh.png)
+![Success Deployment](http://i.imgur.com/tTLgIMX.png)
 
 ## Availability
  
@@ -169,7 +169,7 @@ One of the major selling points of Service Fabric is its ability to make service
 
 Regardless of whether the service is guest executable or Service Fabric cognizant service, Service Fabric monitors the service to make sure it runs correctly. In our case, the service will crash after 2 minutes.....so once you issue the PowerShell commands to deploy the cluster (in this case to the local one), you will see that Service fabric detects the failure and reports a bad health on the Service Fabric Explorer:
 
-![Error deployment](http://i.imgur.com/7CriFFb.png)
+![Error Deployment](http://i.imgur.com/XdY1JHg.png)
 
 ## Cleanup
 
@@ -299,11 +299,11 @@ Start-ServiceFabricApplicationUpgrade -ApplicationName $appName -ApplicationType
 
 The upgrade takes place rolls in using a concept called Upgrade Domains which makes ure that the service that is being upgraded does not ever become unavailable:
 
-![Upgrade Domains](http://i.imgur.com/eEZmOjO.png)
+![Upgrade Domains](http://i.imgur.com/eSmVVHd.png)
 
 Once the upgrade is done, the new application and service version is `ProductionV1`:
 
-![Production V1](http://i.imgur.com/XgKT0Zj.png)
+![Production V1](http://i.imgur.com/l5Ohfgk.png)
 
 ## Updates
 
