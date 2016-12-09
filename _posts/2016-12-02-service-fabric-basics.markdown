@@ -155,7 +155,7 @@ New-ServiceFabricApplication -ApplicationTypeName $appTypeName -ApplicationTypeV
 New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceTypeName -ServiceName $serviceName -Stateless -PartitionSchemeSingleton -InstanceCount 1
 ```
 
-This is extremely significant as it allows us to create multiple application instances within the same cluster and each names application instance has its own set of services. This is how the named application and services are related to the cluster (taken from Service Fabric team presentation):
+This is extremely significant as it allows us to create multiple application instances within the same cluster and each names application instance has its own set of services. This is how the named application and services are related to the cluster (this is taken from Service Fabric team presentation):
 
 ![Naming Stuff](http://i.imgur.com/377RP4J.png)
 
@@ -297,7 +297,7 @@ Remove-ServiceFabricApplicationPackage -ImageStoreConnectionString $imageStoreCo
 Start-ServiceFabricApplicationUpgrade -ApplicationName $appName -ApplicationTypeVersion "ProductionV1" -UnmonitoredAuto -UpgradeReplicaSetCheckTimeoutSec 100
 ```
 
-The upgrade takes place rolls in using a concept called Upgrade Domains which makes ure that the service that is being upgraded does not ever become unavailable:
+The upgrade takes place using a concept called Upgrade Domains which makes sure that the service that is being upgraded does not ever become unavailable:
 
 ![Upgrade Domains](http://i.imgur.com/eSmVVHd.png)
 
