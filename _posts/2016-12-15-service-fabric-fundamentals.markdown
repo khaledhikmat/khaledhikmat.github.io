@@ -142,7 +142,7 @@ Since the service interface is implemented as regular Web API controllers (or co
 
 To make this possible, the service must override the `CreateServiceInstanceListeners` in case of stateless services and `CreateServiceReplicaListeners` in case of stateful services. Here is an example of the Stateful service:
 
-```casharp
+```csharp
 protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
 {
     return new ServiceReplicaListener[1]
@@ -361,7 +361,8 @@ public async Task<IActionResult> GetQueueLengthAsync()
 
 Similarly, the Web Service uses the `FabricClient` to communicate with the each partition replica to get and aggregate the result of each country cities:
 
-```csharp        [HttpGet]
+```csharp        
+[HttpGet]
 [Route("cities")]
 public async Task<IActionResult> GetCitiesAsync()
 {
