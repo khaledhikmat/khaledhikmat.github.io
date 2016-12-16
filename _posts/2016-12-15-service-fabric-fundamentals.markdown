@@ -646,3 +646,6 @@ View-Cities -appName Fabrican
 
 ```
 
+## What is next?
+
+I think Service Fabric has a lot of great and useful features that make it is a great candidate for a lot of scenarios. I will post more articles about Service Fabric as I am expnad my knowledge in this really cool technology. 
