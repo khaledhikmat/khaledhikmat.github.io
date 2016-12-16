@@ -335,4 +335,4 @@ Please notice how fast the scaling (up or down) takes place!!
 
 ## What is next?
 
-In future posts, I will use Service Fabric .NET programming model to develop and deploy stateless and stateful services with HTTP and RCP endpoints. 
+In future posts, I will use Service Fabric .NET programming model to develop and deploy stateless and stateful services to demonstrate Service Fabric fundamental concepts. 
