@@ -423,6 +423,10 @@ This is really useful in many scenarios and allows for many great advantages. In
     
 ### Deployment
 
+**This PowerShell script assumes that you used Visual Studio to generate the Service Fabric app package info (right-click the Service Fabric App and select `Package`) or you built the app package manually as demonstrated in a previous [post](http://khaledhikmat.github.io/2016-12-02/service-fabric-basics). The created package directory is expected to have the following format `v{{version}}` i.e. `v1.0.0`**
+
+This PowerShell script copies the package to the cluster, registers the app type and creates two name app instances (i.e. Contoso and Fabrican). In each app instance, create two services: Web Service as a front-end and Rates service as a back-end. 
+
 ```
 $clusterUrl = "localhost"
 $imageStoreConnectionString = "file:C:\SfDevCluster\Data\ImageStoreShare"   # Use this with OneBox
@@ -489,6 +493,8 @@ New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $ratesServic
 
 ### Obliterate
 
+This PowerShell script removes all application name instances and their services from the selected cluster. It does this based on the application type.
+
 ```
 $clusterUrl = "localhost"
 
@@ -506,6 +512,8 @@ Get-ServiceFabricApplicationType | Where-Object { $applicationTypes -contains $_
 
 ### Update
 
+This PowerShell script updates the web service in each app named instance to have 5 instances. Please note that this works if the number of instances does  not exceed the number of nodes in the cluster.
+
 ```
 $clusterUrl = "localhost"
 
@@ -513,18 +521,20 @@ $clusterUrl = "localhost"
 $appName = "fabric:/ContosoRateAggregatorApp"
 $webServiceName = $appName + "/WebService"
 
-# Dynamically change the named service's number of instances
+# Dynamically change the named service's number of instances (the cluster must have at least 5 nodes)
 Update-ServiceFabricService -ServiceName $webServiceName -Stateless -InstanceCount 5 -Force
 
 # Deploy the first aplication name (i.e. Fabrican)
 $appName = "fabric:/FabricanRateAggregatorApp"
 $webServiceName = $appName + "/WebService"
 
-# Dynamically change the named service's number of instances (must be supported by the 
+# Dynamically change the named service's number of instances (the cluster must have at least 5 nodes) 
 Update-ServiceFabricService -ServiceName $webServiceName -Stateless -InstanceCount 5 -Force
 ```
 
 ### Upgrade
+
+This PowerShell script upgrades the application named instances to a higher version i.e. 1.1.0. As noted earlier, this assumes that you have a new folder named v1.1.0 which contains the upgraded application package. The script uses `monitored` upgrade modes and performs the upgrade using upgrade domains. 
 
 ```
 $clusterUrl = "localhost"
@@ -568,6 +578,8 @@ Start-ServiceFabricApplicationUpgrade -ApplicationName $appName -ApplicationType
 
 ### Test
 
+This PowerShell scripts defines functions to exercise the Service Fabric Web service APIs for each named application instance.
+ 
 ```
 Function Generate-RateRequests($appName = 'Contoso', $iterations = 20)
 {
