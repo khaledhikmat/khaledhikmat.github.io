@@ -16,7 +16,7 @@ The app is called Rate Aggregator where we have an app that monitors hotel rate 
 
 The app is quite simple consists of two services: Web Service to act as a front-end and a rates service to actually process the rates and aggregate them:
 
-![App Components](http://i.imgur.com/EiDbDMD.png)
+![App Components](http://i.imgur.com/trNQnSS.png)
 
 ## Source Code
 
@@ -45,7 +45,7 @@ The [iOT](https://github.com/Azure-Samples/service-fabric-dotnet-iot) sample inc
 
 If you would like to expose HTTP Endpoints for your service, Microsoft strongly recommends that you build the URL as follows:
 
-![HTTP Endpoint URL](http://i.imgur.com/Qcvqi2o.png)
+![HTTP Endpoint URL](http://i.imgur.com/qQdvX9h.png)
 
 Examples:
 
@@ -316,7 +316,7 @@ Please note, however, that, unlike stateless service instances, a stateful servi
 
 ### Result Aggregation
 
-Since the state is partitioned, does this mean that we have the reliable colections i.e. queues and dictionaries scattered among the different partitions? The answer is yes! For example, in order to get the queue length of a stateful service, the client has query for all partitions and ask each service instance about the queue length:
+Since the state is partitioned, does this mean that we have the reliable collections (i.e. queues and dictionaries) scattered among the different partitions? The answer is yes! For example, in order to get the queue length of a stateful service, the client has to query all partitions and ask each service instance about the queue length and add them together to determine the overall queue length for the stateful service:
 
 ```csharp
 [HttpGet]
@@ -415,8 +415,8 @@ public async Task<IActionResult> GetCitiesAsync()
 
 One of the great features of Service Fabric is its ability to allow the creation of multi-tenant scanarios. In our demo case, we may launch an app for Contoso rates and another one for Fabrican rates. We want these two apps to be of the same type but they should be completely isolated of each other. So we create two named app instances: `ConosoRateAggretor` and `FabricanRateAggregator`. This means that we have different set of services for each app operated independely and perhaps scaled, updated and upgraded independently.
 
-![Named Instances](http://i.imgur.com/N3J6hm3.png)
- 
+![Named App Instances](http://i.imgur.com/e6YmFNy.png) 
+
 This is really useful in many scenarios and allows for many great advantages. In the next section, we will see how easy it is to actually deploy, un-deploy, update and upgrade these named instances.
  
 ## PowerShell Management Scripts
@@ -648,4 +648,4 @@ View-Cities -appName Fabrican
 
 ## What is next?
 
-I think Service Fabric has a lot of great and useful features that make it is a great candidate for a lot of scenarios. I will post more articles about Service Fabric as I am expnad my knowledge in this really cool technology. 
+I think Service Fabric has a lot of great and useful features that make it is a great candidate for a lot of scenarios. I will post more articles about Service Fabric as I expand my knowledge in this really cool technology. 
