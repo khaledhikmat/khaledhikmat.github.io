@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+        <title>Khaled Hikmat - Azure Logic Apps Push Trigger</title>
+        <meta name="description" content="Coding Thoughts" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+
+        <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
+        <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/highlight.css" rel="stylesheet">
+        <link href="/assets/css/clean-blog.css" rel="stylesheet" />
+        <link href="/assets/css/master.css" rel="stylesheet" />
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/override.css" rel="stylesheet" />
+
+
+        <meta name="application-name" content="Khaled Hikmat" />
+        <meta name="msapplication-tooltip" content="Khaled Hikmat" />
+        <meta name="msapplication-starturl" content="/" />
+
+        <meta property="og:title" content="Khaled Hikmat - Azure Logic Apps Push Trigger" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://blog.khaledhikmat.com/posts/2015-11-15-azure-logicapps" />
+        <!-- TODO: More social graph meta tags -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/highlight.pack.js"></script>   
+        <script src="/assets/js/clean-blog.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/assets/js/trianglify.min.js"></script>
+        <script src="/assets/js/Please-compressed.js"></script>
+                
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+        </head>
+        <body>
+                
+                <!-- Navigation -->
+                <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+                        <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header page-scroll">
+                                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="/">Khaled Hikmat</a>
+                                </div>
+                        
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="navbar-collapse">
+                                        <ul class="nav navbar-nav navbar-right">
+                                                <li><a href="/about">About</a></li>
+<li><a href="/posts">Archive</a></li>
+<li><a href="/tags">Tags</a></li> 
+                                        </ul>
+                                </div>
+                                <!-- /.navbar-collapse -->
+                        </div>
+                        <!-- /.container -->
+                </nav>
+                
+                <!-- Page Header -->
+                <header class="intro-header" id="intro-header">
+                        <div class="container">
+                                <div class="row">
+                                        <div class="col-md-12">
+
+    
+<div class="post-heading">
+    <h1>Azure Logic Apps Push Trigger</h1>
+        <h2 class="subheading">Notes on Azure Logic Apps Push Triggers</h2>
+    <div class="meta">        
+Published on Sunday, November 15, 2015<br>    </div>
+        <div class="tags">
+                    <a role="button" href="/tags/azure" class="btn btn-default btn-xs">Azure</a>
+                    <a role="button" href="/tags/logic-apps" class="btn btn-default btn-xs">Logic Apps</a>
+                    <a role="button" href="/tags/push-trigger" class="btn btn-default btn-xs">Push Trigger</a>
+        </div>     
+</div>
+                                        </div>
+                                </div>
+                        </div>
+                </header>
+                
+                <!-- Main Content -->
+                <div class="container">
+                        <div class="row">
+                                <div id="content" class="col-md-12">
+                                        
+
+<p>I have been toying with Azure Logic Apps for a project I am working on. I wanted to run a Cloud-based work flow triggered by some events within some web app. This post discusses things I had to to go through to get push triggers working as triggered from web events.</p>
+<p><em>Please refer to Nicholas Hauenstein's Azure session referenced below in the reference section for a great introduction</em></p>
+<h2 id="use-case">Use Case</h2>
+<p>As part of a loyalty program system, membership voucher redemption requests arrive to a server via software agents installed at different hotels. Here is how the hotel POS Agent communicates with our Web API:</p>
+<p><img src="http://i.imgur.com/xquyGYG.png" class="img-fluid" alt="POS Architecture" /></p>
+<p>The Web API validates, processes the validation requests and updates a legacy database. It has been requested to enhance this functionality to add the following things when a voucher redemption takes place:</p>
+<ul>
+<li>Notify the member via SMS that a voucher has been successfully redeemed at certain hotel</li>
+<li>Notify the member via push notification that a voucher has been redeemed</li>
+<li>Notify customer support via Email that member so and so has successfully redeemed a voucher at certain hotel</li>
+<li>Register an event with the analytic server</li>
+</ul>
+<p>Instead of building all the functionality in the Web API layer, we decided to trigger an Azure Logic app work flow that handles all these events in a Cloud service.</p>
+<h2 id="push-triggers">Push Triggers</h2>
+<p>Logic Apps can be triggered using many different mechanisms. In our use case, we would like to use a push trigger so that the Web API can trigger the Logic App whenever a voucher request is successfully processed.</p>
+<p><img src="http://i.imgur.com/VzqsehB.png" class="img-fluid" alt="Trigger Architecture" /></p>
+<p>But how does the Web API know how to trigger the Logic App? It turned out that there is a need to create a special purpose API App whose main job is to receive callback registrations from the Logic apps so that when a service or a piece of software needs to trigger the logic app, it would look up the callback URL and trigger the logic app.</p>
+<p><img src="http://i.imgur.com/bu9XEze.png" class="img-fluid" alt="Callback Architecture" /></p>
+<p>Ok....great...but more questions come to mind. How does the logic app register its callback URL with the the API App? It turned out that the minute you drop a push trigger API App in the Logic App overflow (via the designer or the JSON template), the logic app would register its callback URL by putting (using HTTP <code>PUT</code> verb) against the API App. This happens the second you save the work flow and also every hour (just to make sure that API App is aware of the callback URL).</p>
+<p><em>This is one thing that took me a while to figure out. In order to make sure that the logic app re-registers the callback, you need to remove the push trigger API from the work flow, save and then put it back and re-save.</em></p>
+<p>What does the API App have to do to be considered as a push trigger API App? Well...it has to support at least one PUT verb with something similar to this signature:</p>
+<pre><code class="language-csharp">[HttpPut]
+[Metadata(&quot;Mosaic Voucher Redemption Trigger&quot;)]
+[Trigger(TriggerType.Push, typeof(VoucherRedemptionPushTriggerOutput))]
+[Route(&quot;api/mosaic/voucherredemption/callbacks/{triggerId}&quot;, Name = &quot;MosaicVoucherRedemptionTriggerCallback&quot;)]
+public HttpResponseMessage RegisterMosaicVoucherRedemptionCallback(
+    string triggerId,
+    [FromBody]TriggerInput&lt;VoucherRedemptionPushTriggerConfiguration, VoucherRedemptionPushTriggerOutput&gt; parameters)
+{
+    try
+    {
+        // TODO: Add things here
+        
+        // Report back to the logic app that everything is happy
+        return Request.PushTriggerRegistered(parameters.GetCallback());
+    }
+    catch (Exception e)
+    {
+        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e.Message);
+    }
+}
+</code></pre>
+<p>An API App can contain multiple PUT signatures and hence it will be able to support multiple trigger callback registration endpoints.</p>
+<p>The <code>triggerId</code> is usually the name of the Logic App. This allows the API App to serve multiple Logic Apps using multiple trigger ids. The <code>VoucherRedemptionPushTriggerConfiguration</code> defines the API App configuration model and finally the <code>VoucherRedemptionPushTriggerOutput</code> is the API app output model (i.e. input to the Logic app). In our case, here is how the configuration is defined:</p>
+<pre><code class="language-csharp">public class VoucherRedemptionPushTriggerConfiguration
+{
+    [Metadata(&quot;Web API Url&quot;)]
+    public string Url { get; set; }
+
+    [Metadata(&quot;Web API User Id&quot;)]
+    public string UserId { get; set; }
+
+    [Metadata(&quot;Web API Password&quot;)]
+    public string Password { get; set; }
+
+    [Metadata(&quot;Is Restricted?&quot;)]
+    public bool IsRestricted { get; set; }
+
+    [Metadata(&quot;Permitted agent codes (comma delimited)&quot;)]
+    public string PermittedAgentCodes { get; set; }
+}
+</code></pre>
+<p>The above shows the configuration properties that are available for the push trigger API App to control the workflow.</p>
+<pre><code class="language-csharp">public class VoucherRedemptionPushTriggerOutput
+{
+    [Metadata(&quot;Activation Code&quot;)]
+    public string ActivationCode { get; set; }
+
+    [Metadata(&quot;Voucher Code&quot;)]
+    public string VoucherCode { get; set; }
+
+    [Metadata(&quot;Card Number&quot;)]
+    public string CardNumber { get; set; }
+
+    [Metadata(&quot;Transaction Date&quot;)]
+    public DateTime TransactionDate { get; set; }
+
+    [Metadata(&quot;Hotel&quot;)]
+    public string Hotel { get; set; }
+
+    [Metadata(&quot;Outlet&quot;)]
+    public string Outlet { get; set; }
+
+    [Metadata(&quot;City&quot;)]
+    public string City { get; set; }
+
+    [Metadata(&quot;Country&quot;)]
+    public string Country { get; set; }
+
+    [Metadata(&quot;First Name&quot;)]
+    public string FirstName { get; set; }
+
+    [Metadata(&quot;Last Name&quot;)]
+    public string LastName { get; set; }
+
+    [Metadata(&quot;Email&quot;)]
+    public string Email { get; set; }
+
+    [Metadata(&quot;Mobile Number&quot;)]
+    public string MobileNumber { get; set; }
+}
+</code></pre>
+<p>The above shows the API App output properties (which is an input to the logic app).</p>
+<p>So in summary, the logic app calls the PUT method of the Api APP and provides configuration structure (based on <code>VoucherRedemptionPushTriggerConfiguration</code>) and then expects to receive a call back from the trigger source providing data that matches the <code>VoucherRedemptionPushTriggerOutput</code>. The API App is not the trigger source...in our case, the trigger source is the Web API. Hence whenever the API App receives a callback registration from the a logic app, it posts the callback info to the Web API via an endpoint and return to the Logic app. In this case, the API App is nothing but a middle man that receives a callback info and knows how to distribute it to its intended recipients. This is because the logic app cannot communicate directly to the Web API.</p>
+<p>Of course, the API App may send the callback info to multiple trigger sources. All of them will become eligible to trigger the logic app.</p>
+<p>Here is an illustration of the trigger phases:</p>
+<p><img src="http://i.imgur.com/TM0MHgZ.png" class="img-fluid" alt="Trigger Phases" /></p>
+<p>Please note that during the trigger phase, the API App is no longer involved. The trigger source reads the callback info from its database and calls upon the logic app  without any involvement from the API App.</p>
+<h2 id="logic-app">Logic App</h2>
+<p>Finally, you must deploy the API App to the same resource group in which the logic app resides in. This will make the API App available as a selection in the available connectors:</p>
+<p><img src="http://i.imgur.com/ufzzZQN.png" class="img-fluid" alt="Available Connectors" /></p>
+<p>Using the Azure portal editor, you simply drop in the trigger API App and choose one of the triggers available in the API App (as mentioned, one API App may support multiple triggers). You fill out the configuration information:</p>
+<p><img src="http://i.imgur.com/vP76X5O.png" class="img-fluid" alt="Trigger Configuration Info" /></p>
+<p>and see the expected input from the trigger source (this will you to use the Logic App expression language to read the available properties):</p>
+<p><img src="http://i.imgur.com/5ACczU2.png" class="img-fluid" alt="Trigger Input" /></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>There are many many scenarios where Logic Apps can be extremely useful. I recommend watching Nicholas Hauenstein presentation (below) to see a great use case for logic apps.</p>
+<p>Some people may try to compare IFTTT (If this, then that) or Zapier with Logic Apps! They are substantially different. IFTTT and Zapier are meant for individuals creating cloud-based (two-step-only) scenarios to handle their day-to-day workflows. Logic Apps on the other hand are general-purpose Cloud-based work flows that have a sophisticated definition and work flow languages.</p>
+<h2 id="references">References</h2>
+<ul>
+<li>Nicholas Hauenstein - 2015 Azure Con session on [https://azure.microsoft.com/en-us/documentation/videos/azurecon-2015-processing-nfc-tag-reads-in-an-azure-app-service-logic-app/](Processing NFC tag reads in an Azure APP service service)</li>
+</ul>
+
+
+
+                                </div>
+                        </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Footer -->
+                <footer>
+                        <div class="container">
+        <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline text-center">
+                        <li>
+                        <a href="https://twitter.com/khaledhmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                        <li>
+                        <a href="https://github.com/khaledhikmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                </ul>
+                <p class="copyright text-muted">
+                        Copyright © 2016 by Khaled Hikmat. 
+                        <br />
+                        <strong><a href="http://wyam.io">Generated by Wyam</a></strong>
+                </p>
+                </div>
+        </div>
+</div>
+                </footer> 
+
+                <script type="text/javascript">
+</script>
+                <script>hljs.initHighlightingOnLoad();</script>
+
+                        <script type="text/javascript">                
+                                // Header background                        
+                                var colors = Please.make_color({
+                                        colors_returned: 3,
+                                        saturation: .6
+                                });
+                                var t = new Trianglify({
+                                        x_gradient: colors,
+                                        y_gradient: ["#FFFFFF"]
+                                });
+                                var header = document.getElementById("intro-header");
+                                var pattern = t.generate(header.clientWidth, header.clientHeight);
+                                header.setAttribute('style', 'background-image: ' + pattern.dataUrl);                        
+                        </script>
+        </body>
+</html>
+

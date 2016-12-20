@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+        <title>Khaled Hikmat - Xamarin Forms App using VS for mac</title>
+        <meta name="description" content="Coding Thoughts" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+
+        <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
+        <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/highlight.css" rel="stylesheet">
+        <link href="/assets/css/clean-blog.css" rel="stylesheet" />
+        <link href="/assets/css/master.css" rel="stylesheet" />
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/override.css" rel="stylesheet" />
+
+
+        <meta name="application-name" content="Khaled Hikmat" />
+        <meta name="msapplication-tooltip" content="Khaled Hikmat" />
+        <meta name="msapplication-starturl" content="/" />
+
+        <meta property="og:title" content="Khaled Hikmat - Xamarin Forms App using VS for mac" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://blog.khaledhikmat.com/posts/2016-11-24-presentation-evaluation" />
+        <!-- TODO: More social graph meta tags -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/highlight.pack.js"></script>   
+        <script src="/assets/js/clean-blog.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/assets/js/trianglify.min.js"></script>
+        <script src="/assets/js/Please-compressed.js"></script>
+                
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+        </head>
+        <body>
+                
+                <!-- Navigation -->
+                <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+                        <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header page-scroll">
+                                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="/">Khaled Hikmat</a>
+                                </div>
+                        
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="navbar-collapse">
+                                        <ul class="nav navbar-nav navbar-right">
+                                                <li><a href="/about">About</a></li>
+<li><a href="/posts">Archive</a></li>
+<li><a href="/tags">Tags</a></li> 
+                                        </ul>
+                                </div>
+                                <!-- /.navbar-collapse -->
+                        </div>
+                        <!-- /.container -->
+                </nav>
+                
+                <!-- Page Header -->
+                <header class="intro-header" id="intro-header">
+                        <div class="container">
+                                <div class="row">
+                                        <div class="col-md-12">
+
+    
+<div class="post-heading">
+    <h1>Xamarin Forms App using VS for mac</h1>
+        <h2 class="subheading">Simple example of using VS for mac to build a Xamarin Forms app to capture a picture, send to cognitive and PowerBI</h2>
+    <div class="meta">        
+Published on Thursday, November 24, 2016<br>    </div>
+        <div class="tags">
+                    <a role="button" href="/tags/cross-platform" class="btn btn-default btn-xs">Cross Platform</a>
+                    <a role="button" href="/tags/visual-studio" class="btn btn-default btn-xs">Visual Studio</a>
+                    <a role="button" href="/tags/xamarin" class="btn btn-default btn-xs">Xamarin</a>
+        </div>     
+</div>
+                                        </div>
+                                </div>
+                        </div>
+                </header>
+                
+                <!-- Main Content -->
+                <div class="container">
+                        <div class="row">
+                                <div id="content" class="col-md-12">
+                                        
+
+<p>I am new to Xamarin development and I also wanted to try the newly announced VS for mac! So I created a little Camera app that can be used to evaluate presentations. The app allows the user to take a <code>selfie</code>. When committed, the picture is sent to an Azure cognitive function to extract the gender, male and smile (a measure of emotion). The app then displays the taken picture and returned result in the app. It also sends the result to PowerBI real-time stream to allow the visualization of the evaluation results.</p>
+<p>So in essence, a user uses the app to take a selfie with a smile or a frown to indicate whether the presentation was good, not so good or somewhere in between. For example, if the user submitted a picture that looks like this:</p>
+<p><img src="http://i.imgur.com/QPF0LI8.png" class="img-fluid" alt="Evaluation" /></p>
+<p>The cognitive result might look like this:</p>
+<p><img src="http://i.imgur.com/0U4IaRH.png" class="img-fluid" alt="Cognitive Result" /></p>
+<p>and the result will be pushed in real-time to a PowerBI dashboard:</p>
+<p><img src="http://i.imgur.com/XvnGaVs.png" class="img-fluid" alt="PowerBI" /></p>
+<h2 id="xamarin-app">Xamarin App</h2>
+<h3 id="taking-a-camera-picture">Taking a Camera picture</h3>
+<p>Using VS for mac, I created a blank XAML forms app solution with Android and iOS. Added the following Xamarin plugin to all of its projects (portable, iOS and Droid):</p>
+<ul>
+<li>Xam.Plugin.Media</li>
+</ul>
+<p>This allows me to use the Camera without having to deal with iOs or Android. I wrote the following simple XAML in the main page:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;ContentPage xmlns=&quot;http://xamarin.com/schemas/2014/forms&quot; 
+		xmlns:x=&quot;http://schemas.microsoft.com/winfx/2009/xaml&quot; 
+		xmlns:local=&quot;clr-namespace:PresentationEvaluation&quot; 
+		x:Class=&quot;PresentationEvaluation.PresentationEvaluationPage&quot;&gt;
+	&lt;StackLayout&gt;
+		&lt;Button x:Name=&quot;btnTakePicture&quot; Clicked=&quot;btnTakePicture_Clicked&quot; Text=&quot;Take selfie with emotion&quot;/&gt;
+		&lt;ActivityIndicator x:Name=&quot;Indicator&quot; Color=&quot;Black&quot;/&gt;
+		&lt;StackLayout x:Name=&quot;ResultPanel&quot; Padding=&quot;10&quot;&gt;
+			&lt;Image x:Name=&quot;Image&quot; HeightRequest=&quot;240&quot; /&gt;
+	        &lt;StackLayout x:Name=&quot;Age&quot; Orientation=&quot;Horizontal&quot;&gt;
+	            &lt;Label&gt;Age&lt;/Label&gt;
+	            &lt;Label x:Name=&quot;AgeData&quot;&gt;&lt;/Label&gt;
+	        &lt;/StackLayout&gt;
+	        &lt;StackLayout x:Name=&quot;Gender&quot; Orientation=&quot;Horizontal&quot;&gt;
+	            &lt;Label&gt;Gender&lt;/Label&gt;
+	            &lt;Label x:Name=&quot;GenderData&quot;&gt;&lt;/Label&gt;
+	        &lt;/StackLayout&gt;
+	        &lt;StackLayout x:Name=&quot;Smile&quot; Orientation=&quot;Horizontal&quot;&gt;
+	            &lt;Label&gt;Smile&lt;/Label&gt;
+	            &lt;Label x:Name=&quot;SmileData&quot;&gt;&lt;/Label&gt;
+	        &lt;/StackLayout&gt;
+	        &lt;Label x:Name=&quot;Result&quot;&gt;&lt;/Label&gt;
+		&lt;/StackLayout&gt;
+	&lt;/StackLayout&gt;
+&lt;/ContentPage&gt;
+</code></pre>
+<p>and I had this in the behind code:</p>
+<pre><code class="language-csharp">namespace PresentationEvaluation
+{
+	public partial class PresentationEvaluationPage : ContentPage
+	{
+		public PresentationEvaluationPage()
+		{
+			InitializeComponent();
+			ResultPanel.IsVisible = false;
+		}
+
+		private async void btnTakePicture_Clicked(object sender, EventArgs e)
+		{
+			try
+			{
+				await CrossMedia.Current.Initialize();
+
+				if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakeVideoSupported)
+					throw new Exception($&quot;There is no camera on the device!&quot;);
+
+				var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+				{
+					SaveToAlbum = true,
+					Name = &quot;SelfieEvaluation.jpg&quot;
+				});
+
+				if (file == null)
+					throw new Exception($&quot;Picture not captured to disk!!&quot;);
+
+				Image.Source = ImageSource.FromStream(() =&gt; file.GetStream());
+
+				//TODO: Do something with the image 
+			}
+			catch (Exception ex)
+			{
+				await DisplayAlert(&quot;Sorry&quot;, &quot;An error occurred: &quot; + ex.Message, &quot;Ok&quot;);
+			}
+			finally
+			{
+			}
+		}
+	}
+}
+</code></pre>
+<h3 id="communicating-with-cognitive">Communicating with Cognitive</h3>
+<p>Now that we got the picture from the Camera, I wanted to send it to Azure Cognitive to detect the age, gender and smile. I added some NuGet packages:</p>
+<ul>
+<li>Microsoft.Net.Http</li>
+<li>Newton.Json</li>
+</ul>
+<p>First I had to convert the media image file to an array of bytes:</p>
+<pre><code class="language-csharp">public static byte[] GetBytes(MediaFile file)
+{
+	byte[] fileBytes = null;
+	using (var ms = new MemoryStream())
+	{
+		file.GetStream().CopyTo(ms);
+		file.Dispose();
+		fileBytes = ms.ToArray();
+	}
+
+	return fileBytes;
+}
+</code></pre>
+<p>Then submitted to the congnitive APIs:</p>
+<pre><code class="language-csharp">		byte[] picture = GetBytes(file);
+
+		float age = -1;
+		string gender = &quot;&quot;;
+		float smile = -1;
+
+		// Submit to Cognitive
+		using (var httpClient = new HttpClient())
+		{
+			httpClient.DefaultRequestHeaders.Add(&quot;Ocp-Apim-Subscription-Key&quot;, &quot;get-your-own&quot;);
+			HttpResponseMessage response;
+			var content = new ByteArrayContent(picture);
+			content.Headers.ContentType = new MediaTypeHeaderValue(&quot;application/octet-stream&quot;);
+			response = await httpClient.PostAsync(FacialApi, content);
+			string responseData = await response.Content.ReadAsStringAsync();
+			if (!response.IsSuccessStatusCode)
+				throw new Exception($&quot;Unable to post to cognitive service: {response.StatusCode.ToString()}&quot;);
+
+			Face[] faces = JsonConvert.DeserializeObject&lt;Face[]&gt;(responseData);
+			if (faces != null &amp;&amp; faces.Length &gt; 0)
+			{
+				Face face = faces[0];
+				age = face.faceAttributes.age;
+				gender = face.faceAttributes.gender;
+				smile = face.faceAttributes.smile;
+			}
+		}
+</code></pre>
+<p>Where the Face classes are defined as follows (I just special pasted the docs JSON example into my Visual Studio to create these classes):</p>
+<pre><code class="language-csharp">public class Face
+{
+	public string faceId { get; set; }
+	public Facerectangle faceRectangle { get; set; }
+	public Faceattributes faceAttributes { get; set; }
+	public string glasses { get; set; }
+	public Headpose headPose { get; set; }
+}
+
+public class Facerectangle
+{
+	public int width { get; set; }
+	public int height { get; set; }
+	public int left { get; set; }
+	public int top { get; set; }
+}
+
+public class Faceattributes
+{
+	public float age { get; set; }
+	public string gender { get; set; }
+	public float smile { get; set; }
+	public Facialhair facialHair { get; set; }
+}
+
+public class Facialhair
+{
+	public float mustache { get; set; }
+	public float beard { get; set; }
+	public float sideburns { get; set; }
+}
+
+public class Headpose
+{
+	public float roll { get; set; }
+	public int yaw { get; set; }
+	public int pitch { get; set; }
+}
+</code></pre>
+<p>Because I have a free cognitive account and I could be throttled, I created a randomizer to generate random values in case i don't wato to use the cognitive functions for testing. So I created a flag that I can change whenever I want to test without cognitive:</p>
+<pre><code class="language-csharp">// Submit to Cognitive
+if (IsCognitive)
+{
+	///same as above
+	...
+}
+else
+{
+	gender = genders.ElementAt(random.Next(genders.Count - 1));
+	age = ages.ElementAt(random.Next(ages.Count - 1));
+	smile = smiles.ElementAt(random.Next(smiles.Count - 1));
+}
+</code></pre>
+<h3 id="powerbi">PowerBI</h3>
+<p>Once I get the result back from the cognitive function, I create a real time event (and refer to the smile range as score after I multiply it by 10) and send it to <a href="https://powerbi.microsoft.com/en-us/documentation/powerbi-service-real-time-streaming/">PowerBI real-time</a> very useful feature which displays visualizations in real-time:</p>
+<pre><code class="language-csharp">using (var httpClient = new HttpClient())
+{
+	var realTimeEvent = new
+	{
+		time = DateTime.Now,
+		age = (int)age,
+		score = (int)(smile * 10),
+		gender = gender
+	};
+
+	var data = new dynamic[1];
+	data[0] = realTimeEvent;
+	var postData = JsonConvert.SerializeObject(data);
+	HttpContent httpContent = new StringContent(postData, Encoding.UTF8, &quot;application/json&quot;);
+	HttpResponseMessage response = await httpClient.PostAsync(PowerBIApi, httpContent);
+	string responseString = await response.Content.ReadAsStringAsync();
+
+	if (!response.IsSuccessStatusCode)
+		throw new Exception(&quot;Unable to post to PowerBI: &quot; + response.StatusCode);
+}
+</code></pre>
+<p>where PowerBIApi is the real-time API that you must post it. You will get this from PowerPI service when you create your own Real-Time dataset.</p>
+<p>This allows people to watch the presentation evaluation result in real-time:</p>
+<p><img src="http://i.imgur.com/XvnGaVs.png" class="img-fluid" alt="PowerBI" /></p>
+<p>That was a nice exercise! I liked the ease of developing stuff in Xamarin forms as it shields me almost completely from Android and iOS. Visual Studio for mac (in preview), however, has a lot of room of improvement...it feels heavy, clunky and a bit buggy. Finally I would like to say that, in non-demo situations, it is probably better to send the picture to an Azure storage which will trigger an Azure Function that will send to cognitive and PowerBI.</p>
+<p>The code is available in GitHub <a href="https://github.com/khaledhikmat/presentation-evaluation">here</a></p>
+
+
+
+                                </div>
+                        </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Footer -->
+                <footer>
+                        <div class="container">
+        <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline text-center">
+                        <li>
+                        <a href="https://twitter.com/khaledhmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                        <li>
+                        <a href="https://github.com/khaledhikmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                </ul>
+                <p class="copyright text-muted">
+                        Copyright © 2016 by Khaled Hikmat. 
+                        <br />
+                        <strong><a href="http://wyam.io">Generated by Wyam</a></strong>
+                </p>
+                </div>
+        </div>
+</div>
+                </footer> 
+
+                <script type="text/javascript">
+</script>
+                <script>hljs.initHighlightingOnLoad();</script>
+
+                        <script type="text/javascript">                
+                                // Header background                        
+                                var colors = Please.make_color({
+                                        colors_returned: 3,
+                                        saturation: .6
+                                });
+                                var t = new Trianglify({
+                                        x_gradient: colors,
+                                        y_gradient: ["#FFFFFF"]
+                                });
+                                var header = document.getElementById("intro-header");
+                                var pattern = t.generate(header.clientWidth, header.clientHeight);
+                                header.setAttribute('style', 'background-image: ' + pattern.dataUrl);                        
+                        </script>
+        </body>
+</html>
+

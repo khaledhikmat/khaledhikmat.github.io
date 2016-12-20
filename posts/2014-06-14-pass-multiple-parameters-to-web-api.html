@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
 
-        <title>Khaled Hikmat</title>
+        <title>Khaled Hikmat - Pass Multiple Parameters to a Web API GET</title>
         <meta name="description" content="Coding Thoughts" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">        
 
@@ -28,9 +28,9 @@
         <meta name="msapplication-tooltip" content="Khaled Hikmat" />
         <meta name="msapplication-starturl" content="/" />
 
-        <meta property="og:title" content="Khaled Hikmat" />
+        <meta property="og:title" content="Khaled Hikmat - Pass Multiple Parameters to a Web API GET" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="http://blog.khaledhikmat.com/" />
+        <meta property="og:url" content="http://blog.khaledhikmat.com/posts/2014-06-14-pass-multiple-parameters-to-web-api" />
         <!-- TODO: More social graph meta tags -->
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -85,10 +85,17 @@
                                 <div class="row">
                                         <div class="col-md-12">
 
-    <div class="site-heading">
-        <h1>Coding Thoughts</h1>
-                <hr class="small">
-        <span class="subheading">Software old timer</span>
+    
+<div class="post-heading">
+    <h1>Pass Multiple Parameters to a Web API GET</h1>
+        <h2 class="subheading">A good way to handle passing multiple parameters to a GET method in ASP .NET Web API</h2>
+    <div class="meta">        
+Published on Monday, July 7, 2014<br>    </div>
+        <div class="tags">
+                    <a role="button" href="/tags/asp.net" class="btn btn-default btn-xs">ASP.NEt</a>
+                    <a role="button" href="/tags/c%23" class="btn btn-default btn-xs">C#</a>
+                    <a role="button" href="/tags/web-api" class="btn btn-default btn-xs">Web API</a>
+        </div>     
 </div>
                                         </div>
                                 </div>
@@ -100,77 +107,94 @@
                         <div class="row">
                                 <div id="content" class="col-md-12">
                                         
-<div class="row">
-    <div class="col-sm-8 right-border">
-                <div class="post-preview">
-                    <a href="/posts/2016-12-15-service-fabric-fundamentals">
-                        <h2 class="post-title">Service Fabric Fundamentals</h2>
-                            <h3 class="post-subtitle">A demonstration of Service Fabric Fundamentals</h3>
-                    </a>
-                    <p class="post-meta">Posted on Thursday, December 15, 2016</p>
-                    <p>The <a href="https://github.com/Azure-Samples/service-fabric-dotnet-iot">Service Fabric iOT sample app</a> is a great sample to follow for our own Service Fabric apps. In this post, I used code snippets and concepts from the iOT sample to build a small app to demonstrate some fundamentals concepts that I feel are important.</p>             
-                </div>       
-                    <hr /> 
-                <div class="post-preview">
-                    <a href="/posts/2016-12-02-service-fabric-basics">
-                        <h2 class="post-title">Service Fabric Basics</h2>
-                            <h3 class="post-subtitle">A demonstration of basic but important functionality in Service Fabric</h3>
-                    </a>
-                    <p class="post-meta">Posted on Friday, December 2, 2016</p>
-                    <p>Service Fabric is a cool technology from Microsoft! It has advanced features that allows many scenarios. But in this post, we will only cover basic concepts that are usually misunderstood by a lot of folks.</p>             
-                </div>       
-                    <hr /> 
-                <div class="post-preview">
-                    <a href="/posts/2016-11-24-presentation-evaluation">
-                        <h2 class="post-title">Xamarin Forms App using VS for mac</h2>
-                            <h3 class="post-subtitle">Simple example of using VS for mac to build a Xamarin Forms app to capture a picture, send to cognitive and PowerBI</h3>
-                    </a>
-                    <p class="post-meta">Posted on Thursday, November 24, 2016</p>
-                    <p>I am new to Xamarin development and I also wanted to try the newly announced VS for mac! So I created a little Camera app that can be used to evaluate presentations. The app allows the user to take a <code>selfie</code>. When committed, the picture is sent to an Azure cognitive function to extract the gender, male and smile (a measure of emotion). The app then displays the taken picture and returned result in the app. It also sends the result to PowerBI real-time stream to allow the visualization of the evaluation results.</p>             
-                </div>       
-    </div>
-    <div class="col-sm-4 sidebar">
-        <hr class="visible-xs-block" />
-        <h5>Tags</h5>
-        <div>
-                <a role="button" href="/tags/web-api" class="btn btn-default btn-sm"> Web API (4)</a>
-                <a role="button" href="/tags/azure" class="btn btn-default btn-sm"> Azure (4)</a>
-                <a role="button" href="/tags/c%23" class="btn btn-default btn-sm"> C# (4)</a>
-                <a role="button" href="/tags/asp.net" class="btn btn-default btn-sm"> ASP.NET (4)</a>
-                <a role="button" href="/tags/ios" class="btn btn-default btn-sm"> iOS (3)</a>
-                <a role="button" href="/tags/android" class="btn btn-default btn-sm"> Android (2)</a>
-                <a role="button" href="/tags/service-fabric" class="btn btn-default btn-sm"> Service Fabric (2)</a>
-                <a role="button" href="/tags/html5" class="btn btn-default btn-sm"> HTML5 (2)</a>
-                <a role="button" href="/tags/%D8%B4%D9%80%D9%80%D9%80%D9%80%D9%80%D9%80%D8%B9%D8%B1" class="btn btn-default btn-sm"> &#x634;&#x640;&#x640;&#x640;&#x640;&#x640;&#x640;&#x639;&#x631; (2)</a>
-                <a role="button" href="/tags/win8" class="btn btn-default btn-sm"> Win8 (2)</a>
-        </div>
-        <ul class="pager">
-            <li class="next">
-                <a href="/tags">View All Tags &rarr;</a>
-            </li>
-        </ul>
-        <hr />
-        <h5>Older Posts</h5>
-        <ul class="list-unstyled">
-                <li><a href="/posts/2016-09-09-aspnet-core-file-return">Return a file in ASP.NET Core from a Web API</a></li>
-                <li><a href="/posts/2016-04-30-kicking-powerapps-tires">Kicking PowerApps Tires</a></li>
-                <li><a href="/posts/2016-04-25-open-azure-vm-port">Open Azure VM Port</a></li>
-                <li><a href="/posts/2016-02-19-asp-net-api-versioning">ASP.NET API Versioning</a></li>
-        </ul>
-        <ul class="pager">
-            <li class="next">
-                <a href="/posts">Archive &rarr;</a>
-            </li>
-        </ul>
 
-        <hr />
-<h5>On The Interwebs</h5>
-<ul class="list-unstyled">
-    <li><a href="https://twitter.com/khaledhmat"><i class="fa fa-twitter"></i> Twitter (khaledhmat)</a></li>
-    <li><a href="https://github.com/khaledhikmat"><i class="fa fa-github"></i> GitHub (khaledhikmat)</a></li>
-</ul>
-    </div> 
-</div>
+<p>I needed to pass multiple query string parameters to a GET method in an ASP .NET Web API. I wanted to receive the parameters as a complex argument
+in the GET Method. This is how I wanted my Web API controller method to look like:</p>
+<pre><code>[Route(&quot;api/outlets&quot;, Name = &quot;Outlets&quot;)]
+public IHttpActionResult GetTry(OutletsSearchParameters params)
+{
+    try
+    {
+        // Do stuff...
+        return Ok(params); // Just to see what I am getting
+    }
+    catch (Exception e)
+    {
+        return BadRequest(e.Message);
+    }
+}
+</code></pre>
+<p>Where the OutletsSearchParameters is defined as follows:</p>
+<pre><code>    public class OutletsSearchParameters 
+    {
+        public int Page { get; set; }
+        public int RecordsPerPage { get; set; }
+        public string Lang { get; set; }
+        public string City { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+    }
+</code></pre>
+<p>I found out that I can use action filer to the rescue. Here is an implementation of the custom filter:</p>
+<pre><code>    public class JsonParameter : ActionFilterAttribute
+    {
+        Type _type;
+        string _queryStringKey;
+
+        public JsonParameter(Type type, string queryStringKey)
+        {
+            _type = type;
+            _queryStringKey = queryStringKey;
+        }
+
+        public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
+        {
+            NameValueCollection qscoll = HttpUtility.ParseQueryString(actionContext.Request.RequestUri.Query);
+            if (qscoll != null)
+            {
+                var jsonParameter = qscoll[_queryStringKey];
+                if (jsonParameter != null)
+                {
+                    var jsonData = JsonConvert.DeserializeObject(jsonParameter, _type);
+                    actionContext.ActionArguments[_queryStringKey] = jsonData;
+                }
+            }
+        }
+    }
+</code></pre>
+<p>and here is how I decorated my Web API controller method:</p>
+<pre><code>        [Route(&quot;api/outlets&quot;, Name = &quot;Outlets&quot;)]
+        [JsonParameter(typeof(OutletsSearchParameters), &quot;json&quot;)]
+        public IHttpActionResult GetTry(OutletsSearchParameters json)
+        {
+            try
+            {
+				// Do stuff...
+                return Ok(json); // Just to see what I am getting
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+</code></pre>
+<p>Now....I can use pass the parameters as a JSON object in the query string like so:</p>
+<pre><code>/api/outlets?json={&quot;city&quot;:&quot;some city&quot;,&quot;lang&quot;:&quot;EN&quot;,&quot;page&quot;:&quot;0&quot;,&quot;recordsPerPage&quot;:&quot;10&quot;}
+</code></pre>
+<p>From a Java Script client, I can assemble an object literal like this:</p>
+<pre><code>	var searchParameters = {
+		city: 'some nice city',
+		lang: 'EN',
+		page: 0,
+		recordsPerPage: 10
+	};
+</code></pre>
+<p>and use the JSON stringify method to serialize the object. To assemble the URL, we can write something like this:</p>
+<pre><code>var url = '/api/outlets?json=' + JSON.stringify(searchParameters);
+</code></pre>
+
+
+
                                 </div>
                         </div>
                 </div>

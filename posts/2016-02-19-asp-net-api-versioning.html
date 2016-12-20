@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+        <title>Khaled Hikmat - ASP.NET API Versioning</title>
+        <meta name="description" content="Coding Thoughts" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+
+        <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
+        <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/highlight.css" rel="stylesheet">
+        <link href="/assets/css/clean-blog.css" rel="stylesheet" />
+        <link href="/assets/css/master.css" rel="stylesheet" />
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/override.css" rel="stylesheet" />
+
+
+        <meta name="application-name" content="Khaled Hikmat" />
+        <meta name="msapplication-tooltip" content="Khaled Hikmat" />
+        <meta name="msapplication-starturl" content="/" />
+
+        <meta property="og:title" content="Khaled Hikmat - ASP.NET API Versioning" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://blog.khaledhikmat.com/posts/2016-02-19-asp-net-api-versioning" />
+        <!-- TODO: More social graph meta tags -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/highlight.pack.js"></script>   
+        <script src="/assets/js/clean-blog.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/assets/js/trianglify.min.js"></script>
+        <script src="/assets/js/Please-compressed.js"></script>
+                
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+        </head>
+        <body>
+                
+                <!-- Navigation -->
+                <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+                        <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header page-scroll">
+                                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="/">Khaled Hikmat</a>
+                                </div>
+                        
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="navbar-collapse">
+                                        <ul class="nav navbar-nav navbar-right">
+                                                <li><a href="/about">About</a></li>
+<li><a href="/posts">Archive</a></li>
+<li><a href="/tags">Tags</a></li> 
+                                        </ul>
+                                </div>
+                                <!-- /.navbar-collapse -->
+                        </div>
+                        <!-- /.container -->
+                </nav>
+                
+                <!-- Page Header -->
+                <header class="intro-header" id="intro-header">
+                        <div class="container">
+                                <div class="row">
+                                        <div class="col-md-12">
+
+    
+<div class="post-heading">
+    <h1>ASP.NET API Versioning</h1>
+        <h2 class="subheading">Web API Versioning to solve different mobile app authentication schemes</h2>
+    <div class="meta">        
+Published on Friday, February 19, 2016<br>    </div>
+        <div class="tags">
+                    <a role="button" href="/tags/asp.net" class="btn btn-default btn-xs">ASP.NET</a>
+                    <a role="button" href="/tags/azure" class="btn btn-default btn-xs">Azure</a>
+                    <a role="button" href="/tags/web-api" class="btn btn-default btn-xs">Web API</a>
+        </div>     
+</div>
+                                        </div>
+                                </div>
+                        </div>
+                </header>
+                
+                <!-- Main Content -->
+                <div class="container">
+                        <div class="row">
+                                <div id="content" class="col-md-12">
+                                        
+
+<p>A while back, I created an ASP.NET Web API 2 to be a back-end for a mobile app. I used basic authentication to make it easier for mobile apps to consume the Web API. I now decided to provide better security so I wanted to move to a token-based authentication. The problem is that if I change the Web API to a token-based, all existing mobile apps in the field will not function as they will be refused Web API connection.</p>
+<p>The answer is to use Web API versioning! This way existing mobile users can continue to use the current version that uses basic authentication until the app is upgraded. The updated app version will switch over to use the new version which is based on token authentication. This post will discuss how I accomplished this versioning scheme.</p>
+<h2 id="controller-selector">Controller Selector</h2>
+<p>The first step is to configure the ASP.NET framework to use a custom controller selector. In the <code>WebApiConfig</code> <code>Register</code> method, we tell the framework to use the custom selector:</p>
+<pre><code class="language-csharp">config.Services.Replace(typeof(IHttpControllerSelector), new VersionAwareControllerSelector(config));
+</code></pre>
+<p>The selector is coded as follows:</p>
+<pre><code class="language-csharp">public class VersionAwareControllerSelector : DefaultHttpControllerSelector
+{
+    private const string VERSION_HEADER_NAME = &quot;some-value&quot;;
+    private const string VERSION_QUERY_NAME = &quot;v&quot;;
+
+    private HttpConfiguration _configuration;
+
+    public VersionAwareControllerSelector(HttpConfiguration configuration)
+        : base(configuration)
+    {
+        _configuration = configuration;
+    }
+
+    // This works for Web API 2 and Attributed Routing
+    // FROM: http://stackoverflow.com/questions/19835015/versioning-asp-net-web-api-2-with-media-types/19882371#19882371
+    // BLOG: http://webstackoflove.com/asp-net-web-api-versioning-with-media-types/
+    public override HttpControllerDescriptor SelectController(HttpRequestMessage request)
+    {
+        HttpControllerDescriptor controllerDescriptor = null;
+
+        // Get a list of all controllers provided by the default selector
+        IDictionary&lt;string, HttpControllerDescriptor&gt; controllers = GetControllerMapping();
+
+        IHttpRouteData routeData = request.GetRouteData();
+
+        if (routeData == null)
+        {
+            throw new HttpResponseException(HttpStatusCode.NotFound);
+        }
+
+        // Pick up the API Version from the header...but we could also do query string
+        var apiVersion = GetVersionFromHeader(request);
+
+        // Check if this route is actually an attribute route
+        IEnumerable&lt;IHttpRouteData&gt; attributeSubRoutes = routeData.GetSubRoutes();
+
+        if (attributeSubRoutes == null)
+        {
+            string controllerName = GetRouteVariable&lt;string&gt;(routeData, &quot;controller&quot;);
+            if (controllerName == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            string newControllerName = String.Concat(controllerName, apiVersion);
+
+            if (controllers.TryGetValue(newControllerName, out controllerDescriptor))
+            {
+                return controllerDescriptor;
+            }
+            else
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+        }
+        else
+        {
+            string newControllerNameSuffix = String.Concat(&quot;V&quot;, apiVersion); ;
+
+            IEnumerable&lt;IHttpRouteData&gt; filteredSubRoutes = attributeSubRoutes.Where(attrRouteData =&gt;
+            {
+                HttpControllerDescriptor currentDescriptor = GetControllerDescriptor(attrRouteData);
+                bool match = currentDescriptor.ControllerName.EndsWith(newControllerNameSuffix);
+
+                if (match &amp;&amp; (controllerDescriptor == null))
+                {
+                    controllerDescriptor = currentDescriptor;
+                }
+
+                return match;
+            });
+
+            routeData.Values[&quot;MS_SubRoutes&quot;] = filteredSubRoutes.ToArray();
+        }
+
+        return controllerDescriptor;
+    }
+
+    private HttpControllerDescriptor GetControllerDescriptor(IHttpRouteData routeData)
+    {
+        return ((HttpActionDescriptor[])routeData.Route.DataTokens[&quot;actions&quot;]).First().ControllerDescriptor;
+    }
+
+    // Get a value from the route data, if present.
+    private static T GetRouteVariable&lt;T&gt;(IHttpRouteData routeData, string name)
+    {
+        object result = null;
+        if (routeData.Values.TryGetValue(name, out result))
+        {
+            return (T)result;
+        }
+        return default(T);
+    }
+    
+
+    private string GetVersionFromHeader(HttpRequestMessage request)
+    {
+        if (request.Headers.Contains(VERSION_HEADER_NAME))
+        {
+            var header = request.Headers.GetValues(VERSION_HEADER_NAME).FirstOrDefault();
+            if (header != null)
+            {
+                return header;
+            }
+        }
+
+        return &quot;1&quot;;
+    }
+
+    private string GetVersionFromQueryString(HttpRequestMessage request)
+    {
+        var query = HttpUtility.ParseQueryString(request.RequestUri.Query);
+
+        var version = query[VERSION_QUERY_NAME];
+        if (version != null)
+        {
+            return version;
+        }
+
+        return &quot;1&quot;;
+    }
+}
+</code></pre>
+<p>As demonstarted above, I chose to send the version information as a header value! There are other options ...one of them is to pass it in the query string such as <code>http://example.com/api/stats?v=2</code>.</p>
+<h2 id="controller-versions">Controller Versions</h2>
+<p>The above allows us to have versioned controllers with the following naming convention:</p>
+<p><img src="http://i.imgur.com/5jxk3S5.png" class="img-fluid" alt="Controller Versions" /></p>
+<p>The framework will pick version 1 (i.e. <code>StatsV1Controller</code>) by default unless the request's header contains a version header value. If the value is 2, then <code>StatsV2Controller</code> will be picked.</p>
+<p>The V1 controller is defined this way:</p>
+<pre><code class="language-csharp">[BasicAuthorize()]
+public class StatsV1Controller : ApiController
+{
+    [Route(&quot;api/stats&quot;, Name = &quot;Stats&quot;)]
+    public virtual IHttpActionResult GetStats()
+    {
+		....
+    }
+}
+</code></pre>
+<p>while the V2 controller is defined this way:</p>
+<pre><code class="language-csharp">[TokenAuthorize()]
+public class StatsV2Controller : StatsV1Controller
+{
+    [Route(&quot;api/stats&quot;, Name = &quot;StatsV2&quot;)]
+    public override IHttpActionResult GetStats()
+    {
+		return base.GetStats();
+    }
+}
+</code></pre>
+<ul>
+<li>The V1 controller uses basic authorization (as decorated by the attribute on top of the controller class) and V2 uses token authentication as decorated.</li>
+<li>The V2 controller inherits from the V1 controller so there is no need to re-implement the methods.</li>
+<li>However, there is a need to supply a different route name for the V2 controller otherwise we will get a conflict. This is done by giving the V2 controller a route name that ends with V1 i.e. StatsV2. This is a little unfortunate but this is how it is. Had it not been for this, we could have simply inherited from V1 without having to repeat any method.</li>
+<li>Since V2 inherits from V1, I noticed that both authentication filters run per request. This means that when V2 is picked, the token authorize filer will run first and then followed by the basic authorize filter. This can cause problems. So what I did is at the end of the token authorize filter, I inject a value in the request properties. In the basic authorize filter, I check if the value exists, and, it if it does, I abort the basic authorize filter since the token filter has already run.</li>
+</ul>
+<h2 id="request-property">Request Property</h2>
+<p>Here is one way to inject a property in the request in the token filter:</p>
+<pre><code class="language-csharp">actionContext.Request.Properties[&quot;some-key&quot;] = &quot;some-value&quot;;
+</code></pre>
+<p>Then in the basic filter, I check for this property existence. If it does exist, it means the request is authenticated and there is no need to perform basic authentication.</p>
+<pre><code class="language-csharp">string accessToken;
+if (!actionContext.Request.Properties.TryGetValue(&quot;sone-key&quot;, out accessToken))            
+{
+}
+</code></pre>
+<p>I hope someone finds this post helpful. Having multiple versions has provided me with a way to transition my mobile app users from basic authentication to token authentication without breaking the existing mobile apps.</p>
+
+
+
+                                </div>
+                        </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Footer -->
+                <footer>
+                        <div class="container">
+        <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline text-center">
+                        <li>
+                        <a href="https://twitter.com/khaledhmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                        <li>
+                        <a href="https://github.com/khaledhikmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                </ul>
+                <p class="copyright text-muted">
+                        Copyright © 2016 by Khaled Hikmat. 
+                        <br />
+                        <strong><a href="http://wyam.io">Generated by Wyam</a></strong>
+                </p>
+                </div>
+        </div>
+</div>
+                </footer> 
+
+                <script type="text/javascript">
+</script>
+                <script>hljs.initHighlightingOnLoad();</script>
+
+                        <script type="text/javascript">                
+                                // Header background                        
+                                var colors = Please.make_color({
+                                        colors_returned: 3,
+                                        saturation: .6
+                                });
+                                var t = new Trianglify({
+                                        x_gradient: colors,
+                                        y_gradient: ["#FFFFFF"]
+                                });
+                                var header = document.getElementById("intro-header");
+                                var pattern = t.generate(header.clientWidth, header.clientHeight);
+                                header.setAttribute('style', 'background-image: ' + pattern.dataUrl);                        
+                        </script>
+        </body>
+</html>
+

@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+        <title>Khaled Hikmat - Git Commands</title>
+        <meta name="description" content="Coding Thoughts" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+
+        <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
+        <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/highlight.css" rel="stylesheet">
+        <link href="/assets/css/clean-blog.css" rel="stylesheet" />
+        <link href="/assets/css/master.css" rel="stylesheet" />
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/override.css" rel="stylesheet" />
+
+
+        <meta name="application-name" content="Khaled Hikmat" />
+        <meta name="msapplication-tooltip" content="Khaled Hikmat" />
+        <meta name="msapplication-starturl" content="/" />
+
+        <meta property="og:title" content="Khaled Hikmat - Git Commands" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://blog.khaledhikmat.com/posts/2014-02-06-git-commands" />
+        <!-- TODO: More social graph meta tags -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/highlight.pack.js"></script>   
+        <script src="/assets/js/clean-blog.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/assets/js/trianglify.min.js"></script>
+        <script src="/assets/js/Please-compressed.js"></script>
+                
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+        </head>
+        <body>
+                
+                <!-- Navigation -->
+                <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+                        <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header page-scroll">
+                                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="/">Khaled Hikmat</a>
+                                </div>
+                        
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="navbar-collapse">
+                                        <ul class="nav navbar-nav navbar-right">
+                                                <li><a href="/about">About</a></li>
+<li><a href="/posts">Archive</a></li>
+<li><a href="/tags">Tags</a></li> 
+                                        </ul>
+                                </div>
+                                <!-- /.navbar-collapse -->
+                        </div>
+                        <!-- /.container -->
+                </nav>
+                
+                <!-- Page Header -->
+                <header class="intro-header" id="intro-header">
+                        <div class="container">
+                                <div class="row">
+                                        <div class="col-md-12">
+
+    
+<div class="post-heading">
+    <h1>Git Commands</h1>
+        <h2 class="subheading">A list of useful &#x27;git&#x27; commands one might need on a daily basis if you work with git-based repositories</h2>
+    <div class="meta">        
+Published on Thursday, February 6, 2014<br>    </div>
+        <div class="tags">
+                    <a role="button" href="/tags/git" class="btn btn-default btn-xs">Git</a>
+        </div>     
+</div>
+                                        </div>
+                                </div>
+                        </div>
+                </header>
+                
+                <!-- Main Content -->
+                <div class="container">
+                        <div class="row">
+                                <div id="content" class="col-md-12">
+                                        
+
+<h3 id="configuration">Configuration</h3>
+<p>Git provides 3 levels of configurations:</p>
+<ul>
+<li>System-level:
+<ul>
+<li>git config --system</li>
+<li>Stored in /etc/gitconfig or c:\Program Files (x86)\Git\etc\gitconfig</li>
+</ul>
+</li>
+<li>User-level:
+<ul>
+<li>git config --global</li>
+<li>Stored in ~/.gitconfig or c:\Users&lt;NAME&gt;.gitconfig</li>
+</ul>
+</li>
+<li>Repository-level:
+<ul>
+<li>git config</li>
+<li>Stored in .git/config in each repo</li>
+</ul>
+</li>
+</ul>
+<p>To list all global configuration options:</p>
+<pre><code>git config --global --list	
+</code></pre>
+<p>To add your your name, email, editor and help level:</p>
+<pre><code>git config --global user.name &quot;Khaled Hikmat&quot;	
+git config --global user.email &quot;khaled.hikmat&#64;gmail.com&quot;	
+git config --global core.editor vim	
+git config --global help.autocorrect 1	
+git config --global color.ui auto	
+git config --global core.autocrlf true (for Windows)	
+git config --global core.autocrlf input (for Mac)
+</code></pre>
+<p>Aliasing:</p>
+<pre><code>git config --global alias.co &quot;checkout&quot;
+</code></pre>
+<p>Git configuration is heirarchical where the repo configuration overrides the global configuration and the global configuration overrides
+the system's.</p>
+<h3 id="working-locally">Working Locally</h3>
+<p>Create a new directory i.e. GitCommands</p>
+<pre><code>mkdir GitCommands
+</code></pre>
+<p>Initialize the directory for git</p>
+<pre><code>cd GitCommands
+git init
+ls -al
+</code></pre>
+<p>Check status</p>
+<pre><code>git status
+</code></pre>
+<p>Create new files</p>
+<pre><code>echo &quot;Hello World&quot; &gt; README.txt
+git add README.txt
+git status
+git commit
+git log
+</code></pre>
+<p>Commits Management and difference between the head and previous commits</p>
+<pre><code>git add -u (add all updated files)
+git commit -m &quot;Added a second line&quot;
+git log
+git diff HEAD~1..HEAD (the difference between the latest minus one commit and the latest one)
+git diff HEAD~1.. (same as above but abbreviated)
+</code></pre>
+<p>New files</p>
+<pre><code>touch file1.txt file1.txt
+git add -A (add added files)
+commit -m &quot;Added new feature&quot; 
+</code></pre>
+<p>Stage as two different commits</p>
+<pre><code>git touch file3.txt
+vim README.txt
+git add file3.txt
+git commit -m &quot;Added new feaure&quot;
+git add file3.txt
+git commit -m &quot;Added new feaure&quot;
+git add README.txt
+git commit -m &quot;Updated README.txt&quot;
+</code></pre>
+<p>File deletions</p>
+<pre><code>git rm file3.txt
+git status
+git add -u
+</code></pre>
+<p>File renaming</p>
+<pre><code>mv file4.txt new_file.txt
+git add -A
+git status
+git commit -m &quot;Refactored code&quot;
+</code></pre>
+<p>Undo - revert changes</p>
+<pre><code>git checkout README.txt
+git reset --hard (reset back to the head)
+git reset --hard HEAD~1
+git reset --soft HEAD~1
+git clean -n (what would happen)
+git clean -f (force)
+</code></pre>
+<p>Ignore files</p>
+<pre><code>vim .gitignore
+/logs/*.txt (/ is the root of my repository)
+logs/*.txt
+</code></pre>
+<p>If you create a file in your repository named .gitignore git will use its rules when looking at files to commit. Note that git will not ignore a file that was already tracked before a rule was added to this file to ignore it. In such a case the file must be un-tracked, usually with git rm --cached filename</p>
+<h3 id="working-remotely">Working Remotely</h3>
+<p>Cloning and examining logs - the entire history is available</p>
+<pre><code>git clone https://github.com/jquery/jquery.git (clone jquery locally)
+cd jquery
+git log
+git log --oneline
+git log --oneline | wc -l (line count) 
+git log --oneline --graph
+git log --format=short
+git shortlog
+git shortlog -sne (short + numerical + email)
+</code></pre>
+<p>Exmaining changes</p>
+<pre><code>git show HEAD
+git show HEAD~1
+git show &lt;SHAW1&gt;
+</code></pre>
+<p>Examining origin</p>
+<pre><code>git remote
+git remote -v
+</code></pre>
+<h3 id="protocols">Protocols</h3>
+<ul>
+<li>http and https, port 80 &amp; 443, https://github.com/jquery/jquery.git</li>
+<li>git, port 9418, git://github.com/jquery/jquery.git</li>
+<li>ssh, port 22, git&#64;github.com:jquery/jquery.git</li>
+<li>File, n/a, /Users/James/code/jquery</li>
+</ul>
+<h3 id="view-branches-tags">View Branches &amp; tags</h3>
+<pre><code>cat .git/config
+git branch
+git branch -r
+git tag
+</code></pre>
+<h3 id="create-a-new-repository-on-the-command-line">Create a new repository on the command line</h3>
+<pre><code>touch README.md
+git init
+git add README.md
+git commit -m &quot;first commit&quot;
+git remote add origin git&#64;github.com:khaledhikmat/GitCommands.git
+git push -u origin master
+</code></pre>
+<h3 id="push-an-existing-repository-from-the-command-line">Push an existing repository from the command line</h3>
+<pre><code>git remote add origin git&#64;github.com:khaledhikmat/GitCommands.git
+git push -u origin master
+</code></pre>
+<h3 id="tagging">Tagging</h3>
+<p>Gives you stable points in your release!!</p>
+<pre><code>git tag v1.0
+git tag -a v1.0_with_message
+git tag -a v1.0_with_message -m &quot;Blah...&quot;
+git tag -s v1.0_signed (requires gnupq to verify)
+git tag -v v1.0_with_message (cannot verify)
+git push --tags
+</code></pre>
+<h3 id="branch-visualizations">Branch Visualizations</h3>
+<pre><code>git log --oneline --graph --all --decorate
+git config --global alias.lga &quot;log --oneline --graph --all --decorate&quot;
+git lga
+</code></pre>
+<h3 id="branching-merging-and-rebasing">Branching, Merging and Rebasing</h3>
+<pre><code>git branch feature1
+git checkout feature1
+git echo &quot;Feature1&quot; &gt;&gt; README.txt
+git status
+git commit -am &quot;Added feature1&quot;
+git lga (HEAD now points to feature1)
+git checkout master
+git lga (HEAD now points to the last master commit)
+</code></pre>
+<p>You can get also base branches on a particlat shaw commit</p>
+<pre><code>git branch Fix1 6993d83
+git chekout Fix1
+echo &quot;Fixed bug 3123&quot; &gt;&gt; README.txt
+git commit -am &quot;Fixed bug 3123&quot;
+git lga
+</code></pre>
+<p>Renaming a branch</p>
+<pre><code>git branch -m fix1 bug1234
+</code></pre>
+<p>Deleting a branch</p>
+<pre><code>git branch -d bug 1234 (not allowed because it is not committed)
+git branch -D bug 1234 (force)
+</code></pre>
+<p>Recover  a deleted branch</p>
+<pre><code>git reflog
+git branch 
+</code></pre>
+<p>Creating and checking out a branch (all in one):</p>
+<pre><code>git chekout -b feature2
+</code></pre>
+<h3 id="stashing">Stashing</h3>
+<p>Don't want to lose work in progress</p>
+<pre><code># Switch to feature2
+git checkout feature2
+# Do some work but could not complete it
+echo &quot;not completed Feature stuff&quot; &gt;&gt; README.txt
+git status
+# Stash it away so I don't lose my changes
+git stash 
+# My changes on feature2 are rolled back into a stash area like a holding area
+git status 
+# This lists the stash area
+git stash list
+# Ok switch to another branch and fix buys and commit
+git checkout feature1
+echo &quot;do real work on feature1&quot; &gt;&gt; README.txt
+git ccommit -am &quot;Really goof stuff for feature1&quot;
+# Once done, switch back to feature2
+git checkout feature2
+# Re-apply the stash
+git stash apply
+# or (pop is the same as push...but pop removes it from my stash list)
+git stach pop 
+# or drop to drop the stash without applying
+git stash drop
+# If I decide that the stuff in the stash requires its own branch, this is very uesful: it creates a branch, applies the stash and checks it out
+git stash branch feature2_advanced
+</code></pre>
+<h3 id="merging">Merging</h3>
+<pre><code>git checkout master
+git merge feature1
+# No longer need this label
+git branch -d feature1
+# Watch what happened
+git lga
+# Now let us merge feature2
+git merge feature2
+# Conflist? Either fix manually or
+git mergetool
+# Need to setup a merge tool (kdiff3)
+git diff --cached
+git commit -am &quot;Fixed merge&quot;
+rm README.txt.orig
+</code></pre>
+<p>Checkout this <a href="http://jebaird.com/2013/07/08/setting-up-kdiff3-as-the-default-merge-tool-for-git-on-windows.html">tutorial</a> to see how you setup kdiff3 as a merge tool for Windows.</p>
+<h3 id="rebasing">Rebasing</h3>
+<pre><code>git branch feature3 v1.0
+git checkout feature3
+notepad file.txt
+git commit -am &quot;Added things for feature3&quot;
+git lga
+# But I really want to make it look like feature3 has been in master...soI want to rebase my master
+git rebase master (git rebase continue)
+git checkout master
+3 Easy fast-forward merge
+git merge feature 3 
+</code></pre>
+<h3 id="remote-branching">Remote branching</h3>
+<pre><code>git fetch
+git push
+git branch v1.0_fixes
+# Now I can push my changes and create that same branch remotely thus exposing the branch
+git push origin v1.0_fixes or git push origin v1.0_fixes:v1.0_my_great_stuff
+git branch -r
+</code></pre>
+<p>Delete remote branch by pushing nothing into it</p>
+<pre><code>git push origin :v1.0_my_great_stuff
+git push origin :v1.0_fixes
+</code></pre>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="http://pluralsight.com/training/Courses/TableOfContents/git-fundamentals">Git Funamentals</a> by James Kovacs</li>
+<li><a href="http://pluralsight.com/training/Courses/TableOfContents/introduction-to-git">Introduction to Git</a> by Geoffrey Grosenbach</li>
+</ul>
+
+
+
+                                </div>
+                        </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Footer -->
+                <footer>
+                        <div class="container">
+        <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline text-center">
+                        <li>
+                        <a href="https://twitter.com/khaledhmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                        <li>
+                        <a href="https://github.com/khaledhikmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                </ul>
+                <p class="copyright text-muted">
+                        Copyright © 2016 by Khaled Hikmat. 
+                        <br />
+                        <strong><a href="http://wyam.io">Generated by Wyam</a></strong>
+                </p>
+                </div>
+        </div>
+</div>
+                </footer> 
+
+                <script type="text/javascript">
+</script>
+                <script>hljs.initHighlightingOnLoad();</script>
+
+                        <script type="text/javascript">                
+                                // Header background                        
+                                var colors = Please.make_color({
+                                        colors_returned: 3,
+                                        saturation: .6
+                                });
+                                var t = new Trianglify({
+                                        x_gradient: colors,
+                                        y_gradient: ["#FFFFFF"]
+                                });
+                                var header = document.getElementById("intro-header");
+                                var pattern = t.generate(header.clientWidth, header.clientHeight);
+                                header.setAttribute('style', 'background-image: ' + pattern.dataUrl);                        
+                        </script>
+        </body>
+</html>
+

@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+        <title>Khaled Hikmat - Static Libraries in iOS</title>
+        <meta name="description" content="Coding Thoughts" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+
+        <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
+        <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/highlight.css" rel="stylesheet">
+        <link href="/assets/css/clean-blog.css" rel="stylesheet" />
+        <link href="/assets/css/master.css" rel="stylesheet" />
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/override.css" rel="stylesheet" />
+
+
+        <meta name="application-name" content="Khaled Hikmat" />
+        <meta name="msapplication-tooltip" content="Khaled Hikmat" />
+        <meta name="msapplication-starturl" content="/" />
+
+        <meta property="og:title" content="Khaled Hikmat - Static Libraries in iOS" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://blog.khaledhikmat.com/posts/2014-01-06-static-libraries-in-ios" />
+        <!-- TODO: More social graph meta tags -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/highlight.pack.js"></script>   
+        <script src="/assets/js/clean-blog.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/assets/js/trianglify.min.js"></script>
+        <script src="/assets/js/Please-compressed.js"></script>
+                
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+        </head>
+        <body>
+                
+                <!-- Navigation -->
+                <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+                        <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header page-scroll">
+                                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="/">Khaled Hikmat</a>
+                                </div>
+                        
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="navbar-collapse">
+                                        <ul class="nav navbar-nav navbar-right">
+                                                <li><a href="/about">About</a></li>
+<li><a href="/posts">Archive</a></li>
+<li><a href="/tags">Tags</a></li> 
+                                        </ul>
+                                </div>
+                                <!-- /.navbar-collapse -->
+                        </div>
+                        <!-- /.container -->
+                </nav>
+                
+                <!-- Page Header -->
+                <header class="intro-header" id="intro-header">
+                        <div class="container">
+                                <div class="row">
+                                        <div class="col-md-12">
+
+    
+<div class="post-heading">
+    <h1>Static Libraries in iOS</h1>
+        <h2 class="subheading">A sample of how to create static libraries in iOS</h2>
+    <div class="meta">        
+Published on Monday, January 6, 2014<br>    </div>
+        <div class="tags">
+                    <a role="button" href="/tags/ios" class="btn btn-default btn-xs">iOS</a>
+        </div>     
+</div>
+                                        </div>
+                                </div>
+                        </div>
+                </header>
+                
+                <!-- Main Content -->
+                <div class="container">
+                        <div class="row">
+                                <div id="content" class="col-md-12">
+                                        
+
+<p>As you develop more and more iOS apps, you will realize you will need the same set of utilities and base classes in all your app projects. You can place this common or shared code in a shared static library and include it in all of your projects.</p>
+<p>In this post, I will explain how to create and use a very simple static library in IOS that contains some util functions. The main objective is to show how to create and use a static library so you don't have to jump through hoops like I did!! Hence the library itself will be quite simple.</p>
+<h3 id="creating-a-static-library">Creating a static library:</h3>
+<p>Let us start by creating a static library in Xcode:</p>
+<p>![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.15.36.png)</p>
+<p>![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.18.35.png)</p>
+<p>Once the library is created, let us create a Utils class that inherits from NSObject:</p>
+<p>![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.20.25.png)</p>
+<p>Let us add code to the Utils.h file:</p>
+<pre><code>//
+//  Utils.h
+//  MySharedLib
+//
+//  Created by Khaled Hikmat on 1/6/14.
+//  Copyright (c) 2014 Blogs. All rights reserved.
+//
+
+#import &lt;Foundation/Foundation.h&gt;
+
+&#64;interface Utils : NSObject
++ (NSDate *) dateFromUnixDate:(NSString *)unix;
++ (int) indexOfText:(NSString *)text inSentence:(NSString *)sentence;
++ (BOOL) date:(NSDate *)date isBetweenDate:(NSDate *)beginDate andDate:(NSDate *)endDate;
++ (int) hoursBetweenDate:(NSDate *)fromDate andDate:(NSDate *)toDate;
++ (int) monthsBetweenDate:(NSDate *)fromDate andDate:(NSDate *)toDate;
++ (int) yearsBetweenDate:(NSDate *)fromDate andDate:(NSDate *)toDate;
+&#64;end
+</code></pre>
+<p>and implement the Utils methods in the implementation file Utils.m:</p>
+<pre><code>//
+//  Utils.m
+//  MySharedLib
+//
+//  Created by Khaled Hikmat on 1/6/14.
+//  Copyright (c) 2014 Blogs. All rights reserved.
+//
+
+#import &quot;Utils.h&quot;
+
+&#64;implementation Utils
+// Converts from JSON Unix Date (in .NET): /Date(1303884000000)/
++ (NSDate *) dateFromUnixDate:(NSString *)unix {
+    NSDate * date = nil;
+    
+    &#64;try {
+        int index = [Utils indexOfText:&#64;&quot;(&quot; inSentence:unix];
+        if (index != -1) {
+            NSString * newDate = &#64;&quot;&quot;;
+            newDate = [unix substringWithRange:NSMakeRange(index+1, 13)];
+            if ([newDate longLongValue] &gt; 0) {
+                NSTimeInterval interval = [newDate longLongValue] / 1000;
+                date = [NSDate dateWithTimeIntervalSince1970:interval];
+            }
+        }
+    }
+    &#64;catch (NSException *exception) {
+    }
+    &#64;finally {
+    }
+    
+    return date;
+}
+
++ (int) indexOfText:(NSString *)text inSentence:(NSString *)sentence {
+    NSRange range = [sentence rangeOfString:text];
+    if (range.length &gt; 0)
+        return range.location;
+    else
+        return -1;
+}
+
++ (BOOL) date:(NSDate *)date isBetweenDate:(NSDate *)beginDate andDate:(NSDate *)endDate {
+    if ([date compare:beginDate] == NSOrderedAscending)
+        return NO;
+    
+    if ([date compare:endDate] == NSOrderedAscending)
+        return NO;
+    
+    return YES;
+}
+
++ (int) hoursBetweenDate:(NSDate *)fromDate andDate:(NSDate *)toDate {
+    NSDateComponents * components;
+    NSInteger hours;
+    
+    components = [[NSCalendar currentCalendar] components: NSHourCalendarUnit fromDate:fromDate toDate:toDate options:0];
+    hours = [components hour];
+    return hours;
+}
+
++ (int) monthsBetweenDate:(NSDate *)fromDate andDate:(NSDate *)toDate {
+    NSDateComponents * components;
+    NSInteger months;
+    
+    components = [[NSCalendar currentCalendar] components: NSMonthCalendarUnit fromDate:fromDate toDate:toDate options:0];
+    months = [components month];
+    return months;
+}
+
++ (int) yearsBetweenDate:(NSDate *)fromDate andDate:(NSDate *)toDate {
+    NSDateComponents * components;
+    NSInteger years;
+    
+    components = [[NSCalendar currentCalendar] components: NSYearCalendarUnit fromDate:fromDate toDate:toDate options:0];
+    years = [components year];
+    return years;
+}
+&#64;end
+</code></pre>
+<p>Compile to make sure that the library has no errors.</p>
+<p>So now we have some static useful Util methods that are part of a static library. We would like to make these methods available to any iOS app project that we work on. You can add more classes to the static library but, for the sake of this post, I will keep it simple. In my shared library, I have generic classes that I use as base classes for a lot of my code.</p>
+<p>Before we create a new project to use the newly created static library in, let us briefly discuss the library's output. There are two things: the include files (i.e. Utils.h) and the library binary. The library's binary is of type .a. In order to let the library know to include the Util.h that we just created, we need to tell it to include it in its output. Open the static library project settings and navigate to the Build Phases -&gt; Copy Files:</p>
+<p>![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.40.29.png)</p>
+<p>Click the little plus sign to add additional header files:</p>
+<p>![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.40.38.png)</p>
+<p>![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.40.56.png)</p>
+<p>At the end, your project's build phases should look like something like this:</p>
+<p>![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.41.12.png)</p>
+<p>Now the library knows to include the Utils.h in its output. Having done that, make sure you re-compile the library and let us examine the actual output in Finder. Expand the 'Products' folder in Xcode and right-click the libMySharedLib.a:</p>
+<p>![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.41.39.png)</p>
+<p>This launches the Finder to show the output:</p>
+<p>![Distribution by committer]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-15.42.05.png)</p>
+<p>You will see that output consists of the .a file and the include files. By the way, Xcode includes the MySharedLib.h automatically in the output. I see lots of libraries that place all the headers in the main include file (i.e. MySharedLib.h), but I do prefer different header files.</p>
+<p><em>IMPORTANT</em>:
+Please note that static libraries do not have universal binaries. In other words, if you compile the library while an iOS device is the target, you will get ARM object code. Otherwise, you will get x86 object code (for the simulators). If you want your library's output to support both architectures, you will have to use a tool called 'LIPO'. There is a reference at the end of this post that refers to another post that deals with this issue in a very clear way.</p>
+<h3 id="using-the-static-library">Using the static library:</h3>
+<p>To use our newly created static library, let us create an iOS app...any thing will do. For this demo, I created a Single Page iOS App.</p>
+<p>Before we can use the library, let us create a folder in the App's directory with the name of 'MySharedLib'. This folder should contain the headers and the .a file from the library's output. The App folder might look something like this:</p>
+<p>![UI View Item]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-18.57.06.png)</p>
+<p>Now that we copied the library's output to the app's folder, we can tell the app to link it in statically and make its header files known to the app.</p>
+<p>Access the project settings (General -&gt; Linked Frameworks and Libraries) and add the MySharedLib to the project's linking:</p>
+<p>![UI View Item]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-17.03.05.png)</p>
+<p>Click 'Add Others' to open up the additional menu. Navigate to the mySharedLib .a and choose it:
+![UI View Item]({{ site.baseurl }}/images/2014-01-06/Screenshot-2014-01-06-17.03.20.png)</p>
+<p>Access the project settings (Build Settings -&gt; Search Paths ...make sure you are in the 'All' level not 'Basic'). Change both the header and library search path to be:</p>
+<pre><code>${SOURCE_ROOT}/MySharedLib
+</code></pre>
+<p>Notice how we are pointing to the directory that we created within our project. Now that we have our app project linked to the library and knows how to search for its headers, we can modify the ViewController code to import the library's Utils.h and use it like so:</p>
+<pre><code>//
+//  ViewController.m
+//  MyApp
+//
+//  Created by Khaled Hikmat on 1/6/14.
+//  Copyright (c) 2014 Blogs. All rights reserved.
+//
+
+#import &quot;ViewController.h&quot;
+
+#import 
+
+&#64;interface ViewController ()
+
+&#64;end
+
+&#64;implementation ViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // Use a method from Utils in MySharedLib:
+    NSLog(&#64;&quot;Index of 'hat' in 'Cat in the hat' is %i&quot;, [Utils indexOfText:&#64;&quot;hat&quot; inSentence:&#64;&quot;Cat in the hat&quot;]);
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+&#64;end
+</code></pre>
+<p>Please note that we are using the library import as opposed to the file import (notice the brackets as opposed to the double quotation):</p>
+<pre><code>#import &lt;Utils.h&gt;
+</code></pre>
+<p>Static libraries allow us to manage our code properly and reduce the code duplication. After I wrote this article, I noticed there is a much detailed post/tutorial about iOS static libraries <a href="http://www.raywenderlich.com/41377/creating-a-static-library-in-ios-tutorial">here</a> which digs into more details and further explains what you need to do to make your library have universal binaries to it can run on the ARM and x86 architectures.</p>
+
+
+
+                                </div>
+                        </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Footer -->
+                <footer>
+                        <div class="container">
+        <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline text-center">
+                        <li>
+                        <a href="https://twitter.com/khaledhmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                        <li>
+                        <a href="https://github.com/khaledhikmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                </ul>
+                <p class="copyright text-muted">
+                        Copyright © 2016 by Khaled Hikmat. 
+                        <br />
+                        <strong><a href="http://wyam.io">Generated by Wyam</a></strong>
+                </p>
+                </div>
+        </div>
+</div>
+                </footer> 
+
+                <script type="text/javascript">
+</script>
+                <script>hljs.initHighlightingOnLoad();</script>
+
+                        <script type="text/javascript">                
+                                // Header background                        
+                                var colors = Please.make_color({
+                                        colors_returned: 3,
+                                        saturation: .6
+                                });
+                                var t = new Trianglify({
+                                        x_gradient: colors,
+                                        y_gradient: ["#FFFFFF"]
+                                });
+                                var header = document.getElementById("intro-header");
+                                var pattern = t.generate(header.clientWidth, header.clientHeight);
+                                header.setAttribute('style', 'background-image: ' + pattern.dataUrl);                        
+                        </script>
+        </body>
+</html>
+

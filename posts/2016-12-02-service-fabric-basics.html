@@ -1,0 +1,420 @@
+
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+        <title>Khaled Hikmat - Service Fabric Basics</title>
+        <meta name="description" content="Coding Thoughts" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+
+        <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
+        <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/highlight.css" rel="stylesheet">
+        <link href="/assets/css/clean-blog.css" rel="stylesheet" />
+        <link href="/assets/css/master.css" rel="stylesheet" />
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/override.css" rel="stylesheet" />
+
+
+        <meta name="application-name" content="Khaled Hikmat" />
+        <meta name="msapplication-tooltip" content="Khaled Hikmat" />
+        <meta name="msapplication-starturl" content="/" />
+
+        <meta property="og:title" content="Khaled Hikmat - Service Fabric Basics" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://blog.khaledhikmat.com/posts/2016-12-02-service-fabric-basics" />
+        <!-- TODO: More social graph meta tags -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/highlight.pack.js"></script>   
+        <script src="/assets/js/clean-blog.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/assets/js/trianglify.min.js"></script>
+        <script src="/assets/js/Please-compressed.js"></script>
+                
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+        </head>
+        <body>
+                
+                <!-- Navigation -->
+                <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+                        <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header page-scroll">
+                                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="/">Khaled Hikmat</a>
+                                </div>
+                        
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="navbar-collapse">
+                                        <ul class="nav navbar-nav navbar-right">
+                                                <li><a href="/about">About</a></li>
+<li><a href="/posts">Archive</a></li>
+<li><a href="/tags">Tags</a></li> 
+                                        </ul>
+                                </div>
+                                <!-- /.navbar-collapse -->
+                        </div>
+                        <!-- /.container -->
+                </nav>
+                
+                <!-- Page Header -->
+                <header class="intro-header" id="intro-header">
+                        <div class="container">
+                                <div class="row">
+                                        <div class="col-md-12">
+
+    
+<div class="post-heading">
+    <h1>Service Fabric Basics</h1>
+        <h2 class="subheading">A demonstration of basic but important functionality in Service Fabric</h2>
+    <div class="meta">        
+Published on Friday, December 2, 2016<br>    </div>
+        <div class="tags">
+                    <a role="button" href="/tags/basics" class="btn btn-default btn-xs">Basics</a>
+                    <a role="button" href="/tags/service-fabric" class="btn btn-default btn-xs">Service Fabric</a>
+        </div>     
+</div>
+                                        </div>
+                                </div>
+                        </div>
+                </header>
+                
+                <!-- Main Content -->
+                <div class="container">
+                        <div class="row">
+                                <div id="content" class="col-md-12">
+                                        
+
+<p>Service Fabric is a cool technology from Microsoft! It has advanced features that allows many scenarios. But in this post, we will only cover basic concepts that are usually misunderstood by a lot of folks.</p>
+<p>For the purpose of this demo, we are going to develop a very basic guest executable service written as a console app. We will use very basic application and service manifests and PowerShell script to deploy to Service Fabric and show how Service Fabric monitors services, reports their health and allows for upgrade and update.</p>
+<p>The source code for this post is available <a href="https://github.com/khaledhikmat/service-fabric-basics">here</a>.</p>
+<h2 id="guest-service">Guest Service</h2>
+<p>The Guest service is a very basic console app that does this:</p>
+<pre><code class="language-csharp">class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine(&quot;Crashable Service Started....&quot;);
+        Thread.Sleep(120000);
+        Console.WriteLine(&quot;Crashable Service crashed...&quot;);
+        // Crash!!!!!
+        Environment.Exit(-1);
+    }
+}
+</code></pre>
+<p>That is it!! The service starts and crashes after 2 minutes. Let us see how we can package this service to run within Service Fabric. Please note that this service is not cognizant of any Service Fabric. It is purely a simple service written as a console app.</p>
+<h2 id="application-package">Application Package</h2>
+<p>Application Package in Service Fabric is nothing but a folder that contains certain manifests in specific sub-folders! We will build the directory by hand instead of using Visual Studio to do it for us so we can find out exactly how to do this. Let us create a directory called <code>BasicAvailabilityApp</code> (i.e.  <code>c:\BasicAvailabilityApp</code>) to describe the Service Fabric application.</p>
+<h3 id="the-root-folder">The root folder</h3>
+<p>The root folder contains the application manifest and a sub-folder for each service in contains. Here is how the application manifest looks like for this demo application:</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;ApplicationManifest ApplicationTypeName=&quot;BasicAvailabilityAppType&quot; ApplicationTypeVersion=&quot;1.0.0&quot;
+                     xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; 
+                     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+                     xmlns=&quot;http://schemas.microsoft.com/2011/01/fabric&quot;&gt;
+   &lt;ServiceManifestImport&gt;
+      &lt;ServiceManifestRef ServiceManifestName=&quot;CrashableServiceTypePkg&quot; ServiceManifestVersion=&quot;1.0.0&quot; /&gt;
+   &lt;/ServiceManifestImport&gt;
+&lt;/ApplicationManifest&gt;
+</code></pre>
+<p>There are several pieces of information in this manifest:</p>
+<ul>
+<li>The application type: <code>BasicAvailabilityAppType</code>.</li>
+<li>The application version: <code>1.0.0</code>.</li>
+<li>The application contains a single service type <code>CrashableServiceTypePkg</code> with version <code>1.0.0</code>.</li>
+<li>The XML name spaces are not important to us.</li>
+</ul>
+<p>This is how the application folder looks like:</p>
+<p><img src="http://i.imgur.com/suY3mS4.png" class="img-fluid" alt="Root Application Folder" /></p>
+<h3 id="the-service-folder">The service folder</h3>
+<p>The service folder contains the service manifest and a sub-folder for each service in contains. Here is how the application manifest looks like for this demo application:</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;ServiceManifest Name=&quot;CrashableServiceTypePkg&quot;
+                 Version=&quot;1.0.0&quot;
+                 xmlns=&quot;http://schemas.microsoft.com/2011/01/fabric&quot;
+                 xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;
+                 xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+  &lt;ServiceTypes&gt;
+    &lt;StatelessServiceType ServiceTypeName=&quot;CrashableServiceType&quot; UseImplicitHost=&quot;true&quot; /&gt;
+  &lt;/ServiceTypes&gt;
+
+  &lt;CodePackage Name=&quot;CodePkg&quot; Version=&quot;1.0.0&quot;&gt;
+    &lt;EntryPoint&gt;
+      &lt;ExeHost&gt;
+        &lt;Program&gt;CrashableService.exe&lt;/Program&gt;
+      &lt;/ExeHost&gt;
+    &lt;/EntryPoint&gt;
+  &lt;/CodePackage&gt;
+&lt;/ServiceManifest&gt;
+</code></pre>
+<p>There are several pieces of information in this manifest:</p>
+<ul>
+<li>The service package: <code>CrashableServiceTypePkg</code>.</li>
+<li>The service version: <code>1.0.0</code>.</li>
+<li>The service type: <code>CrashableServiceType</code>.</li>
+<li>The service type is stateless.</li>
+<li>The service code package exists in a sub-folder called <code>CodePkg</code> and it is of version <code>1.0.0</code>.</li>
+<li>The service code consists of an executable called <code>CrashableService.exe</code>.</li>
+<li>The XML name spaces are not important to us.</li>
+</ul>
+<p>This is how the service folder looks like:</p>
+<p><img src="http://i.imgur.com/MTzbGXl.png" class="img-fluid" alt="Service Folder" /></p>
+<p>This is what it takes to package an application in Service Fabric.</p>
+<h2 id="deployment">Deployment</h2>
+<p>Please note that the package we created in the previous step needs to be deployed to Service Fabric in order to run. To do this, we will need to use either Visual Studio or PowerShell. Since we want to use the lower level commands, Visual Studio is not an option for us. We will use PowerShell instead:</p>
+<p>Here is the PowerShell script that we can use:</p>
+<pre><code># Define equates (hard-coded):
+$clusterUrl = &quot;localhost&quot;
+$imageStoreConnectionString = &quot;file:C:\SfDevCluster\Data\ImageStoreShare&quot; 
+$appPkgName = &quot;BasicAvailabilityAppTypePkg&quot;
+$appTypeName = &quot;BasicAvailabilityAppType&quot;
+$appName = &quot;fabric:/BasicAvailabilityApp&quot;
+$serviceTypeName = &quot;CrashableServiceType&quot;
+$serviceName = $appName + &quot;/CrashableService&quot;
+
+# Connect PowerShell session to a cluster
+Connect-ServiceFabricCluster -ConnectionEndpoint ${clusterUrl}:19000
+
+# Copy the application package to the cluster
+Copy-ServiceFabricApplicationPackage -ApplicationPackagePath &quot;BasicAvailabilityApp&quot; -ImageStoreConnectionString $imageStoreConnectionString -ApplicationPackagePathInImageStore $appPkgName
+
+# Register the application package's application type/version
+Register-ServiceFabricApplicationType -ApplicationPathInImageStore $appPkgName
+
+# After registering the package's app type/version, you can remove the package from the cluster image store
+Remove-ServiceFabricApplicationPackage -ImageStoreConnectionString $imageStoreConnectionString -ApplicationPackagePathInImageStore $appPkgName
+
+# Create a named application from the registered app type/version
+New-ServiceFabricApplication -ApplicationTypeName $appTypeName -ApplicationTypeVersion &quot;1.0.0&quot; -ApplicationName $appName 
+
+# Create a named service within the named app from the service's type
+New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceTypeName -ServiceName $serviceName -Stateless -PartitionSchemeSingleton -InstanceCount 1
+
+</code></pre>
+<p>The key commands are the last two where we:</p>
+<ul>
+<li>Create a named application name from the registered application type and version:</li>
+</ul>
+<pre><code># Create a named application from the registered app type/version
+New-ServiceFabricApplication -ApplicationTypeName $appTypeName -ApplicationTypeVersion &quot;1.0.0&quot; -ApplicationName $appName 
+</code></pre>
+<ul>
+<li>Create a named service within the named app from the service type:</li>
+</ul>
+<pre><code># Create a named service within the named app from the service's type
+New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceTypeName -ServiceName $serviceName -Stateless -PartitionSchemeSingleton -InstanceCount 1
+</code></pre>
+<p>This is extremely significant as it allows us to create multiple application instances within the same cluster and each names application instance has its own set of services. This is how the named application and services are related to the cluster (this is taken from Service Fabric team presentation):</p>
+<p><img src="http://i.imgur.com/377RP4J.png" class="img-fluid" alt="Naming Stuff" /></p>
+<p>Once the named application and the named service are deployed, the Service Fabric explorer shows it like this:</p>
+<p><img src="http://i.imgur.com/tTLgIMX.png" class="img-fluid" alt="Success Deployment" /></p>
+<h2 id="availability">Availability</h2>
+<p>One of the major selling points of Service Fabric is its ability to make services highly available by monitoring them and restarting them if necessary. This post is to show ta very basic example of this to demo this very concept.</p>
+<p>Regardless of whether the service is guest executable or Service Fabric cognizant service, Service Fabric monitors the service to make sure it runs correctly. In our case, the service will crash after 2 minutes.....so once you issue the PowerShell commands to deploy the cluster (in this case to the local one), you will see that Service fabric detects the failure and reports a bad health on the Service Fabric Explorer:</p>
+<p><img src="http://i.imgur.com/XdY1JHg.png" class="img-fluid" alt="Error Deployment" /></p>
+<h2 id="cleanup">Cleanup</h2>
+<p>In order to remove the named application and its services, you can issue these PowerShell commands:</p>
+<pre><code># Delete the named service
+Remove-ServiceFabricService -ServiceName $serviceName -Force
+
+# Delete the named application and its named services
+Remove-ServiceFabricApplication -ApplicationName $appName -Force
+</code></pre>
+<p>In order to delete the application type:</p>
+<pre><code># If no named apps are running, you can delete the app type/version
+Unregister-ServiceFabricApplicationType -ApplicationTypeName $appTypeName -ApplicationTypeVersion &quot;1.0.0&quot; -Force
+</code></pre>
+<h2 id="versions-upgrade">Versions &amp; Upgrade</h2>
+<p>It turned out that Service Fabric does not really care how you name your versions! If you name your versions as numbers like 1.0.0 or 1.1.0, this naming convention is referred to as <code>Semantic Versioning</code>. But you are free to use whatever version naming convention you want.</p>
+<p>Let us use a different version scheme for our simple app. How about alpha, beta and productionV1, productionV2, etc. Let us cleanup our app from the cluster (as shown above), fix the service crashing, update the manifest files to make the version <code>Beta</code> and re-deploy using the beta version:</p>
+<h3 id="the-service">The Service</h3>
+<pre><code class="language-csharp">static void Main(string[] args)
+{
+    Console.WriteLine(&quot;Crashable Service Started....&quot;);
+
+    while(true)
+    {
+        Thread.Sleep(120000);
+    }
+}
+</code></pre>
+<h3 id="the-application-manifest">The Application Manifest</h3>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;ApplicationManifest ApplicationTypeName=&quot;BasicAvailabilityAppType&quot; 
+					 ApplicationTypeVersion=&quot;Beta&quot;
+                     xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; 
+                     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+                     xmlns=&quot;http://schemas.microsoft.com/2011/01/fabric&quot;&gt;
+   &lt;ServiceManifestImport&gt;
+      &lt;ServiceManifestRef ServiceManifestName=&quot;CrashableServiceTypePkg&quot; ServiceManifestVersion=&quot;Beta&quot; /&gt;
+   &lt;/ServiceManifestImport&gt;
+&lt;/ApplicationManifest&gt;
+</code></pre>
+<h3 id="the-service-manifest">The Service Manifest</h3>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;ServiceManifest Name=&quot;CrashableServiceTypePkg&quot;
+                 Version=&quot;Beta&quot;
+                 xmlns=&quot;http://schemas.microsoft.com/2011/01/fabric&quot;
+                 xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;
+                 xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+  &lt;ServiceTypes&gt;
+    &lt;StatelessServiceType ServiceTypeName=&quot;CrashableServiceType&quot; UseImplicitHost=&quot;true&quot; /&gt;
+  &lt;/ServiceTypes&gt;
+
+  &lt;CodePackage Name=&quot;CodePkg&quot; Version=&quot;Beta&quot;&gt;
+    &lt;EntryPoint&gt;
+      &lt;ExeHost&gt;
+        &lt;Program&gt;CrashableService.exe&lt;/Program&gt;
+      &lt;/ExeHost&gt;
+    &lt;/EntryPoint&gt;
+  &lt;/CodePackage&gt;
+&lt;/ServiceManifest&gt;
+</code></pre>
+<h3 id="deployment-1">Deployment</h3>
+<pre><code># Define equates (hard-coded):
+$clusterUrl = &quot;localhost&quot;
+$imageStoreConnectionString = &quot;file:C:\SfDevCluster\Data\ImageStoreShare&quot; 
+$appPkgName = &quot;BasicAvailabilityAppTypePkg&quot;
+$appTypeName = &quot;BasicAvailabilityAppType&quot;
+$appName = &quot;fabric:/BasicAvailabilityApp&quot;
+$serviceTypeName = &quot;CrashableServiceType&quot;
+$serviceName = $appName + &quot;/CrashableService&quot;
+
+# Connect PowerShell session to a cluster
+Connect-ServiceFabricCluster -ConnectionEndpoint ${clusterUrl}:19000
+
+# Copy the application package to the cluster
+Copy-ServiceFabricApplicationPackage -ApplicationPackagePath &quot;BasicAvailabilityApp&quot; -ImageStoreConnectionString $imageStoreConnectionString -ApplicationPackagePathInImageStore $appPkgName
+
+# Register the application package's application type/version
+Register-ServiceFabricApplicationType -ApplicationPathInImageStore $appPkgName
+
+# After registering the package's app type/version, you can remove the package from the cluster image store
+Remove-ServiceFabricApplicationPackage -ImageStoreConnectionString $imageStoreConnectionString -ApplicationPackagePathInImageStore $appPkgName
+
+# Create a named application from the registered app type/version
+New-ServiceFabricApplication -ApplicationTypeName $appTypeName -ApplicationTypeVersion &quot;Beta&quot; -ApplicationName $appName 
+
+# Create a named service within the named app from the service's type
+New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceTypeName -ServiceName $serviceName -Stateless -PartitionSchemeSingleton -InstanceCount 1
+</code></pre>
+<h3 id="upgrade">Upgrade</h3>
+<p>Now that the beta version is deployed, let us make another change in the service, change the version to ProdutionV1 and issue the following PowerShell commands to registe and upgrade to <code>ProductionV1</code></p>
+<pre><code># Copy the application package ProductionV1 to the cluster
+Copy-ServiceFabricApplicationPackage -ApplicationPackagePath &quot;BasicAvailabilityApp-ProductionV1&quot; -ImageStoreConnectionString $imageStoreConnectionString -ApplicationPackagePathInImageStore $appPkgName
+
+# Register the application package's application type/version
+Register-ServiceFabricApplicationType -ApplicationPathInImageStore $appPkgName
+
+# After registering the package's app type/version, you can remove the package
+Remove-ServiceFabricApplicationPackage -ImageStoreConnectionString $imageStoreConnectionString -ApplicationPackagePathInImageStore $appPkgName
+
+# Upgrade the application from Beta to ProductionV1
+Start-ServiceFabricApplicationUpgrade -ApplicationName $appName -ApplicationTypeVersion &quot;ProductionV1&quot; -UnmonitoredAuto -UpgradeReplicaSetCheckTimeoutSec 100
+</code></pre>
+<p>The upgrade takes place using a concept called Upgrade Domains which makes sure that the service that is being upgraded does not ever become unavailable:</p>
+<p><img src="http://i.imgur.com/eSmVVHd.png" class="img-fluid" alt="Upgrade Domains" /></p>
+<p>Once the upgrade is done, the new application and service version is <code>ProductionV1</code>:</p>
+<p><img src="http://i.imgur.com/l5Ohfgk.png" class="img-fluid" alt="Production V1" /></p>
+<h2 id="updates">Updates</h2>
+<p>Now that our service is in production, let us see what how we can increase and decrease its number of instances at will. This is very useful to scale the service up and down depending on parameters determined by the operations team.</p>
+<p>You may have noticed that we have always used instance count 1 when we deployed our named service:</p>
+<pre><code># Create a named service within the named app from the service's type
+New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceTypeName -ServiceName $serviceName -Stateless -PartitionSchemeSingleton -InstanceCount 1
+</code></pre>
+<p>Let us try to increase the instance count to 5 using PowerShell:</p>
+<pre><code># Dynamically change the named service's number of instances
+Update-ServiceFabricService -ServiceName $serviceName -Stateless -InstanceCount 5 -Force
+</code></pre>
+<p><strong>Please note</strong> that if your test cluster has less than 5 nodes, you will get health warnings from Service Fabric because SF will not be place more instances than the number of available nodes. This is because SF cannot guarantee availability if it places multiple instances on the same node.</p>
+<p>Anyway, if you get health warning or if you would like to scale back on your service, you can downgrade the number of instances using this PowerShell command:</p>
+<pre><code>Update-ServiceFabricService -ServiceName $serviceName -Stateless -InstanceCount 1 -Force
+</code></pre>
+<p>Please notice how fast the scaling (up or down) takes place!!</p>
+<h2 id="what-is-next">What is next?</h2>
+<p>In future posts, I will use Service Fabric .NET programming model to develop and deploy stateless and stateful services to demonstrate Service Fabric fundamental concepts.</p>
+
+
+
+                                </div>
+                        </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Footer -->
+                <footer>
+                        <div class="container">
+        <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline text-center">
+                        <li>
+                        <a href="https://twitter.com/khaledhmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                        <li>
+                        <a href="https://github.com/khaledhikmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                </ul>
+                <p class="copyright text-muted">
+                        Copyright © 2016 by Khaled Hikmat. 
+                        <br />
+                        <strong><a href="http://wyam.io">Generated by Wyam</a></strong>
+                </p>
+                </div>
+        </div>
+</div>
+                </footer> 
+
+                <script type="text/javascript">
+</script>
+                <script>hljs.initHighlightingOnLoad();</script>
+
+                        <script type="text/javascript">                
+                                // Header background                        
+                                var colors = Please.make_color({
+                                        colors_returned: 3,
+                                        saturation: .6
+                                });
+                                var t = new Trianglify({
+                                        x_gradient: colors,
+                                        y_gradient: ["#FFFFFF"]
+                                });
+                                var header = document.getElementById("intro-header");
+                                var pattern = t.generate(header.clientWidth, header.clientHeight);
+                                header.setAttribute('style', 'background-image: ' + pattern.dataUrl);                        
+                        </script>
+        </body>
+</html>
+

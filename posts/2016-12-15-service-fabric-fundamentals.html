@@ -1,0 +1,782 @@
+
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+        <title>Khaled Hikmat - Service Fabric Fundamentals</title>
+        <meta name="description" content="Coding Thoughts" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+
+        <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
+        <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/highlight.css" rel="stylesheet">
+        <link href="/assets/css/clean-blog.css" rel="stylesheet" />
+        <link href="/assets/css/master.css" rel="stylesheet" />
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/override.css" rel="stylesheet" />
+
+
+        <meta name="application-name" content="Khaled Hikmat" />
+        <meta name="msapplication-tooltip" content="Khaled Hikmat" />
+        <meta name="msapplication-starturl" content="/" />
+
+        <meta property="og:title" content="Khaled Hikmat - Service Fabric Fundamentals" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://blog.khaledhikmat.com/posts/2016-12-15-service-fabric-fundamentals" />
+        <!-- TODO: More social graph meta tags -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/highlight.pack.js"></script>   
+        <script src="/assets/js/clean-blog.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/assets/js/trianglify.min.js"></script>
+        <script src="/assets/js/Please-compressed.js"></script>
+                
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+        </head>
+        <body>
+                
+                <!-- Navigation -->
+                <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+                        <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header page-scroll">
+                                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="/">Khaled Hikmat</a>
+                                </div>
+                        
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="navbar-collapse">
+                                        <ul class="nav navbar-nav navbar-right">
+                                                <li><a href="/about">About</a></li>
+<li><a href="/posts">Archive</a></li>
+<li><a href="/tags">Tags</a></li> 
+                                        </ul>
+                                </div>
+                                <!-- /.navbar-collapse -->
+                        </div>
+                        <!-- /.container -->
+                </nav>
+                
+                <!-- Page Header -->
+                <header class="intro-header" id="intro-header">
+                        <div class="container">
+                                <div class="row">
+                                        <div class="col-md-12">
+
+    
+<div class="post-heading">
+    <h1>Service Fabric Fundamentals</h1>
+        <h2 class="subheading">A demonstration of Service Fabric Fundamentals</h2>
+    <div class="meta">        
+Published on Thursday, December 15, 2016<br>    </div>
+        <div class="tags">
+                    <a role="button" href="/tags/fundamentals" class="btn btn-default btn-xs">Fundamentals</a>
+                    <a role="button" href="/tags/service-fabric" class="btn btn-default btn-xs">Service Fabric</a>
+        </div>     
+</div>
+                                        </div>
+                                </div>
+                        </div>
+                </header>
+                
+                <!-- Main Content -->
+                <div class="container">
+                        <div class="row">
+                                <div id="content" class="col-md-12">
+                                        
+
+<p>The <a href="https://github.com/Azure-Samples/service-fabric-dotnet-iot">Service Fabric iOT sample app</a> is a great sample to follow for our own Service Fabric apps. In this post, I used code snippets and concepts from the iOT sample to build a small app to demonstrate some fundamentals concepts that I feel are important.</p>
+<p>The source code for this post is available <a href="https://github.com/khaledhikmat/service-fabric-fundamentals">here</a>.</p>
+<h2 id="the-app-scenario">The app scenario</h2>
+<p>The app is called Rate Aggregator where we have an app that monitors hotel rate requests coming in from somewhere (presumably from some site) and aggregates the result by city. I also wanted the app to be multi-tenant so we can have an app instance for each rate service provider i.e. Contoso and Fabrican.</p>
+<p>The app is quite simple and consists of two services: Web Service to act as a front-end and a rates service to actually process the rates and aggregate them:</p>
+<p><img src="http://i.imgur.com/trNQnSS.png" class="img-fluid" alt="App Components" /></p>
+<h2 id="source-code">Source Code</h2>
+<p>The solution source code consists of 4 different projects:</p>
+<ul>
+<li>Common Project - a class library that has the common classes that are shared across the other projects. Please note that this library must be built using the <code>x64</code> platform.</li>
+<li>Web Service - a stateless Service Fabric service created using the Visual Studio ASP.NET Core template.</li>
+<li>Rates Service - a stateful Service Fabric service created using the Visual Studio ASP.NET Core template.</li>
+<li>An app project to contain the Service Fabric instances and provide application manifests.</li>
+<li>A collection of PowerShell scripts that manage the deployment, un-deployment, update, upgrade and test. We will go through those files in this post.</li>
+</ul>
+<p>Please note:</p>
+<ul>
+<li>I created the solution using VS 2015 Service Fabric template. But actually the projects are regular projects that include Service Fabric NuGet packages. The only project that is quite specific to Service Fabric is the app project i.e. <code>RateAggregatorApp</code> ...but as demonstrated in a <a href="../posts/2016-12-02-service-fabric-basics">previous post</a>, the app manifests and packaging can be easily generated manually.</li>
+<li>The ASP.NET Code template in Service Fabric is still in preview. I noticed some odd stuff about it:
+<ul>
+<li>The template assumes that you are building stateless services! To create Stateful services using the ASP.NET template, manual intervention have to take place which I will note in this post</li>
+<li>The useful <code>ServiceEventSource.cs</code> class is not included in the generated project. So if you want to use ETW logging, you must create this file manually (copy it from another SF project)</li>
+<li>The template includes, in the <code>Program.cs</code> file the Service Fabric registration code and the Service class. It is useful to break up apart and create a class (using the name of the service) to describe the service i.e. <code>WebService</code> and <code>RatesService</code></li>
+</ul>
+</li>
+<li>The Service Fabric <code>RateAggregatorApp</code> <code>APplicationManifest.xml</code> file has a section for <code>DefaultServices</code> which automatically deploys the default services whenever an app is deployed. I usually remove the default services from the manifest file so i can better control the named app instance and service creation process (which I will demo in this post).</li>
+</ul>
+<h2 id="fundamental-concepts">Fundamental Concepts</h2>
+<p>The <a href="https://github.com/Azure-Samples/service-fabric-dotnet-iot">iOT</a> sample includes really nice code utilities that can be used to build <code>Uri</code>s for services especially when the service exposes HTTP endpoints. The most important concepts that I would like to convey are:</p>
+<h3 id="http-endpoints">HTTP Endpoints</h3>
+<p>If you would like to expose HTTP Endpoints for your service, Microsoft strongly recommends that you build the URL as follows:</p>
+<p><img src="http://i.imgur.com/qQdvX9h.png" class="img-fluid" alt="HTTP Endpoint URL" /></p>
+<p>Examples:</p>
+<ol>
+<li><code>Http://localhost:8084/ContosoRateAggregatorApp/7217642a-2ac8-4b29-b52d-3e92303ce1b2/131262989332452689/f74f07f7-d92f-47b9-8d6b-c86966c78d09</code></li>
+<li><code>Http://localhost:8084/FabricanRateAggregatorApp/13049e47-9727-4e02-9086-8fd6e2457313/131262989924122573/3b3455d8-487e-4ec4-9bd8-64ba8e658662</code></li>
+</ol>
+<p>For stateful services, this makes total sense! The combination of <code>partitionId</code> and <code>instanceId</code> are great for diagnostics and the <code>guid</code> makes every endpoint unique which is really useful because services are sometimes moved around. However, for Stateless services, I think we can easily omit the <code>partitionId</code>, the <code>instanceId</code> and the <code>guid</code> since stateless service endpoints are usually load balanced as they accept traffic from the Internet. Examples of stateless services endpoints:</p>
+<ol>
+<li><code>Http://localhost:8082/FabricanRateAggregatorApp</code></li>
+<li><code>Http://localhost:8082/ContosoRateAggregatorApp</code></li>
+</ol>
+<p>If you are planning to expose multiple stateless web services in each app instances, then perhaps adding the service name to the end of the URL would make sense.Examples:</p>
+<ol>
+<li><code>Http://localhost:8082/FabricanRateAggregatorApp/WebService</code></li>
+<li><code>Http://localhost:8082/ContosoRateAggregatorApp/WebService</code></li>
+</ol>
+<p>The demo app source code common project includes a <code>WebHostCommunicationListener</code> class (which is borrowed from the iOT sample) shows a really good implementation of how to manage this:</p>
+<pre><code class="language-csharp">string ip = this.serviceContext.NodeContext.IPAddressOrFQDN;
+EndpointResourceDescription serviceEndpoint = this.serviceContext.CodePackageActivationContext.GetEndpoint(this.endpointName);
+EndpointProtocol protocol = serviceEndpoint.Protocol;
+int port = serviceEndpoint.Port;
+string host = &quot;+&quot;;
+
+string listenUrl;
+string path = this.appPath != null ? this.appPath.TrimEnd('/') + &quot;/&quot; : &quot;&quot;;
+
+if (this.serviceContext is StatefulServiceContext)
+{
+    StatefulServiceContext statefulContext = this.serviceContext as StatefulServiceContext;
+    listenUrl = $&quot;{serviceEndpoint.Protocol}://{host}:{serviceEndpoint.Port}/{path}{statefulContext.PartitionId}/{statefulContext.ReplicaId}/{Guid.NewGuid()}&quot;;
+}
+else
+{
+    listenUrl = $&quot;{serviceEndpoint.Protocol}://{host}:{serviceEndpoint.Port}/{path}&quot;;
+}
+
+this.webHost = this.build(listenUrl);
+this.webHost.Start();
+
+return Task.FromResult(listenUrl.Replace(&quot;://+&quot;, &quot;://&quot; + ip));
+</code></pre>
+<h3 id="http-web-apis">HTTP Web APIs</h3>
+<p>Using ASP.NET Core to implement the Stateless and Stateful services has the distinct advantage of allowing the services expose a Web API layer that can be used by clients to call on the services. The Web API layer has regular controllers with normal Web API decoration to allow the services be called from regular HTTP clients:</p>
+<pre><code class="language-csharp">    [Route(&quot;api/[controller]&quot;)]
+    public class RatesController : Controller
+    {
+        private readonly IReliableStateManager stateManager;
+        private readonly StatefulServiceContext context;
+        private readonly CancellationTokenSource serviceCancellationSource;
+
+        public RatesController(IReliableStateManager stateManager, StatefulServiceContext context, CancellationTokenSource serviceCancellationSource)
+        {
+            this.stateManager = stateManager;
+            this.context = context;
+            this.serviceCancellationSource = serviceCancellationSource;
+        }
+
+        [HttpGet]
+        [Route(&quot;queue/length&quot;)]
+        public async Task&lt;IActionResult&gt; GetQueueLengthAsync()
+        {
+			....
+		}
+	}
+</code></pre>
+<p>Please note that the service has the <code>IReliableStateManager</code>, the <code>StatefulServiceContext</code> and the <code>CancellationSource</code> injected. This allows the Web API controller to use the service reliable collections and anything else related to service context. For example, this is the implementation of the queue length Web API method:</p>
+<pre><code class="language-csharp">        [HttpGet]
+        [Route(&quot;queue/length&quot;)]
+        public async Task&lt;IActionResult&gt; GetQueueLengthAsync()
+        {
+            IReliableQueue&lt;RateRequest&gt; queue = await this.stateManager.GetOrAddAsync&lt;IReliableQueue&lt;RateRequest&gt;&gt;(RatesService.RateQueueName);
+
+            using (ITransaction tx = this.stateManager.CreateTransaction())
+            {
+                long count = await queue.GetCountAsync(tx);
+
+                return this.Ok(count);
+            }
+        }
+</code></pre>
+<p>Note how the API controller uses the injected <code>StateManager</code> to gain access to the reliable queue and reports on its length.</p>
+<p>Since the service interface is implemented as regular Web API controllers (or controllers), they can also be exposed as <code>Swagger</code> and allow other an API management layer to front-end these services.</p>
+<p>To make this possible, the service must override the <code>CreateServiceInstanceListeners</code> in case of stateless services and <code>CreateServiceReplicaListeners</code> in case of stateful services. Here is an example of the Stateful service:</p>
+<pre><code class="language-csharp">protected override IEnumerable&lt;ServiceReplicaListener&gt; CreateServiceReplicaListeners()
+{
+    return new ServiceReplicaListener[1]
+    {
+        new ServiceReplicaListener(
+            context =&gt;
+            {
+                string tenantName = new Uri(context.CodePackageActivationContext.ApplicationName).Segments.Last();
+
+                return new WebHostCommunicationListener(
+                    context,
+                    tenantName,
+                    &quot;ServiceEndpoint&quot;,
+                    uri =&gt;
+                    {
+                        ServiceEventSource.Current.Message($&quot;Listening on {uri}&quot;);
+
+                        return new WebHostBuilder().UseWebListener()
+                            .ConfigureServices(
+                                services =&gt; services
+                                    .AddSingleton&lt;StatefulServiceContext&gt;(this.Context)
+                                    .AddSingleton&lt;IReliableStateManager&gt;(this.StateManager)
+                                    .AddSingleton&lt;CancellationTokenSource&gt;(this._webApiCancellationSource))
+                            .UseContentRoot(Directory.GetCurrentDirectory())
+                            .UseStartup&lt;Startup&gt;()
+                            .UseUrls(uri)
+                            .Build();
+                    });
+            })
+    };
+}
+
+</code></pre>
+<p>Please note the use of the <code>WebHostCommunicationListener</code> and how we inject the service context, state manager and the cancellation token.</p>
+<p>In our demo app, both statelss and stateful services implement their interface as Web API.</p>
+<h3 id="http-vs.rcp-endpoints">HTTP vs. RCP Endpoints</h3>
+<p>Instead of HTTP Web API, Services (especially stateful) can expose an interface using a built-in RCP communicaton listener. In this case, the service implements an interface and make it easy for clients to call upon the service using the interface. For example, a stateful service might have an interface that looks like this:</p>
+<pre><code class="language-csharp">    public interface ILookupService : IService
+    {
+        Task EnqueueEvent(SalesEvent sEvent);
+        Task&lt;string&gt; GetNodeName();
+        Task&lt;int&gt; GetEventsCounter(CancellationToken ct);
+    }
+</code></pre>
+<p>The service will then be implemented this way:</p>
+<pre><code class="language-csharp">    internal sealed class LookupService : StatefulService, ILookupService
+    {
+	...
+	}
+</code></pre>
+<p>The service will override the CreateServiceReplicaListeners as follows:</p>
+<pre><code class="language-csharp">    protected override IEnumerable&lt;ServiceReplicaListener&gt; CreateServiceReplicaListeners()
+    {
+        return new[]
+            {
+                new ServiceReplicaListener(context =&gt;
+                    this.CreateServiceRemotingListener(context),
+                    &quot;rpcPrimaryEndpoint&quot;,
+                    false)
+            };
+    }
+</code></pre>
+<p>Although this looks nice and complies with Object Oriented programming, I think it should only be used with internal stateful services (those that do not expose an outside interface). Stateless services that are used by external clients are better off using an HTTP Web API interface which makes them easily consumable by many clients in different languages.</p>
+<h3 id="reliable-collections">Reliable Collections</h3>
+<p>Since we have the state manager injected in the stateful service Web API controllers, it makes all the service reliable collections available to the Web API controllers. In our demo, the <code>RatesService</code> Web API controller i.e. <code>RatesController</code> uses the reliable queue to get the queue length and enqueue rate requests to the service. The service processes the incoming <code>RateRequest</code> in its <code>RunAsyc</code> method and aggregates the results in a reliable dictionary indexed by city/country:</p>
+<pre><code class="language-csharp">protected override async Task RunAsync(CancellationToken cancellationToken)
+{
+    cancellationToken.Register(() =&gt; this._webApiCancellationSource.Cancel());
+
+    IReliableDictionary&lt;string, RateAggregation&gt; citiesDictionary = await this.StateManager.GetOrAddAsync&lt;IReliableDictionary&lt;string, RateAggregation&gt;&gt;(RateCitiesDictionaryName);
+    IReliableQueue&lt;RateRequest&gt; queue = await this.StateManager.GetOrAddAsync&lt;IReliableQueue&lt;RateRequest&gt;&gt;(RateQueueName);
+
+    while (true)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        try
+        {
+            using (var tx = this.StateManager.CreateTransaction())
+            {
+                var result = await queue.TryDequeueAsync(tx);
+
+                if (result.HasValue)
+                {
+                    RateRequest request = result.Value;
+
+                    // TODO: Process the request
+                    // TODO: Go against the reservation provider to pick up the rate
+                    // TODO: How do I determine the reservation provider per tenant?
+                    int nights = (request.CheckOutDate - request.CheckInDate).Days;
+                    int netAmount = _random.Next(500) * nights;
+                    var newAggregation = new RateAggregation();
+                    newAggregation.Transactions = 1;
+                    newAggregation.Nights = nights;
+                    newAggregation.Amount = (double) netAmount;
+
+                    await citiesDictionary.AddOrUpdateAsync(tx, $&quot;{request.City}/{request.Country}&quot;, newAggregation, (key, currentValue) =&gt;
+                    {
+                        currentValue.Transactions += newAggregation.Transactions;
+                        currentValue.Nights += newAggregation.Nights;
+                        currentValue.Amount += newAggregation.Amount;
+                        return currentValue;
+                    });
+
+                    // This commits the add to dictionary and the dequeue operation.
+                    await tx.CommitAsync();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        await Task.Delay(TimeSpan.FromMilliseconds(500), cancellationToken);
+    }
+}
+</code></pre>
+<p>The reliable dictionary is then used in the service contrloller to return the aggregated result in an API call.</p>
+<h3 id="partitions-replicas-and-instances">Partitions, Replicas and Instances</h3>
+<p>In our demo app, we use partitions in the Stateful service i.e. <code>RatesService</code> to partition our data in 4 different buckets:</p>
+<ol>
+<li>Rate Requests for the United States</li>
+<li>Rate Requests for Canada</li>
+<li>Rate Requests for Australia</li>
+<li>Rate Requests for other countries</li>
+</ol>
+<p>Hence our partition key range is 0 (Low Key) to 3 (High Key). We use a very simple method to select the appropriate partition based on the request's country code:</p>
+<pre><code class="language-csharp">private long GetPartitionKey(RateRequest request)
+{
+    if (request.Country == &quot;USA&quot;)
+        return 0;
+    else if (request.Country == &quot;CAN&quot;)
+        return 1;
+    else if (request.Country == &quot;AUS&quot;)
+        return 2;
+    else // all others
+        return 3;
+}
+</code></pre>
+<p>To allow for high availability, Service Fabric uses replicas for stateful services and instances for stateless services. In Service Fabric literature, the term replicas and instances are often exchanged.</p>
+<p>In order to guarantee high availability of stateful service state, the state for each partition is usually replicated. The number of replicas is decided at the time of deploying the service (as we will see soon in the PowerShell script). This means that, if a stateful service has 4 partitions and the target replica count is 3, for example, then there are 12 instances of that service in Service Fabric.</p>
+<p>In order to guarantee high availability of stateless services, Service Fabric allows the instantiation of multiple instances. Usually the number of instances matches the number of nodes in the Service Fabric cluster which allows Service Fabric to distribute an instance on each node. The load balancer then distribute the load across all nodes.</p>
+<p>Please note, however, that, unlike stateless service instances, a stateful service partitions cannot be changed at run-time once the service is deployed. The number of partitions must be decided initially before the service is deployed to the cluster. Of course, if the service state can be discarded, then of course changes to the partition are allowed. Stateless services number of instances can be updated at any time (up or down) at any time. In fact, this is one of the great features of Service Fabric.</p>
+<h3 id="result-aggregation">Result Aggregation</h3>
+<p>Since the state is partitioned, does this mean that we have the reliable collections (i.e. queues and dictionaries) scattered among the different partitions? The answer is yes! For example, in order to get the queue length of a stateful service, the client has to query all partitions and ask each service instance about the queue length and add them together to determine the overall queue length for the stateful service:</p>
+<pre><code class="language-csharp">[HttpGet]
+[Route(&quot;queue/length&quot;)]
+public async Task&lt;IActionResult&gt; GetQueueLengthAsync()
+{
+    ServiceUriBuilder uriBuilder = new ServiceUriBuilder(RatesServiceName);
+    Uri serviceUri = uriBuilder.Build();
+
+    // service may be partitioned.
+    // this will aggregate the queue lengths from each partition
+    ServicePartitionList partitions = await this.fabricClient.QueryManager.GetPartitionListAsync(serviceUri);
+
+    HttpClient httpClient = new HttpClient(new HttpServiceClientHandler());
+
+    long count = 0;
+    foreach (Partition partition in partitions)
+    {
+        Uri getUrl = new HttpServiceUriBuilder()
+            .SetServiceName(serviceUri)
+            .SetPartitionKey(((Int64RangePartitionInformation)partition.PartitionInformation).LowKey)
+            .SetServicePathAndQuery($&quot;/api/rates/queue/length&quot;)
+            .Build();
+
+        HttpResponseMessage response = await httpClient.GetAsync(getUrl, this.cancellationSource.Token);
+
+        if (response.StatusCode != System.Net.HttpStatusCode.OK)
+        {
+            return this.StatusCode((int)response.StatusCode);
+        }
+
+        string result = await response.Content.ReadAsStringAsync();
+
+        count += Int64.Parse(result);
+    }
+
+    return this.Ok(count);
+}
+</code></pre>
+<p><code>FabricClient</code> is the .NET client used to provide all sorts of management capabilities. It is injected in the Web Service controller to allow them to communicate with each partitition replica and get the needed results as shown above. Then the Web Service adds the count of each partition and return the total lenth of all partitions queues.</p>
+<p>Similarly, the Web Service uses the <code>FabricClient</code> to communicate with the each partition replica to get and aggregate the result of each country cities:</p>
+<pre><code class="language-csharp">[HttpGet]
+[Route(&quot;cities&quot;)]
+public async Task&lt;IActionResult&gt; GetCitiesAsync()
+{
+    ServiceUriBuilder uriBuilder = new ServiceUriBuilder(RatesServiceName);
+    Uri serviceUri = uriBuilder.Build();
+
+    // service may be partitioned.
+    // this will aggregate cities from all partitions
+    ServicePartitionList partitions = await this.fabricClient.QueryManager.GetPartitionListAsync(serviceUri);
+
+    HttpClient httpClient = new HttpClient(new HttpServiceClientHandler());
+
+    List&lt;CityStats&gt; cities = new List&lt;CityStats&gt;();
+    foreach (Partition partition in partitions)
+    {
+        Uri getUrl = new HttpServiceUriBuilder()
+            .SetServiceName(serviceUri)
+            .SetPartitionKey(((Int64RangePartitionInformation)partition.PartitionInformation).LowKey)
+            .SetServicePathAndQuery($&quot;/api/rates/cities&quot;)
+            .Build();
+
+        HttpResponseMessage response = await httpClient.GetAsync(getUrl, this.cancellationSource.Token);
+
+        if (response.StatusCode != System.Net.HttpStatusCode.OK)
+        {
+            return this.StatusCode((int)response.StatusCode);
+        }
+
+        JsonSerializer serializer = new JsonSerializer();
+        using (StreamReader streamReader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+        {
+            using (JsonTextReader jsonReader = new JsonTextReader(streamReader))
+            {
+                List&lt;CityStats&gt; result = serializer.Deserialize&lt;List&lt;CityStats&gt;&gt;(jsonReader);
+
+                if (result != null)
+                {
+                    cities.AddRange(result);
+                }
+            }
+        }
+    }
+
+    return this.Ok(cities);
+}
+
+</code></pre>
+<h3 id="multi-tenancy">Multi-Tenancy</h3>
+<p>One of the great features of Service Fabric is its ability to allow the creation of multi-tenant scanarios. In our demo case, we may launch an app for Contoso rates and another one for Fabrican rates. We want these two apps to be of the same type but they should be completely isolated of each other. So we create two named app instances: <code>ConosoRateAggretor</code> and <code>FabricanRateAggregator</code>. This means that we have different set of services for each app operated independely and perhaps scaled, updated and upgraded independently.</p>
+<p><img src="http://i.imgur.com/e6YmFNy.png" class="img-fluid" alt="Named App Instances" /></p>
+<p>This is really useful in many scenarios and allows for many great advantages. In the next section, we will see how easy it is to actually deploy, un-deploy, update and upgrade these named instances.</p>
+<h3 id="configuration">Configuration</h3>
+<p>Given that we have multiple named app instances, how do we pass different parameters for each named instance? In the <code>RatesService</code>, we would like to have the name of the provider (and probably other configuration items) so we can communicate with the provider to pull rates. In our demo app, we are not actually communicating with the provider.</p>
+<p>To do this, we define parameters for the <code>RatesService</code> in the Service Settings file as follows:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+&lt;Settings xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns=&quot;http://schemas.microsoft.com/2011/01/fabric&quot;&gt;
+  &lt;!-- Add your custom configuration sections and parameters here --&gt;
+  &lt;Section Name=&quot;ParametersSection&quot;&gt;
+    &lt;Parameter Name=&quot;ProviderName&quot; Value=&quot;&quot; /&gt;
+  &lt;/Section&gt;
+&lt;/Settings&gt;
+</code></pre>
+<p>The section name can be anything. In our case, it is <code>ParametersSection</code>. To be able to override this value for a specific application instance, we create a <code>ConfigOverride</code> when we import the service manifest in the application manifest:</p>
+<pre><code>&lt;ServiceManifestImport&gt;
+&lt;ServiceManifestRef ServiceManifestName=&quot;RatesServicePkg&quot; ServiceManifestVersion=&quot;1.0.0&quot; /&gt;
+&lt;ConfigOverrides&gt;
+  &lt;ConfigOverride Name=&quot;Config&quot;&gt;
+    &lt;Settings&gt;
+      &lt;Section Name=&quot;ParametersSection&quot;&gt;
+        &lt;Parameter Name=&quot;ProviderName&quot; Value=&quot;[RatesService_ProviderName]&quot; /&gt;
+      &lt;/Section&gt;
+    &lt;/Settings&gt;
+  &lt;/ConfigOverride&gt;
+&lt;/ConfigOverrides&gt;
+&lt;/ServiceManifestImport&gt;
+</code></pre>
+<p><em>The convention is to name the value as <code>ServiceName_ParameterName</code></em></p>
+<p>Finally, we must adjust the application manifest to include the required parameter:</p>
+<pre><code>&lt;ApplicationManifest xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; ApplicationTypeName=&quot;RateAggregatorAppType&quot; ApplicationTypeVersion=&quot;1.0.0&quot; xmlns=&quot;http://schemas.microsoft.com/2011/01/fabric&quot;&gt;
+  &lt;Parameters&gt;
+    &lt;Parameter Name=&quot;RatesService_ProviderName&quot; DefaultValue=&quot;&quot; /&gt;
+  &lt;/Parameters&gt;
+  ...
+&lt;/ApplicationManifest&gt;
+</code></pre>
+<p>Finally, at the deployment time (as you will see in more detail in the deployment script), we will specify a PowerShell <code>Hashtable</code> to override these parameters per named instance:</p>
+<pre><code>New-ServiceFabricApplication -ApplicationTypeName $appTypeName -ApplicationTypeVersion $version -ApplicationName $appName -ApplicationParameter &#64;{&quot;RatesService_ProviderName&quot; = &quot;Contoso&quot;}  
+
+New-ServiceFabricApplication -ApplicationTypeName $appTypeName -ApplicationTypeVersion $version -ApplicationName $appName -ApplicationParameter &#64;{&quot;RatesService_ProviderName&quot; = &quot;Fabrican&quot;}  
+</code></pre>
+<p>The <code>RatesService</code> code will then make sure of this parameter to contact the instance-bound provider.</p>
+<h2 id="powershell-management-scripts">PowerShell Management Scripts</h2>
+<h3 id="deployment">Deployment</h3>
+<p><strong>This PowerShell script assumes that you used Visual Studio to generate the Service Fabric app package info (right-click the Service Fabric App and select <code>Package</code>) or you built the app package manually as demonstrated in a previous <a href="../posts/2016-12-02-service-fabric-basics">post</a>. The created package directory is expected to have the following format <code>v1.0.0</code> where 1.0.0 is the version number</strong></p>
+<p>This PowerShell script copies the package to the cluster, registers the app type and creates two name app instances (i.e. Contoso and Fabrican). In each app instance, create two services: Web Service as a front-end and Rates service as a back-end.</p>
+<pre><code>$clusterUrl = &quot;localhost&quot;
+$imageStoreConnectionString = &quot;file:C:\SfDevCluster\Data\ImageStoreShare&quot;   # Use this with OneBox
+If ($clusterUrl -ne &quot;localhost&quot;)
+{
+    $imageStoreConnectionString = &quot;fabric:ImageStore&quot;                       # Use this when not using OneBox
+}
+
+# Used only for the inmage store....it can be any name!!!
+$appPkgName = &quot;RateAggregatorAppTypePkg&quot;
+
+# Define the app and service types
+$appTypeName = &quot;RateAggregatorAppType&quot;
+$webServiceTypeName = &quot;WebServiceType&quot;
+$ratesServiceTypeName = &quot;RatesServiceType&quot;
+
+# Define the version
+$version = &quot;1.0.0&quot;
+
+# Connect PowerShell session to a cluster
+Connect-ServiceFabricCluster -ConnectionEndpoint ${clusterUrl}:19000
+
+# Copy the application package to the cluster
+Copy-ServiceFabricApplicationPackage -ApplicationPackagePath &quot;RateAggregatorApp\pkg\v$version&quot; -ImageStoreConnectionString $imageStoreConnectionString -ApplicationPackagePathInImageStore $appPkgName
+
+# Register the application package's application type/version
+Register-ServiceFabricApplicationType -ApplicationPathInImageStore $appPkgName
+
+# After registering the package's app type/version, you can remove the package
+Remove-ServiceFabricApplicationPackage -ImageStoreConnectionString $imageStoreConnectionString -ApplicationPackagePathInImageStore $appPkgName
+
+# Deploy the first aplication name (i.e. Contoso)
+$appName = &quot;fabric:/ContosoRateAggregatorApp&quot;
+$webServiceName = $appName + &quot;/WebService&quot;
+$ratesServiceName = $appName + &quot;/RatesService&quot;
+
+# Create a named application from the registered app type/version
+New-ServiceFabricApplication -ApplicationTypeName $appTypeName -ApplicationTypeVersion $version -ApplicationName $appName -ApplicationParameter &#64;{&quot;RatesService_ProviderName&quot; = &quot;Contoso&quot;}  
+
+# Create a named service within the named app from the service's type
+New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $webServiceTypeName -ServiceName $webServiceName -Stateless -PartitionSchemeSingleton -InstanceCount 1
+
+# Create a named service within the named app from the service's type
+# For stateful services, it is important to indicate in the service manifest that the service is stateful and that it has a persisted state:
+# &lt;StatefulServiceType ServiceTypeName=&quot;RatesServiceType&quot; HasPersistedState=&quot;true&quot;/&gt;
+# Actually all of these switches are important on the PowerShell command:
+# -PartitionSchemeUniformInt64 $true -PartitionCount 4 -MinReplicaSetSize 2 -TargetReplicaSetSize 3 -LowKey 0 -HighKey 3 -HasPersistedState
+New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $ratesServiceTypeName -ServiceName $ratesServiceName -PartitionSchemeUniformInt64 $true -PartitionCount 4 -MinReplicaSetSize 2 -TargetReplicaSetSize 3 -LowKey 0 -HighKey 3 -HasPersistedState
+
+# Deploy the second aplication name (i.e. Fabrican)
+$appName = &quot;fabric:/FabricanRateAggregatorApp&quot;
+$webServiceName = $appName + &quot;/WebService&quot;
+$ratesServiceName = $appName + &quot;/RatesService&quot;
+
+# Create a named application from the registered app type/version
+New-ServiceFabricApplication -ApplicationTypeName $appTypeName -ApplicationTypeVersion $version -ApplicationName $appName -ApplicationParameter &#64;{&quot;RatesService_ProviderName&quot; = &quot;Fabrican&quot;}  
+
+# Create a named service within the named app from the service's type
+New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $webServiceTypeName -ServiceName $webServiceName -Stateless -PartitionSchemeSingleton -InstanceCount 1
+
+# Create a named service within the named app from the service's type
+New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $ratesServiceTypeName -ServiceName $ratesServiceName -PartitionSchemeUniformInt64 $true -PartitionCount 4 -MinReplicaSetSize 2 -TargetReplicaSetSize 3 -LowKey 0 -HighKey 3 -HasPersistedState
+</code></pre>
+<h3 id="obliterate">Obliterate</h3>
+<p>This PowerShell script removes all application name instances and their services from the selected cluster. It does this based on the application type.</p>
+<pre><code>$clusterUrl = &quot;localhost&quot;
+
+# Define the app and service types
+$applicationTypes = &quot;RateAggregatorAppType&quot;
+
+# Connect PowerShell session to a cluster
+Connect-ServiceFabricCluster -ConnectionEndpoint ${clusterUrl}:19000
+
+# Remove all application names instances and their services
+Get-ServiceFabricApplication | Where-Object { $applicationTypes -contains $_.ApplicationTypeName } | Remove-ServiceFabricApplication -Force
+Get-ServiceFabricApplicationType | Where-Object { $applicationTypes -contains $_.ApplicationTypeName } | Unregister-ServiceFabricApplicationType -Force
+
+</code></pre>
+<h3 id="update">Update</h3>
+<p>This PowerShell script updates the web service in each app named instance to have 5 instances. Please note that this works if the number of instances does  not exceed the number of nodes in the cluster.</p>
+<pre><code>$clusterUrl = &quot;localhost&quot;
+
+# Deploy the first aplication name (i.e. Contoso)
+$appName = &quot;fabric:/ContosoRateAggregatorApp&quot;
+$webServiceName = $appName + &quot;/WebService&quot;
+
+# Dynamically change the named service's number of instances (the cluster must have at least 5 nodes)
+Update-ServiceFabricService -ServiceName $webServiceName -Stateless -InstanceCount 5 -Force
+
+# Deploy the first aplication name (i.e. Fabrican)
+$appName = &quot;fabric:/FabricanRateAggregatorApp&quot;
+$webServiceName = $appName + &quot;/WebService&quot;
+
+# Dynamically change the named service's number of instances (the cluster must have at least 5 nodes) 
+Update-ServiceFabricService -ServiceName $webServiceName -Stateless -InstanceCount 5 -Force
+</code></pre>
+<h3 id="upgrade">Upgrade</h3>
+<p>This PowerShell script upgrades the application named instances to a higher version i.e. 1.1.0. As noted earlier, this assumes that you have a new folder named v1.1.0 which contains the upgraded application package. The script uses <code>monitored</code> upgrade modes and performs the upgrade using upgrade domains.</p>
+<pre><code>$clusterUrl = &quot;localhost&quot;
+$imageStoreConnectionString = &quot;file:C:\SfDevCluster\Data\ImageStoreShare&quot;   # Use this with OneBox
+If ($clusterUrl -ne &quot;localhost&quot;)
+{
+    $imageStoreConnectionString = &quot;fabric:ImageStore&quot;                       # Use this when not using OneBox
+}
+
+# Used only for the inmage store....it can be any name!!!
+$appPkgName = &quot;RateAggregatorAppTypePkg&quot;
+
+# Define the new version
+$version = &quot;1.1.0&quot;
+
+# Connect PowerShell session to a cluster
+Connect-ServiceFabricCluster -ConnectionEndpoint ${clusterUrl}:19000
+
+# Copy the application package to the cluster
+Copy-ServiceFabricApplicationPackage -ApplicationPackagePath &quot;RateAggregatorApp\pkg\v$version&quot; -ImageStoreConnectionString $imageStoreConnectionString -ApplicationPackagePathInImageStore $appPkgName
+
+# Register the application package's application type/version
+Register-ServiceFabricApplicationType -ApplicationPathInImageStore $appPkgName
+
+# After registering the package's app type/version, you can remove the package
+Remove-ServiceFabricApplicationPackage -ImageStoreConnectionString $imageStoreConnectionString -ApplicationPackagePathInImageStore $appPkgName
+
+# Upgrade the first aplication name (i.e. Contoso)
+$appName = &quot;fabric:/ContosoRateAggregatorApp&quot;
+
+# Upgrade the application to the new version
+Start-ServiceFabricApplicationUpgrade -ApplicationName $appName -ApplicationTypeVersion $version -Monitored -UpgradeReplicaSetCheckTimeoutSec 100
+
+# Upgrade the second aplication name (i.e. Fabrican)
+$appName = &quot;fabric:/FabricanRateAggregatorApp&quot;
+
+# Upgrade the application to the new version
+Start-ServiceFabricApplicationUpgrade -ApplicationName $appName -ApplicationTypeVersion $version -Monitored -UpgradeReplicaSetCheckTimeoutSec 100
+
+</code></pre>
+<h3 id="test">Test</h3>
+<p>This PowerShell scripts defines functions to exercise the Service Fabric Web service APIs for each named application instance.</p>
+<pre><code>Function Generate-RateRequests($appName = 'Contoso', $iterations = 20)
+{
+    Try {
+        Write-Host &quot;Generating $iterations random rate requests against $appName ....&quot; -ForegroundColor Green
+
+        $url = &quot;Http://localhost:8082/$appName&quot; + &quot;RateAggregatorApp/api/requests&quot;
+
+        foreach($i in 1..$iterations)
+        {
+            $checkInDate = get-date -Year (get-random -minimum 2012 -maximum 2016) -Month (get-random -minimum 1 -maximum 12) -Day (get-random -minimum 1 -maximum 28)
+            $nights = get-random -minimum 1 -maximum 30
+            $checkOutDate = $checkInDate.AddDays($nights)
+            $hotelId = get-random -input &quot;1&quot;, &quot;2&quot;, &quot;3&quot; -count 1
+            $body = &#64;{
+                CheckInDate = get-date $checkInDate -Format &quot;yyy-MM-ddTHH:mm:ss&quot;;
+                CheckOutDate = get-date $checkOutDate -Format &quot;yyy-MM-ddTHH:mm:ss&quot;;
+                HotelId = $hotelId;
+                HotelName = &quot;Hotel$hotelId&quot;;
+                City = &quot;City$hotelId&quot;;
+                Country = get-random -input &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;CAN&quot;, &quot;CAN&quot;, &quot;CAN&quot;, &quot;AUS&quot;, &quot;AUS&quot;, &quot;AUS&quot;, &quot;FRA&quot;, &quot;GER&quot;, &quot;UAE&quot; -count 1
+            }
+            Write-Host &quot;This is the JSON we are generating for iteration # $i....&quot; -ForegroundColor yellow
+            $json = ConvertTo-Json $body -Depth 3
+            $json
+
+	        $result = Invoke-RestMethod -Uri $url -Headers &#64;{&quot;Content-Type&quot;=&quot;application/json&quot; } -Body $json -Method POST -TimeoutSec 600
+        }        
+    } Catch {
+        Write-Host &quot;Failure message: $_.Exception.Message&quot; -ForegroundColor red
+        Write-Host &quot;Failure stack trace: $_.Exception.StackTrace&quot; -ForegroundColor red
+        Write-Host &quot;Failure inner exception: $_.Exception.InnerException&quot; -ForegroundColor red
+    }
+}
+
+Function View-QueueLength($appName = 'Contoso')
+{
+    Try {
+        Write-Host &quot;View Queue Length for $appName....&quot; -ForegroundColor Green
+
+        $url = &quot;Http://localhost:8082/$appName&quot; + &quot;RateAggregatorApp/api/stats/queue/length&quot;
+	    $result = Invoke-RestMethod -Uri $url -Headers &#64;{&quot;Content-Type&quot;=&quot;application/json&quot; } -Method GET -TimeoutSec 600
+        $json = ConvertTo-Json $result -Depth 3
+        $json
+    } Catch {
+        Write-Host &quot;Failure message: $_.Exception.Message&quot; -ForegroundColor red
+        Write-Host &quot;Failure stack trace: $_.Exception.StackTrace&quot; -ForegroundColor red
+        Write-Host &quot;Failure inner exception: $_.Exception.InnerException&quot; -ForegroundColor red
+    }
+}
+
+Function View-Cities($appName = 'Contoso')
+{
+    Try {
+        Write-Host &quot;View cities for $appName....&quot; -ForegroundColor Green
+
+        $url = &quot;Http://localhost:8082/$appName&quot; + &quot;RateAggregatorApp/api/stats/cities&quot;
+	    $result = Invoke-RestMethod -Uri $url -Headers &#64;{&quot;Content-Type&quot;=&quot;application/json&quot; } -Method GET -TimeoutSec 600
+        $json = ConvertTo-Json $result -Depth 3
+        $json
+    } Catch {
+        Write-Host &quot;Failure message: $_.Exception.Message&quot; -ForegroundColor red
+        Write-Host &quot;Failure stack trace: $_.Exception.StackTrace&quot; -ForegroundColor red
+        Write-Host &quot;Failure inner exception: $_.Exception.InnerException&quot; -ForegroundColor red
+    }
+}
+
+Generate-RateRequests -appName Contoso -iterations 100
+Generate-RateRequests -appName Fabrican -iterations 100
+
+View-QueueLength -appName Contoso
+View-QueueLength -appName Fabrican
+
+View-Cities -appName Contoso
+View-Cities -appName Fabrican
+
+</code></pre>
+<h2 id="what-is-next">What is next?</h2>
+<p>I think Service Fabric has a lot of great and useful features that make it is a great candidate for a lot of scenarios. I will post more articles about Service Fabric as I expand my knowledge in this really cool technology.</p>
+
+
+
+                                </div>
+                        </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Footer -->
+                <footer>
+                        <div class="container">
+        <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline text-center">
+                        <li>
+                        <a href="https://twitter.com/khaledhmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                        <li>
+                        <a href="https://github.com/khaledhikmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                </ul>
+                <p class="copyright text-muted">
+                        Copyright © 2016 by Khaled Hikmat. 
+                        <br />
+                        <strong><a href="http://wyam.io">Generated by Wyam</a></strong>
+                </p>
+                </div>
+        </div>
+</div>
+                </footer> 
+
+                <script type="text/javascript">
+</script>
+                <script>hljs.initHighlightingOnLoad();</script>
+
+                        <script type="text/javascript">                
+                                // Header background                        
+                                var colors = Please.make_color({
+                                        colors_returned: 3,
+                                        saturation: .6
+                                });
+                                var t = new Trianglify({
+                                        x_gradient: colors,
+                                        y_gradient: ["#FFFFFF"]
+                                });
+                                var header = document.getElementById("intro-header");
+                                var pattern = t.generate(header.clientWidth, header.clientHeight);
+                                header.setAttribute('style', 'background-image: ' + pattern.dataUrl);                        
+                        </script>
+        </body>
+</html>
+
