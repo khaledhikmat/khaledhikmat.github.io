@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+        <title>Khaled Hikmat - Document Deletion in Azure DocumentDB</title>
+        <meta name="description" content="Coding Thoughts" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+
+        <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
+        <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/highlight.css" rel="stylesheet">
+        <link href="/assets/css/clean-blog.css" rel="stylesheet" />
+        <link href="/assets/css/master.css" rel="stylesheet" />
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/override.css" rel="stylesheet" />
+
+
+        <meta name="application-name" content="Khaled Hikmat" />
+        <meta name="msapplication-tooltip" content="Khaled Hikmat" />
+        <meta name="msapplication-starturl" content="/" />
+
+        <meta property="og:title" content="Khaled Hikmat - Document Deletion in Azure DocumentDB" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://khaledhikmat.github.io/posts/2017-03-30-deletes-in-docdb" />
+        <!-- TODO: More social graph meta tags -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/highlight.pack.js"></script>   
+        <script src="/assets/js/clean-blog.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/assets/js/trianglify.min.js"></script>
+        <script src="/assets/js/Please-compressed.js"></script>
+                
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+        </head>
+        <body>
+                
+                <!-- Navigation -->
+                <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+                        <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header page-scroll">
+                                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="/">Khaled Hikmat</a>
+                                </div>
+                        
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="navbar-collapse">
+                                        <ul class="nav navbar-nav navbar-right">
+                                                <li><a href="/about">About</a></li>
+<li><a href="/posts">Archive</a></li>
+<li><a href="/tags">Tags</a></li> 
+                                        </ul>
+                                </div>
+                                <!-- /.navbar-collapse -->
+                        </div>
+                        <!-- /.container -->
+                </nav>
+                
+                <!-- Page Header -->
+                <header class="intro-header" id="intro-header">
+                        <div class="container">
+                                <div class="row">
+                                        <div class="col-md-12">
+
+    
+<div class="post-heading">
+    <h1>Document Deletion in Azure DocumentDB</h1>
+        <h2 class="subheading">How to perform multiple-document deletions based on time in Azure DocumentDB</h2>
+    <div class="meta">        
+Published on Thursday, March 30, 2017<br>    </div>
+        <div class="tags">
+                    <a role="button" href="/tags/azure" class="btn btn-default btn-xs">Azure</a>
+                    <a role="button" href="/tags/documentdb" class="btn btn-default btn-xs">DocumentDB</a>
+        </div>     
+</div>
+                                        </div>
+                                </div>
+                        </div>
+                </header>
+                
+                <!-- Main Content -->
+                <div class="container">
+                        <div class="row">
+                                <div id="content" class="col-md-12">
+                                        
+
+<p>I saw many posts about deleting documents in Azure DocumentDB...but none of them worked quite well for me. So I spent a few hours on this and finally got it to work. Below is my solution. The following posts helped me tremendously (thank you):</p>
+<ul>
+<li><a href="https://talkingaboutdata.wordpress.com/2015/08/24/deleting-multiple-documents-from-azure-documentdb/">https://talkingaboutdata.wordpress.com/2015/08/24/deleting-multiple-documents-from-azure-documentdb/</a></li>
+<li><a href="https://www.tutorialspoint.com/documentdb/documentdb_delete_document.htm">https://www.tutorialspoint.com/documentdb/documentdb_delete_document.htm</a></li>
+<li><a href="http://stackoverflow.com/questions/29137708/how-to-delete-all-the-documents-in-documentdb-through-c-sharp-code">http://stackoverflow.com/questions/29137708/how-to-delete-all-the-documents-in-documentdb-through-c-sharp-code</a></li>
+<li><a href="https://azure.microsoft.com/en-us/blog/working-with-dates-in-azure-documentdb-4/">https://azure.microsoft.com/en-us/blog/working-with-dates-in-azure-documentdb-4/</a></li>
+</ul>
+<p>I basically wanted to delete aging documents (based on number of hours) from a collection. So my final routine looks like this. Below is some explanation:</p>
+<pre><code>public async Task&lt;int&gt; DeleteRecords(Uri docDbUri, string docDbKey, string databaseName, string collectionName, int hours)
+{
+    using (var client = new DocumentClient(docDbUri, docDbKey))
+    {
+		try
+		{
+	        var dbs = this._docDbClient.CreateDatabaseQuery().ToList();
+	        if (dbs == null)
+	            throw new Exception(&quot;No databases in the Docdb account!&quot;);
+	        var db = dbs.Where(d =&gt; d.Id == databaseName).FirstOrDefault();
+	        if (db == null)
+	            throw new Exception($&quot;No database [{databaseName}] in the Docdb account!&quot;);
+	        var collections = this._docDbClient.CreateDocumentCollectionQuery(db.CollectionsLink).ToList();
+	        if (collections == null)
+	            throw new Exception($&quot;No collections in the [{databaseName}] database in the Docdb account!&quot;);
+	        var collection = this._docDbClient.CreateDocumentCollectionQuery(db.CollectionsLink).Where(c =&gt; c.Id == collectionName).ToList().FirstOrDefault();
+	        if (collection == null)
+	            throw new Exception($&quot;No collection [{collectionName}] in the [{databaseName}] database in the Docdb account!&quot;);
+
+            int epocDateTime = DateTime.UtcNow.AddHours(-1 * hours).ToEpoch();
+            var dbQuery = &quot;SELECT VALUE {\&quot;link\&quot;: c._self, \&quot;source\&quot;: c.source} FROM c WHERE c._ts &lt; &quot; + epocDateTime;
+            var docs = this._docDbClient.CreateDocumentQuery(collection.SelfLink, dbQuery, new FeedOptions { EnableCrossPartitionQuery = true }).ToList();
+            foreach (var doc in docs)
+            {
+                var link = (string)doc.link;
+                var source = (string)doc.source;
+                await this._docDbClient.DeleteDocumentAsync(link, new RequestOptions() { PartitionKey = new Microsoft.Azure.Documents.PartitionKey(source) });
+            }
+
+            return docs.Count;
+		}
+		catch (Exception ex)
+		{
+			// some debug 
+		}
+    }
+}
+</code></pre>
+<h3 id="time">Time</h3>
+<p>The first problem I encountered is how to select the aging documents! It turned out the best way to do this is to compare numbers as opposed to dates. This <a href="https://azure.microsoft.com/en-us/blog/working-with-dates-in-azure-documentdb-4/">post</a> helped me understand what the problem is and how to go around doing it properly. I ended it up using the built-in time stamp value stored as meta data in every DocDB document i.e. <code>_ts</code>. This may or may not work for every case. In my case my collection document date i.e. <code>eventDate</code> is actually the real UTC time ....so it was no problem. If this is not the case, you many need to store your own time stamp (in addition to the date) so u can do the query to pull the aging documents based on time.</p>
+<p>so this query does exactly that:</p>
+<pre><code>int epocDateTime = DateTime.UtcNow.AddHours(-1 * hours).ToEpoch();
+var dbQuery = $&quot;SELECT * FROM c WHERE c._ts &lt; {epocDateTime}&quot;;
+</code></pre>
+<p>Notice how I am using the Epoc time for my aging time stamp. The <code>DateTime</code> extension is written this way:</p>
+<pre><code>public static int ToEpoch(this DateTime date)
+{
+    if (date == null) return int.MinValue;
+    DateTime epoch = new DateTime(1970, 1, 1);
+    TimeSpan epochTimeSpan = date - epoch;
+    return (int)epochTimeSpan.TotalSeconds;
+}
+</code></pre>
+<h3 id="partition-key">Partition Key</h3>
+<p>My collection was partitioned over a value in the document i.e. <code>source</code>, but I wanted to trim all aging documents across all partitions...not against a single partition. So I used this query options to force the query to span multiple partitions:</p>
+<pre><code>FeedOptions queryOptions = new FeedOptions { EnableCrossPartitionQuery = true };
+</code></pre>
+<h3 id="deletion">Deletion</h3>
+<p>Finally, I wanted to loop through all aging documents and delete:</p>
+<pre><code>int epocDateTime = DateTime.UtcNow.AddHours(-1 * hours).ToEpoch();
+var dbQuery = &quot;SELECT VALUE {\&quot;link\&quot;: c._self, \&quot;source\&quot;: c.source} FROM c WHERE c._ts &lt; &quot; + epocDateTime;
+var docs = this._docDbClient.CreateDocumentQuery(collection.SelfLink, dbQuery, new FeedOptions { EnableCrossPartitionQuery = true }).ToList();
+foreach (var doc in docs)
+{
+    var link = (string)doc.link;
+    var source = (string)doc.source;
+    await this._docDbClient.DeleteDocumentAsync(link, new RequestOptions() { PartitionKey = new Microsoft.Azure.Documents.PartitionKey(source) });
+}
+</code></pre>
+<h4 id="query">Query</h4>
+<p>Please note that the query that I used above uses a projection to get only the document link and the partition key....we really do not need the entire document:</p>
+<pre><code>var dbQuery = &quot;SELECT VALUE {\&quot;link\&quot;: c._self, \&quot;source\&quot;: c.source} FROM c WHERE c._ts &lt; &quot; + epocDateTime;
+</code></pre>
+<p>Also please note that I am using the <code>VALUE</code> modifier in the query so to force DocDB to return the value only. This will return a payload that looks like this:</p>
+<pre><code>[
+  {
+    &quot;link&quot;: &quot;dbs/XEthAA==/colls/XEthAL4dCwA=/docs/XEthAL4dCwABAAAAAAAAAA==/&quot;,
+    &quot;source&quot;: &quot;Digital Controller&quot;
+  },
+  {
+    &quot;link&quot;: &quot;dbs/XEthAA==/colls/XEthAL4dCwA=/docs/XEthAL4dCwACAAAAAAAAAA==/&quot;,
+    &quot;source&quot;: &quot;Profiler&quot;
+  }
+]
+</code></pre>
+<p>If I don't include the <code>VALUE</code> modifier, I get this:</p>
+<pre><code>[
+  {
+    &quot;$1&quot;: {
+      &quot;link&quot;: &quot;dbs/XEthAA==/colls/XEthAL4dCwA=/docs/XEthAL4dCwABAAAAAAAAAA==/&quot;,
+      &quot;source&quot;: &quot;Digital Controller&quot;
+    }
+  },
+  {
+    &quot;$1&quot;: {
+      &quot;link&quot;: &quot;dbs/XEthAA==/colls/XEthAL4dCwA=/docs/XEthAL4dCwACAAAAAAAAAA==/&quot;,
+      &quot;source&quot;: &quot;Profiler&quot;
+    }
+  }
+]
+</code></pre>
+<p>I chose the first one :-)</p>
+<h4 id="deletion-1">Deletion</h4>
+<p>Finally, we pull the documents and delete one at a time:</p>
+<pre><code>var docs = this._docDbClient.CreateDocumentQuery(collection.SelfLink, dbQuery, new FeedOptions { EnableCrossPartitionQuery = true }).ToList();
+foreach (var doc in docs)
+{
+    var link = (string)doc.link;
+    var source = (string)doc.source;
+    await this._docDbClient.DeleteDocumentAsync(link, new RequestOptions() { PartitionKey = new Microsoft.Azure.Documents.PartitionKey(source) });
+}
+</code></pre>
+<p>Initially, I only got the document link from the query thinking that this was the only requirement. So I did something like this:</p>
+<pre><code>var dbQuery = &quot;SELECT VALUE c._self FROM c WHERE c._ts &lt; &quot; + epocDateTime;
+var docs = this._docDbClient.CreateDocumentQuery(collection.SelfLink, dbQuery, new FeedOptions { EnableCrossPartitionQuery = true }).ToList();
+foreach (var doc in docs)
+{
+    await this._docDbClient.DeleteDocumentAsync(doc);
+}
+</code></pre>
+<p>This did not work! I needed to pass the partition key....this is why i changed the query to a projection so I can get the partition key. In my case the partition key is the <code>source</code>. There is a comment in this <a href="http://stackoverflow.com/questions/29137708/how-to-delete-all-the-documents-in-documentdb-through-c-sharp-code">post</a> that gave me a clue that the request option must include the partition key.</p>
+<p>Thank you for reading! I hope this helps someone.</p>
+
+
+
+                                </div>
+                        </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Footer -->
+                <footer>
+                        <div class="container">
+        <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline text-center">
+                        <li>
+                        <a href="https://twitter.com/khaledhmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                        <li>
+                        <a href="https://github.com/khaledhikmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                </ul>
+                <p class="copyright text-muted">
+                        Copyright © 2017 by Khaled Hikmat. 
+                        <br />
+                        <strong><a href="http://wyam.io">Generated by Wyam</a></strong>
+                </p>
+                </div>
+        </div>
+</div>
+                </footer> 
+
+                <script type="text/javascript">
+</script>
+                <script>hljs.initHighlightingOnLoad();</script>
+
+                        <script type="text/javascript">                
+                                // Header background                        
+                                var colors = Please.make_color({
+                                        colors_returned: 3,
+                                        saturation: .6
+                                });
+                                var t = new Trianglify({
+                                        x_gradient: colors,
+                                        y_gradient: ["#FFFFFF"]
+                                });
+                                var header = document.getElementById("intro-header");
+                                var pattern = t.generate(header.clientWidth, header.clientHeight);
+                                header.setAttribute('style', 'background-image: ' + pattern.dataUrl);                        
+                        </script>
+        </body>
+</html>
+
