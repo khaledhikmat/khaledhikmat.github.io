@@ -115,7 +115,7 @@ Published on Thursday, March 30, 2017<br>    </div>
 <li><a href="https://azure.microsoft.com/en-us/blog/working-with-dates-in-azure-documentdb-4/">https://azure.microsoft.com/en-us/blog/working-with-dates-in-azure-documentdb-4/</a></li>
 </ul>
 <p>I basically wanted to delete aging documents (based on number of hours) from a collection. So my final routine looks like this. Below is some explanation:</p>
-<pre><code>public async Task&lt;int&gt; DeleteRecords(Uri docDbUri, string docDbKey, string databaseName, string collectionName, int hours)
+<pre><code>public async Task&lt;int&gt; DeleteAgingDocuments(Uri docDbUri, string docDbKey, string databaseName, string collectionName, int hours)
 {
     using (var client = new DocumentClient(docDbUri, docDbKey))
     {
