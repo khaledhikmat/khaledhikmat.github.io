@@ -435,6 +435,11 @@ Update-ServiceFabricService -ServiceName $serviceName -Stateless -InstanceCount 
 <p>It is also a console app!! But it includes a Service Fabric Nuget package so it can use the <code>FabricClient</code> to communicate health checks to the local cluster.</p>
 <p>Basically, it sets up a timer to check the performance and availability of our <code>crashable</code> service. It reports to Service Fabric when failures take place.</p>
 <p>Doing so makes our <code>crashable</code> service much more resilient to crashes or slow performances as it is monitored by the monitored service and re-started if necessary by Service Fabric.</p>
+<h3 id="console-outputs-in-the-local-cluster">Console Outputs in the local cluster</h3>
+<p>You can use the Service Fabric cluster explorer to find out where Service Fabric stores services on disk. This is available from the Nodes section:</p>
+<p><img src="http://i.imgur.com/bvXbjc2.png" class="img-fluid" alt="SF Cluster Nodes" /></p>
+<p><img src="http://i.imgur.com/lqq6NJ4.png" class="img-fluid" alt="Node Disk" /></p>
+<p>This directory has a <code>log</code> folder that stores the output of the service. This can be very useful for debug purposes. To use it, you must have the <code>ConsoleRedirection</code> turned on as shown above.</p>
 <h2 id="what-is-next">What is next?</h2>
 <p>In future posts, I will use Service Fabric .NET programming model to develop and deploy stateless and stateful services to demonstrate Service Fabric fundamental concepts.</p>
 
