@@ -109,22 +109,32 @@ Published on Friday, December 2, 2016<br>    </div>
 
 <p>Service Fabric is a cool technology from Microsoft! It has advanced features that allows many scenarios. But in this post, we will only cover basic concepts that are usually misunderstood by a lot of folks.</p>
 <p>For the purpose of this demo, we are going to develop a very basic guest executable service written as a console app. We will use very basic application and service manifests and PowerShell script to deploy to Service Fabric and show how Service Fabric monitors services, reports their health and allows for upgrade and update.</p>
-<p>The source code for this post is available <a href="https://github.com/khaledhikmat/service-fabric-basics">here</a>.</p>
+<p>The source code for this post is available <a href="https://github.com/khaledhikmat/service-fabric-basics">here</a>. Most of the code and ideas are credited to Jeff Richter of the Service Fabric Team.</p>
 <h2 id="guest-service">Guest Service</h2>
-<p>The Guest service is a very basic console app that does this:</p>
-<pre><code class="language-csharp">class Program
+<p>The Guest service is a basic <code>Win32</code> console app that invokes an <code>HttpListener</code> on a port that is passed in the argument. The little web server responds to requests like so:</p>
+<p><img src="http://i.imgur.com/YqTjqBD.png" class="img-fluid" alt="Web Server" /></p>
+<p>Note that the service is NOT running the Service Fabric cluster.</p>
+<p>That is it!! This simple web server accepts a command called <code>crash</code> which will kill the service completely:</p>
+<pre><code>http://localhost:8800?cmd=crash
+</code></pre>
+<p>In fact, it does support multiple commands:</p>
+<pre><code>var command = request.QueryString[&quot;cmd&quot;];
+if (!string.IsNullOrEmpty(command))
 {
-    static void Main(string[] args)
+    switch (command.ToLowerInvariant())
     {
-        Console.WriteLine(&quot;Crashable Service Started....&quot;);
-        Thread.Sleep(120000);
-        Console.WriteLine(&quot;Crashable Service crashed...&quot;);
-        // Crash!!!!!
-        Environment.Exit(-1);
+        case &quot;delay&quot;:
+            Int32.TryParse(request.QueryString[&quot;delay&quot;], out _delay);
+            break;
+        case &quot;crash&quot;:
+            Environment.Exit(-1);
+            break;
     }
 }
 </code></pre>
-<p>That is it!! The service starts and crashes after 2 minutes. Let us see how we can package this service to run within Service Fabric. Please note that this service is not cognizant of any Service Fabric. It is purely a simple service written as a console app.</p>
+<p>In order to make this service highly available, let us see how we can package this service to run within Service Fabric. Please note that this service is not cognizant of any Service Fabric. It is purely a simple Win32 service written as a console app.</p>
+<p><strong>Please note that, to debug the service locally from Visual Studio, you need to start VS in administrator mode.</strong></p>
+<p><strong>Please note that Service Fabric requires the projects be X64. So you must change your projects to use X64 by using the Visual Studio Configuration Manager.</strong></p>
 <h2 id="application-package">Application Package</h2>
 <p>Application Package in Service Fabric is nothing but a folder that contains certain manifests in specific sub-folders! We will build the directory by hand instead of using Visual Studio to do it for us so we can find out exactly how to do this. Let us create a directory called <code>BasicAvailabilityApp</code> (i.e.  <code>c:\BasicAvailabilityApp</code>) to describe the Service Fabric application.</p>
 <h3 id="the-root-folder">The root folder</h3>
@@ -164,9 +174,17 @@ Published on Friday, December 2, 2016<br>    </div>
     &lt;EntryPoint&gt;
       &lt;ExeHost&gt;
         &lt;Program&gt;CrashableService.exe&lt;/Program&gt;
+        &lt;Arguments&gt;8800&lt;/Arguments&gt;
       &lt;/ExeHost&gt;
     &lt;/EntryPoint&gt;
   &lt;/CodePackage&gt;
+
+  &lt;!-- ACL the 8800 port where the crashable service listens --&gt;
+  &lt;Resources&gt;
+    &lt;Endpoints&gt;
+      &lt;Endpoint Name=&quot;InputEndpoint&quot; Port=&quot;8800&quot; Protocol=&quot;http&quot; Type=&quot;Input&quot; /&gt;
+    &lt;/Endpoints&gt;
+  &lt;/Resources&gt;
 &lt;/ServiceManifest&gt;
 </code></pre>
 <p>There are several pieces of information in this manifest:</p>
@@ -178,6 +196,7 @@ Published on Friday, December 2, 2016<br>    </div>
 <li>The service code package exists in a sub-folder called <code>CodePkg</code> and it is of version <code>1.0.0</code>.</li>
 <li>The service code consists of an executable called <code>CrashableService.exe</code>.</li>
 <li>The XML name spaces are not important to us.</li>
+<li>The <code>Endoints</code> must be specified to allow the Service Fabric to <code>ACL</code> the port that we want opened for our service to listen on. The <code>Input</code> type instructs SF to accepts input from the Internet.</li>
 </ul>
 <p>This is how the service folder looks like:</p>
 <p><img src="http://i.imgur.com/MTzbGXl.png" class="img-fluid" alt="Service Folder" /></p>
@@ -230,10 +249,14 @@ New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceType
 <p><img src="http://i.imgur.com/377RP4J.png" class="img-fluid" alt="Naming Stuff" /></p>
 <p>Once the named application and the named service are deployed, the Service Fabric explorer shows it like this:</p>
 <p><img src="http://i.imgur.com/tTLgIMX.png" class="img-fluid" alt="Success Deployment" /></p>
+<p>Now, if we access the service in Service Fabric, we will get a response that clearly indicates that the service is indeed running in Service Fabric:</p>
+<p><img src="http://i.imgur.com/AI9jYOV.png" class="img-fluid" alt="Deployed in SF" /></p>
+<p>Note that the service is running in Node 1 of the Service Fabric cluster.</p>
 <h2 id="availability">Availability</h2>
-<p>One of the major selling points of Service Fabric is its ability to make services highly available by monitoring them and restarting them if necessary. This post is to show ta very basic example of this to demo this very concept.</p>
-<p>Regardless of whether the service is guest executable or Service Fabric cognizant service, Service Fabric monitors the service to make sure it runs correctly. In our case, the service will crash after 2 minutes.....so once you issue the PowerShell commands to deploy the cluster (in this case to the local one), you will see that Service fabric detects the failure and reports a bad health on the Service Fabric Explorer:</p>
+<p>One of the major selling points of Service Fabric is its ability to make services highly available by monitoring them and restarting them if necessary.</p>
+<p>Regardless of whether the service is guest executable or Service Fabric cognizant service, Service Fabric monitors the service to make sure it runs correctly. In our case, the service will crash whenever a <code>crash</code> command is submitted. So if you crash the service, you will see that Service Fabric detects the failure and reports a bad health on the Service Fabric Explorer:</p>
 <p><img src="http://i.imgur.com/XdY1JHg.png" class="img-fluid" alt="Error Deployment" /></p>
+<p><strong>It is good it detected that the service failed! However we need a better solution.....we need Service Fabric to restart the service every time it fails. Please read on to see how to do this.</strong></p>
 <h2 id="cleanup">Cleanup</h2>
 <p>In order to remove the named application and its services, you can issue these PowerShell commands:</p>
 <pre><code># Delete the named service
@@ -248,18 +271,7 @@ Unregister-ServiceFabricApplicationType -ApplicationTypeName $appTypeName -Appli
 </code></pre>
 <h2 id="versions-upgrade">Versions &amp; Upgrade</h2>
 <p>It turned out that Service Fabric does not really care how you name your versions! If you name your versions as numbers like 1.0.0 or 1.1.0, this naming convention is referred to as <code>Semantic Versioning</code>. But you are free to use whatever version naming convention you want.</p>
-<p>Let us use a different version scheme for our simple app. How about alpha, beta and productionV1, productionV2, etc. Let us cleanup our app from the cluster (as shown above), fix the service crashing, update the manifest files to make the version <code>Beta</code> and re-deploy using the beta version:</p>
-<h3 id="the-service">The Service</h3>
-<pre><code class="language-csharp">static void Main(string[] args)
-{
-    Console.WriteLine(&quot;Crashable Service Started....&quot;);
-
-    while(true)
-    {
-        Thread.Sleep(120000);
-    }
-}
-</code></pre>
+<p>Let us use a different version scheme for our simple app. How about alpha, beta and productionV1, productionV2, etc. Let us cleanup our app from the cluster (as shown above), apply some changes to the <code>crashable</code> service, update the manifest files to make the version <code>Beta</code> and re-deploy using the beta version:</p>
 <h3 id="the-application-manifest">The Application Manifest</h3>
 <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
 &lt;ApplicationManifest ApplicationTypeName=&quot;BasicAvailabilityAppType&quot; 
@@ -287,9 +299,17 @@ Unregister-ServiceFabricApplicationType -ApplicationTypeName $appTypeName -Appli
     &lt;EntryPoint&gt;
       &lt;ExeHost&gt;
         &lt;Program&gt;CrashableService.exe&lt;/Program&gt;
+        &lt;Arguments&gt;8800&lt;/Arguments&gt;
       &lt;/ExeHost&gt;
     &lt;/EntryPoint&gt;
   &lt;/CodePackage&gt;
+
+  &lt;!-- ACL the 8800 port where the crashable service listens --&gt;
+  &lt;Resources&gt;
+    &lt;Endpoints&gt;
+      &lt;Endpoint Name=&quot;InputEndpoint&quot; Port=&quot;8800&quot; Protocol=&quot;http&quot; Type=&quot;Input&quot; /&gt;
+    &lt;/Endpoints&gt;
+  &lt;/Resources&gt;
 &lt;/ServiceManifest&gt;
 </code></pre>
 <h3 id="deployment-1">Deployment</h3>
@@ -353,6 +373,68 @@ Update-ServiceFabricService -ServiceName $serviceName -Stateless -InstanceCount 
 <pre><code>Update-ServiceFabricService -ServiceName $serviceName -Stateless -InstanceCount 1 -Force
 </code></pre>
 <p>Please notice how fast the scaling (up or down) takes place!!</p>
+<h2 id="better-high-availability">Better High Availability</h2>
+<p>In a previous section in this post, we deployed the <code>crashable</code> service and watched it crash when we submitted a <code>crash</code> command. Service Fabric reported the failure, but did not step in to restart the service and make it available again. Now we will modify the deployment so that Service Fabric will take care of the re-start process.</p>
+<p>To do so, we will need another service that monitors our <code>crashable</code> service and reports health checks to Service Fabric. This new code will have to be Service Fabric aware.</p>
+<p>Let us modify the application package to include this new code. Remember our goal is not to change the <code>crashable</code> service at all.</p>
+<h3 id="the-service-manifest-1">The Service Manifest</h3>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;ServiceManifest Name=&quot;CrashableServiceTypePkg&quot;
+                 Version=&quot;Beta&quot;
+                 xmlns=&quot;http://schemas.microsoft.com/2011/01/fabric&quot;
+                 xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;
+                 xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+  &lt;ServiceTypes&gt;
+    &lt;StatelessServiceType ServiceTypeName=&quot;CrashableServiceType&quot; UseImplicitHost=&quot;true&quot; /&gt;
+  &lt;/ServiceTypes&gt;
+
+  &lt;!-- Code that is NOT Service-Fabric aware --&gt;
+  &lt;!-- Remove Console Redirection in production --&gt;
+  &lt;!-- https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-deploy-existing-app --&gt;
+  &lt;CodePackage Name=&quot;CrashableCodePkg&quot; Version=&quot;Beta&quot;&gt;
+    &lt;EntryPoint&gt;
+      &lt;ExeHost&gt;
+        &lt;Program&gt;CrashableService.exe&lt;/Program&gt;
+        &lt;Arguments&gt;8800&lt;/Arguments&gt;
+		&lt;ConsoleRedirection FileRetentionCount=&quot;5&quot; FileMaxSizeInKb=&quot;2048&quot;/&gt;
+      &lt;/ExeHost&gt;
+    &lt;/EntryPoint&gt;
+  &lt;/CodePackage&gt;
+
+  &lt;!-- Code that is Service-Fabric aware --&gt;
+  &lt;!-- Remove Console Redirection in production --&gt;
+  &lt;!-- https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-deploy-existing-app --&gt;
+  &lt;CodePackage Name=&quot;MonitorCodePkg&quot; Version=&quot;Beta&quot;&gt;
+    &lt;EntryPoint&gt;
+      &lt;ExeHost&gt;
+        &lt;Program&gt;MonitorService.exe&lt;/Program&gt;
+        &lt;Arguments&gt;8800&lt;/Arguments&gt;
+		&lt;ConsoleRedirection FileRetentionCount=&quot;5&quot; FileMaxSizeInKb=&quot;2048&quot;/&gt;
+      &lt;/ExeHost&gt;
+    &lt;/EntryPoint&gt;
+  &lt;/CodePackage&gt;
+
+  &lt;!-- ACL the 8800 port where the crashable service listens --&gt;
+  &lt;Resources&gt;
+    &lt;Endpoints&gt;
+      &lt;Endpoint Name=&quot;InputEndpoint&quot; Port=&quot;8800&quot; Protocol=&quot;http&quot; Type=&quot;Input&quot; /&gt;
+    &lt;/Endpoints&gt;
+  &lt;/Resources&gt;
+&lt;/ServiceManifest&gt;
+</code></pre>
+<p>There are several things here:</p>
+<ul>
+<li>Our <code>crashable</code> service is still the same. It accepts an argumengt to tell it which port number to listen on.</li>
+<li><code>ConsoleRedirection</code> is added to allow us to see the console output in the SF log files. This is to be removed in production.</li>
+<li>There is one service i.e. <code>CrashableServiceType</code> but two code bases: one for the original exe and another code for the monitor that will monitor our <code>crashable</code> service.</li>
+<li>The <code>Endoints</code> must be specified to allow the Service Fabric to <code>ACL</code> the port that we want opened for our service to listen on. The <code>Input</code> type instructs SF to accepts input from the Internet.</li>
+</ul>
+<p>The package folders look like this:</p>
+<p><img src="http://i.imgur.com/CzLxach.png" class="img-fluid" alt="Package Dir" /></p>
+<h3 id="the-monitor-service">The Monitor Service</h3>
+<p>It is also a console app!! But it includes a Service Fabric Nuget package so it can use the <code>FabricClient</code> to communicate health checks to the local cluster.</p>
+<p>Basically, it sets up a timer to check the performance and availability of our <code>crashable</code> service. It reports to Service Fabric when failures take place.</p>
+<p>Doing so makes our <code>crashable</code> service much more resilient to crashes or slow performances as it is monitored by the monitored service and re-started if necessary by Service Fabric.</p>
 <h2 id="what-is-next">What is next?</h2>
 <p>In future posts, I will use Service Fabric .NET programming model to develop and deploy stateless and stateful services to demonstrate Service Fabric fundamental concepts.</p>
 
