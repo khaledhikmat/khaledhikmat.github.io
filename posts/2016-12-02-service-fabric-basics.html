@@ -132,11 +132,14 @@ if (!string.IsNullOrEmpty(command))
     }
 }
 </code></pre>
-<p>In order to make this service highly available, let us see how we can package this service to run within Service Fabric. Please note that this service is not cognizant of any Service Fabric. It is purely a simple Win32 service written as a console app.</p>
-<p><strong>Please note that, to debug the service locally from Visual Studio, you need to start VS in administrator mode.</strong></p>
-<p><strong>Please note that Service Fabric requires the projects be X64. So you must change your projects to use X64 by using the Visual Studio Configuration Manager.</strong></p>
+<p>In order to make this service highly available, let us see how we can package this service to run within Service Fabric. Please note that this service is not cognizant of any Service Fabric. It is purely a simple <code>Win32</code> service written as a console app.</p>
+<p><strong>Please note:</strong></p>
+<ul>
+<li>To debug the service locally from Visual Studio, you need to start VS in administrator mode.</li>
+<li>Service Fabric requires the projects be <code>X64</code>! So you must change your projects to use <code>X64</code> by using the Visual Studio Configuration Manager.</li>
+</ul>
 <h2 id="application-package">Application Package</h2>
-<p>Application Package in Service Fabric is nothing but a folder that contains certain manifests in specific sub-folders! We will build the directory by hand instead of using Visual Studio to do it for us so we can find out exactly how to do this. Let us create a directory called <code>BasicAvailabilityApp</code> (i.e.  <code>c:\BasicAvailabilityApp</code>) to describe the Service Fabric application.</p>
+<p>Application Package in Service Fabric is nothing but a folder that contains certain manifests in specific sub-folders! We will build the directory by hand instead of using Visual Studio so we can find out exactly how to do these steps. Let us create a directory called <code>BasicAvailabilityApp</code> (i.e.  <code>c:\BasicAvailabilityApp</code>) to describe the Service Fabric application.</p>
 <h3 id="the-root-folder">The root folder</h3>
 <p>The root folder contains the application manifest and a sub-folder for each service in contains. Here is how the application manifest looks like for this demo application:</p>
 <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
@@ -157,7 +160,7 @@ if (!string.IsNullOrEmpty(command))
 <li>The XML name spaces are not important to us.</li>
 </ul>
 <p>This is how the application folder looks like:</p>
-<p><img src="http://i.imgur.com/suY3mS4.png" class="img-fluid" alt="Root Application Folder" /></p>
+<p><img src="http://i.imgur.com/VMARUS3.png" class="img-fluid" alt="Root Application Folder" /></p>
 <h3 id="the-service-folder">The service folder</h3>
 <p>The service folder contains the service manifest and a sub-folder for each service in contains. Here is how the application manifest looks like for this demo application:</p>
 <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
@@ -170,7 +173,7 @@ if (!string.IsNullOrEmpty(command))
     &lt;StatelessServiceType ServiceTypeName=&quot;CrashableServiceType&quot; UseImplicitHost=&quot;true&quot; /&gt;
   &lt;/ServiceTypes&gt;
 
-  &lt;CodePackage Name=&quot;CodePkg&quot; Version=&quot;1.0.0&quot;&gt;
+  &lt;CodePackage Name=&quot;CrashableCodePkg&quot; Version=&quot;1.0.0&quot;&gt;
     &lt;EntryPoint&gt;
       &lt;ExeHost&gt;
         &lt;Program&gt;CrashableService.exe&lt;/Program&gt;
@@ -199,10 +202,10 @@ if (!string.IsNullOrEmpty(command))
 <li>The <code>Endoints</code> must be specified to allow the Service Fabric to <code>ACL</code> the port that we want opened for our service to listen on. The <code>Input</code> type instructs SF to accepts input from the Internet.</li>
 </ul>
 <p>This is how the service folder looks like:</p>
-<p><img src="http://i.imgur.com/MTzbGXl.png" class="img-fluid" alt="Service Folder" /></p>
+<p><img src="http://i.imgur.com/0bA48hy.png" class="img-fluid" alt="service Folder" /></p>
 <p>This is what it takes to package an application in Service Fabric.</p>
 <h2 id="deployment">Deployment</h2>
-<p>Please note that the package we created in the previous step needs to be deployed to Service Fabric in order to run. To do this, we will need to use either Visual Studio or PowerShell. Since we want to use the lower level commands, Visual Studio is not an option for us. We will use PowerShell instead:</p>
+<p>Please note that the package we created in the previous step needs to be deployed to Service Fabric in order to run. To do this, we will need to use either Visual Studio or PowerShell. Since we want to use the lower level commands, we will use PowerShell instead of Visual Studio:</p>
 <p>Here is the PowerShell script that we can use:</p>
 <pre><code># Define equates (hard-coded):
 $clusterUrl = &quot;localhost&quot;
@@ -245,7 +248,7 @@ New-ServiceFabricApplication -ApplicationTypeName $appTypeName -ApplicationTypeV
 <pre><code># Create a named service within the named app from the service's type
 New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceTypeName -ServiceName $serviceName -Stateless -PartitionSchemeSingleton -InstanceCount 1
 </code></pre>
-<p>This is extremely significant as it allows us to create multiple application instances within the same cluster and each names application instance has its own set of services. This is how the named application and services are related to the cluster (this is taken from Service Fabric team presentation):</p>
+<p>This is extremely significant as it allows us to create multiple application instances within the same cluster and each named application instance has its own set of services. This is how the named application and services are related to the cluster (this is taken from Service Fabric team presentation):</p>
 <p><img src="http://i.imgur.com/377RP4J.png" class="img-fluid" alt="Naming Stuff" /></p>
 <p>Once the named application and the named service are deployed, the Service Fabric explorer shows it like this:</p>
 <p><img src="http://i.imgur.com/tTLgIMX.png" class="img-fluid" alt="Success Deployment" /></p>
@@ -256,7 +259,10 @@ New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceType
 <p>One of the major selling points of Service Fabric is its ability to make services highly available by monitoring them and restarting them if necessary.</p>
 <p>Regardless of whether the service is guest executable or Service Fabric cognizant service, Service Fabric monitors the service to make sure it runs correctly. In our case, the service will crash whenever a <code>crash</code> command is submitted. So if you crash the service, you will see that Service Fabric detects the failure and reports a bad health on the Service Fabric Explorer:</p>
 <p><img src="http://i.imgur.com/XdY1JHg.png" class="img-fluid" alt="Error Deployment" /></p>
-<p><strong>It is good it detected that the service failed! However we need a better solution.....we need Service Fabric to restart the service every time it fails. Please read on to see how to do this.</strong></p>
+<p>You will notice that the little web server is no longer available when you try to access it. But if you wait for a few seconds and try again, you will be very happy to know that the web server is available again. This is because Service Fabric detected that the service went down, restarted it and made it available holding to the promise of <code>high availability</code> or <code>self healing</code>.</p>
+<p>However, there is only one little problem! The unhealthy indicators (warning or errors) on the explorer may never go away because there isn't anything that resets them. So the health checks will also be shown once they are reported. This could become a little of a problem if you have an external tool that read health check state.</p>
+<p><strong>The above statement is not entirely true! I have seen the latest versions of Service Fabric remove the warning/errors after a little while.</strong></p>
+<p>In any case, I will show a better way (in my opinion) to deal with this shortly in this post. So read on if you are interested.</p>
 <h2 id="cleanup">Cleanup</h2>
 <p>In order to remove the named application and its services, you can issue these PowerShell commands:</p>
 <pre><code># Delete the named service
@@ -295,7 +301,7 @@ Unregister-ServiceFabricApplicationType -ApplicationTypeName $appTypeName -Appli
     &lt;StatelessServiceType ServiceTypeName=&quot;CrashableServiceType&quot; UseImplicitHost=&quot;true&quot; /&gt;
   &lt;/ServiceTypes&gt;
 
-  &lt;CodePackage Name=&quot;CodePkg&quot; Version=&quot;Beta&quot;&gt;
+  &lt;CodePackage Name=&quot;CrashableCodePkg&quot; Version=&quot;Beta&quot;&gt;
     &lt;EntryPoint&gt;
       &lt;ExeHost&gt;
         &lt;Program&gt;CrashableService.exe&lt;/Program&gt;
@@ -341,7 +347,7 @@ New-ServiceFabricApplication -ApplicationTypeName $appTypeName -ApplicationTypeV
 New-ServiceFabricService -ApplicationName $appName -ServiceTypeName $serviceTypeName -ServiceName $serviceName -Stateless -PartitionSchemeSingleton -InstanceCount 1
 </code></pre>
 <h3 id="upgrade">Upgrade</h3>
-<p>Now that the beta version is deployed, let us make another change in the service, change the version to ProdutionV1 and issue the following PowerShell commands to registe and upgrade to <code>ProductionV1</code></p>
+<p>Now that the beta version is deployed, let us make another change in the service, change the version to ProdutionV1 (in the application and service manifests) and issue the following PowerShell commands to register and upgrade to <code>ProductionV1</code></p>
 <pre><code># Copy the application package ProductionV1 to the cluster
 Copy-ServiceFabricApplicationPackage -ApplicationPackagePath &quot;BasicAvailabilityApp-ProductionV1&quot; -ImageStoreConnectionString $imageStoreConnectionString -ApplicationPackagePathInImageStore $appPkgName
 
@@ -374,8 +380,8 @@ Update-ServiceFabricService -ServiceName $serviceName -Stateless -InstanceCount 
 </code></pre>
 <p>Please notice how fast the scaling (up or down) takes place!!</p>
 <h2 id="better-high-availability">Better High Availability</h2>
-<p>In a previous section in this post, we deployed the <code>crashable</code> service and watched it crash when we submitted a <code>crash</code> command. Service Fabric reported the failure, but did not step in to restart the service and make it available again. Now we will modify the deployment so that Service Fabric will take care of the re-start process.</p>
-<p>To do so, we will need another service that monitors our <code>crashable</code> service and reports health checks to Service Fabric. This new code will have to be Service Fabric aware.</p>
+<p>In a previous section in this post, we deployed the <code>crashable</code> service and watched it crash when we submitted a <code>crash</code> command. Service Fabric reported the failure, restarted the service and made it available again. Now we will modify the deployment process to provide a better way to take care of the re-start process.</p>
+<p>To do so, we will need another service that monitors our <code>crashable</code> service and reports health checks to Service Fabric. This new code is Service Fabric aware and is demonstrated by Jeff Richter of the Service Fabric team.</p>
 <p>Let us modify the application package to include this new code. Remember our goal is not to change the <code>crashable</code> service at all.</p>
 <h3 id="the-service-manifest-1">The Service Manifest</h3>
 <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
@@ -426,20 +432,19 @@ Update-ServiceFabricService -ServiceName $serviceName -Stateless -InstanceCount 
 <ul>
 <li>Our <code>crashable</code> service is still the same. It accepts an argumengt to tell it which port number to listen on.</li>
 <li><code>ConsoleRedirection</code> is added to allow us to see the console output in the SF log files. This is to be removed in production.</li>
-<li>There is one service i.e. <code>CrashableServiceType</code> but two code bases: one for the original exe and another code for the monitor that will monitor our <code>crashable</code> service.</li>
+<li>Now there is one service i.e. <code>CrashableServiceType</code> but two code bases: one for the original exe and another code for the monitor that will monitor our <code>crashable</code> service. This is really nice as it allows us to add Service Fabric code to an existing service without much of intervention.</li>
 <li>The <code>Endoints</code> must be specified to allow the Service Fabric to <code>ACL</code> the port that we want opened for our service to listen on. The <code>Input</code> type instructs SF to accepts input from the Internet.</li>
 </ul>
 <p>The package folders look like this:</p>
-<p><img src="http://i.imgur.com/CzLxach.png" class="img-fluid" alt="Package Dir" /></p>
+<p><img src="http://i.imgur.com/fYG5oLe.png" class="img-fluid" alt="Advanced Service Dir" /></p>
 <h3 id="the-monitor-service">The Monitor Service</h3>
-<p>It is also a console app!! But it includes a Service Fabric Nuget package so it can use the <code>FabricClient</code> to communicate health checks to the local cluster.</p>
-<p>Basically, it sets up a timer to check the performance and availability of our <code>crashable</code> service. It reports to Service Fabric when failures take place.</p>
-<p>Doing so makes our <code>crashable</code> service much more resilient to crashes or slow performances as it is monitored by the monitored service and re-started if necessary by Service Fabric.</p>
+<p>It is also a console app!! But it includes a Service Fabric Nuget package so it can use the <code>FabricClient</code> to communicate health checks to the local cluster. Basically, it sets up a timer to check the performance and availability of our <code>crashable</code> service. It reports to Service Fabric when failures take place.</p>
+<p>Doing so makes our <code>crashable</code> service much more resilient to crashes or slow performances as it is monitored by the monitored service and re-started if necessary by Service Fabric. The health checks are also cleared much quicker.</p>
 <h3 id="console-outputs-in-the-local-cluster">Console Outputs in the local cluster</h3>
 <p>You can use the Service Fabric cluster explorer to find out where Service Fabric stores services on disk. This is available from the Nodes section:</p>
 <p><img src="http://i.imgur.com/bvXbjc2.png" class="img-fluid" alt="SF Cluster Nodes" /></p>
 <p><img src="http://i.imgur.com/lqq6NJ4.png" class="img-fluid" alt="Node Disk" /></p>
-<p>This directory has a <code>log</code> folder that stores the output of the service. This can be very useful for debug purposes. To use it, you must have the <code>ConsoleRedirection</code> turned on as shown above.</p>
+<p>This directory has a <code>log</code> folder that stores the output of each service. This can be very useful for debug purposes. To use it, however, you must have the <code>ConsoleRedirection</code> turned on as shown above.</p>
 <h2 id="what-is-next">What is next?</h2>
 <p>In future posts, I will use Service Fabric .NET programming model to develop and deploy stateless and stateful services to demonstrate Service Fabric fundamental concepts.</p>
 
