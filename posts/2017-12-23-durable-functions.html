@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+        <title>Khaled Hikmat - Actors in Serverless</title>
+        <meta name="description" content="Coding Thoughts" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+
+        <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
+        <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/highlight.css" rel="stylesheet">
+        <link href="/assets/css/clean-blog.css" rel="stylesheet" />
+        <link href="/assets/css/master.css" rel="stylesheet" />
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/override.css" rel="stylesheet" />
+
+
+        <meta name="application-name" content="Khaled Hikmat" />
+        <meta name="msapplication-tooltip" content="Khaled Hikmat" />
+        <meta name="msapplication-starturl" content="/" />
+
+        <meta property="og:title" content="Khaled Hikmat - Actors in Serverless" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://khaledhikmat.github.io/posts/2017-12-23-durable-functions" />
+        <!-- TODO: More social graph meta tags -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/highlight.pack.js"></script>   
+        <script src="/assets/js/clean-blog.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/assets/js/trianglify.min.js"></script>
+        <script src="/assets/js/Please-compressed.js"></script>
+                
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+        </head>
+        <body>
+                
+                <!-- Navigation -->
+                <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+                        <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header page-scroll">
+                                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="/">Khaled Hikmat</a>
+                                </div>
+                        
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="navbar-collapse">
+                                        <ul class="nav navbar-nav navbar-right">
+                                                <li><a href="/about">About</a></li>
+<li><a href="/posts">Archive</a></li>
+<li><a href="/tags">Tags</a></li> 
+                                        </ul>
+                                </div>
+                                <!-- /.navbar-collapse -->
+                        </div>
+                        <!-- /.container -->
+                </nav>
+                
+                <!-- Page Header -->
+                <header class="intro-header" id="intro-header">
+                        <div class="container">
+                                <div class="row">
+                                        <div class="col-md-12">
+
+    
+<div class="post-heading">
+    <h1>Actors in Serverless</h1>
+        <h2 class="subheading">Using Azure Functions</h2>
+    <div class="meta">        
+Published on Saturday, December 23, 2017<br>    </div>
+        <div class="tags">
+                    <a role="button" href="/tags/net" class="btn btn-default btn-xs">.NET</a>
+                    <a role="button" href="/tags/actors" class="btn btn-default btn-xs">Actors</a>
+                    <a role="button" href="/tags/azure-functions" class="btn btn-default btn-xs">Azure Functions</a>
+                    <a role="button" href="/tags/durable" class="btn btn-default btn-xs">Durable</a>
+        </div>     
+</div>
+                                        </div>
+                                </div>
+                        </div>
+                </header>
+                
+                <!-- Main Content -->
+                <div class="container">
+                        <div class="row">
+                                <div id="content" class="col-md-12">
+                                        
+
+<p>I started with this <a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-install">documentation page</a> to learn about Azure durable Functions. I wanted to know if I can build a way to implement actors in Azure Functions. Actors programming model is pretty interesting and I did some work on it <a href="http://khaledhikmat.github.io/posts/2016-12-15-service-fabric-fundamentals">here</a>, <a href="http://khaledhikmat.github.io/posts/2016-12-02-service-fabric-basics">here</a> and <a href="http://khaledhikmat.github.io/posts/2017-01-10-service-fabric-notes">here</a> using Azure Service Fabric before.</p>
+<p>Following the Azure Functions sample instructions mentioned in the above link, I quickly got up and running. However, I wanted to answer the following questions about actors in Azure Functions:</p>
+<ul>
+<li>Create a new actor giving a provided actor id</li>
+<li>Signal an existing actor to perform something</li>
+<li>When do actors get created?</li>
+<li>Read the actor's state</li>
+<li>.NET Standard 2.0</li>
+</ul>
+<h2 id="create-a-new-actor">Create a new actor:</h2>
+<p>I created an HTTP trigger that looks like this where I provide a code that can be used as an instance id for the singleton i.e. membership actor. If the membership actor status is null, then we assume it does not exist and we create it and pass an initial state.</p>
+<pre><code>public static async Task&lt;HttpResponseMessage&gt; Run(
+    [HttpTrigger(AuthorizationLevel.Function, methods: &quot;post&quot;, Route = &quot;memberships/{code}&quot;)] HttpRequestMessage req,
+    [OrchestrationClient] DurableOrchestrationClient starter,
+    string code,
+    TraceWriter log)
+{
+    var membershipStatus = await starter.GetStatusAsync(code);
+    if (membershipStatus == null)
+    {
+        var membership = new {
+            Id = &quot;asas&quot;,
+            Code = code,
+            CardNumber = &quot;977515900121213&quot;
+        };
+
+        await starter.StartNewAsync(&quot;E3_Membership&quot;, code, membership);
+        log.Info($&quot;Started a new membership actor with code = '{code}'.&quot;);
+    }
+    else
+    {
+        await starter.RaiseEventAsync(code, &quot;operation&quot;, &quot;refresh&quot;);
+        log.Info($&quot;Refreshed an existing membership actor with code = '{code}'.&quot;);
+    }
+
+    var res = starter.CreateCheckStatusResponse(req, code);
+    res.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.FromSeconds(10));
+    return res;
+}
+</code></pre>
+<h2 id="signal-an-existing-actor-to-perform-something">Signal an existing actor to perform something</h2>
+<p>If the membership actor does exist, we raise a <code>refresh</code> event to wake up the singleton so it can do work:</p>
+<pre><code>await starter.RaiseEventAsync(code, &quot;operation&quot;, &quot;refresh&quot;);
+</code></pre>
+<p>The actual membership actor code looks like this:</p>
+<pre><code>public static class Membership
+{
+    [FunctionName(&quot;E3_Membership&quot;)]
+    public static async Task&lt;dynamic&gt; Run(
+        [OrchestrationTrigger] DurableOrchestrationContext context, TraceWriter log)
+    {
+        dynamic membership = context.GetInput&lt;dynamic&gt;();
+        if (membership == null)
+        {
+            log.Info($&quot;Conduct an initial refresh for {context.InstanceId}&quot;);
+            membership = await Refresh(context, log);
+        }
+
+        var operation = await context.WaitForExternalEvent&lt;string&gt;(&quot;operation&quot;);
+        log.Info($&quot;***** received '{operation}' event.&quot;);
+
+        operation = operation?.ToLowerInvariant();
+        if (operation == &quot;refresh&quot;)
+        {
+            membership = await Refresh(context, log);
+        }
+
+        if (operation != &quot;end&quot;)
+        {
+            context.ContinueAsNew(membership);
+        }
+
+        return membership;
+    }
+
+    public static async Task&lt;dynamic&gt; Refresh(DurableOrchestrationContext context, TraceWriter log)
+    {
+        dynamic membership = new {
+            Id = &quot;asas&quot;,
+            Code = context.InstanceId,
+            CardNumber = &quot;977515900121213&quot;
+        };
+
+        // Simulate a delay....
+        log.Info($&quot;**** about to refresh '{context.InstanceId}'&quot;);
+        DateTime deadline = context.CurrentUtcDateTime.Add(TimeSpan.FromSeconds(5));
+        await context.CreateTimer(deadline, CancellationToken.None);
+        log.Info($&quot;**** done refreshing '{context.InstanceId}'&quot;);
+        return membership;
+    }
+}
+
+</code></pre>
+<h2 id="when-do-actors-get-created">When do actors get created?</h2>
+<p>Actors or singletons actually do persist in storage and this is how the state is maintained. So if you create actors with specific instance ids (or actor ids), shut down the functions and restart it, the signleton instances are available. Of course, they don't load in memory until you actually call one of the instance APIs such as:</p>
+<pre><code>var membershipStatus = await starter.GetStatusAsync(code);
+</code></pre>
+<h3 id="the-actor-state">The actor state</h3>
+<p>Each actor has an internal state! It is initially read by the singleton as an input:</p>
+<pre><code>dynamic membership = context.GetInput&lt;dynamic&gt;();
+</code></pre>
+<p>and it is updated using:</p>
+<pre><code>context.ContinueAsNew(membership);
+</code></pre>
+<p>But it seems that the internal state is actually not persisted anywhere ...it is transient. When actors are initially created, a state is passed as an input i.e. <code>context.GetInput&lt;dynamic&gt;()</code> and the actor updates it with a call to <code>ContinueAsNew</code> which actually restarts itself with a new state.</p>
+<p>I also could not find a way for an HTTP trigger to read the internal state of an actor.</p>
+<p>Given that, I think the internal state seems to be used only for the actor internal operation. If an actor is to expose its state, it must be saved externally so HTTP triggers, for example, can read it directly from the external store.</p>
+<p>This means that the HTTP trigger should be updated as follows:</p>
+<pre><code>public static async Task&lt;HttpResponseMessage&gt; Run(
+    [HttpTrigger(AuthorizationLevel.Function, methods: &quot;post&quot;, Route = &quot;memberships/{code}&quot;)] HttpRequestMessage req,
+    [OrchestrationClient] DurableOrchestrationClient starter,
+    string code,
+    TraceWriter log)
+{
+    var membershipStatus = await starter.GetStatusAsync(code);
+    if (membershipStatus == null)
+    {
+		// Given the membership code, read from an external source
+        var membership = await RetriveFromCosmosDB(code);
+
+        await starter.StartNewAsync(&quot;E3_Membership&quot;, code, membership);
+        log.Info($&quot;Started a new membership actor with code = '{code}'.&quot;);
+    }
+    else
+    {
+        await starter.RaiseEventAsync(code, &quot;operation&quot;, &quot;refresh&quot;);
+        log.Info($&quot;Refreshed an existing membership actor with code = '{code}'.&quot;);
+    }
+
+    var res = starter.CreateCheckStatusResponse(req, code);
+    res.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.FromSeconds(10));
+    return res;
+}
+</code></pre>
+<p>and the membership actor:</p>
+<pre><code>public static class Membership
+{
+    [FunctionName(&quot;E3_Membership&quot;)]
+    public static async Task&lt;dynamic&gt; Run(
+        [OrchestrationTrigger] DurableOrchestrationContext context, TraceWriter log)
+    {
+        dynamic membership = context.GetInput&lt;dynamic&gt;();
+        if (membership == null)
+        {
+            // Read from an external source 
+            membership = await RetriveFromCosmosDB(context.InstanceId);
+        }
+
+        var operation = await context.WaitForExternalEvent&lt;string&gt;(&quot;operation&quot;);
+        log.Info($&quot;***** received '{operation}' event.&quot;);
+
+        operation = operation?.ToLowerInvariant();
+        if (operation == &quot;refresh&quot;)
+        {
+            membership = await Refresh(context, log);
+        }
+
+        if (operation != &quot;end&quot;)
+        {
+            context.ContinueAsNew(membership);
+        }
+
+        return membership;
+    }
+
+    public static async Task&lt;dynamic&gt; Refresh(DurableOrchestrationContext context, TraceWriter log)
+    {
+		// Do something to refresh the membership
+        dynamic membership = new {
+            Id = &quot;asas&quot;,
+            Code = context.InstanceId,
+            CardNumber = &quot;977515900121213&quot;
+        };
+
+		// Store to an external source
+        await StorToCosmosDB(context.InstanceId, membership);
+        return membership;
+    }
+}
+</code></pre>
+<p>and the HTTP trigger that retrieves the membership actor state from an extenal source without dealing with the actor:</p>
+<pre><code>[FunctionName(&quot;HttpGetMembership&quot;)]
+public static async Task&lt;HttpResponseMessage&gt; Run(
+    [HttpTrigger(AuthorizationLevel.Function, methods: &quot;get&quot;, Route = &quot;memberships/{code}&quot;)] HttpRequestMessage req,
+    [OrchestrationClient] DurableOrchestrationClient starter,
+    string code,
+    TraceWriter log)
+{
+    var status = await starter.GetStatusAsync(code);
+    if (status != null)
+    {
+		
+        return req.CreateResponse&lt;dynamic&gt;(HttpStatusCode.OK, await ReadFromCosmosDB(code));
+    }
+    else
+    {
+        return req.CreateResponse&lt;dynamic&gt;(HttpStatusCode.BadRequest, $&quot;{code} membership actor is not found!&quot;);
+    }
+}
+</code></pre>
+<h3 id="net-standard-2.0">.NET Standard 2.0</h3>
+<p>It is work in progress! It is best to use the .NET full framework with Azure Functions. Hopefully this will change soon and we will be able to use .NET Core reliably.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Reflecting on the little time that I spent with Azure Durable Functions, I think they will play an important part of my future solutions. I think they have what it takes to use as actors minus the internal state. I think if we externalize their state, we will be able to query the external store as opposed to query the actors themselves to retrieve their state.</p>
+<p>Azure Durable Actors can also employ reminders and other sophisticated techniques found in Service Fabric actors such as long-running, stateful, single-threaded, location-transparent and globally addressable (taken from the overview <a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-overview">documentation page</a>).</p>
+
+
+
+                                </div>
+                        </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Footer -->
+                <footer>
+                        <div class="container">
+        <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline text-center">
+                        <li>
+                        <a href="https://twitter.com/khaledhmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                        <li>
+                        <a href="https://github.com/khaledhikmat">
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                        </li>
+                </ul>
+                <p class="copyright text-muted">
+                        Copyright © 2017 by Khaled Hikmat. 
+                        <br />
+                        <strong><a href="http://wyam.io">Generated by Wyam</a></strong>
+                </p>
+                </div>
+        </div>
+</div>
+                </footer> 
+
+                <script type="text/javascript">
+</script>
+                <script>hljs.initHighlightingOnLoad();</script>
+
+                        <script type="text/javascript">                
+                                // Header background                        
+                                var colors = Please.make_color({
+                                        colors_returned: 3,
+                                        saturation: .6
+                                });
+                                var t = new Trianglify({
+                                        x_gradient: colors,
+                                        y_gradient: ["#FFFFFF"]
+                                });
+                                var header = document.getElementById("intro-header");
+                                var pattern = t.generate(header.clientWidth, header.clientHeight);
+                                header.setAttribute('style', 'background-image: ' + pattern.dataUrl);                        
+                        </script>
+        </body>
+</html>
+
