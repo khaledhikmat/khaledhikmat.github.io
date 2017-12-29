@@ -428,8 +428,26 @@ public static async Task&lt;HttpResponseMessage&gt; Run(
 <pre><code>context.ContinueAsNew(membership);
 </code></pre>
 <p>But it seems that the internal state is actually not persisted anywhere ...it is transient. When actors are initially created, a state is passed as an input i.e. <code>context.GetInput&lt;dynamic&gt;()</code> and the actor updates it with a call to <code>ContinueAsNew</code> which actually restarts itself with a new state.</p>
-<p>I also could not find a way for an HTTP trigger to read the internal state of an actor.</p>
-<p>Given that, I think the internal state seems to be used only for the actor internal operation. If an actor is to expose its state, it must be saved externally so HTTP triggers, for example, can read it directly from the external store.</p>
+<p>The internal state can be read by using one of the APIs of the instance management:</p>
+<pre><code>var status = await client.GetStatusAsync(instanceId);
+</code></pre>
+<p>Where <code>client</code> is <code>DurableOrchestrationClient</code>. The status input is the actor's internal state:</p>
+<pre><code>{
+    &quot;Name&quot;: &quot;E3_MembershipWithTimer&quot;,
+    &quot;InstanceId&quot;: &quot;U7CCR&quot;,
+    &quot;CreatedTime&quot;: &quot;2017-12-29T21:12:24.8229285Z&quot;,
+    &quot;LastUpdatedTime&quot;: &quot;2017-12-29T21:12:25.5309613Z&quot;,
+    &quot;Input&quot;: {
+        &quot;$type&quot;: &quot;&lt;&gt;f__AnonymousType0`3[[System.String, mscorlib],[System.String, mscorlib],[System.String, mscorlib]], VSSample&quot;,
+        &quot;Id&quot;: &quot;asas&quot;,
+        &quot;Code&quot;: &quot;U7CCR&quot;,
+        &quot;CardNumber&quot;: &quot;977515900121213&quot;
+    },
+    &quot;Output&quot;: null,
+    &quot;RuntimeStatus&quot;: 0
+}
+</code></pre>
+<p>I am not sure if the actor internal state is meant to hold big state though. Perhaps it is better if the actor exposes its state externally so HTTP triggers, for example, can read it directly from the external store.</p>
 <p>One way of doing this is to modify the code to look something like this:</p>
 <pre><code>[FunctionName(&quot;HttpRefreshMemberships&quot;)]
 public static async Task&lt;HttpResponseMessage&gt; Run(
@@ -538,7 +556,7 @@ public static async Task&lt;HttpResponseMessage&gt; Run(
 <h2 id="net-standard-2.0">.NET Standard 2.0</h2>
 <p>It is work in progress! It is best to use the .NET full framework with Azure Functions. Hopefully this will change soon and we will be able to use .NET Core reliably.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>Reflecting on the little time that I spent with Azure Durable Functions, I think they will play an important part of my future solutions. I think they have what it takes to use as actors minus the internal state. If we externalize their state, we will be able to query the external store as opposed to query the actors themselves to retrieve their state.</p>
+<p>Reflecting on the little time that I spent with Azure Durable Functions, I think they will play an important part of my future solutions. I think they have what it takes to use as actors especially that the Azure Durable Functions are designed to <a href="https://social.msdn.microsoft.com/Forums/en-US/b6ffeae3-f62a-4e6d-a68a-e5dc6f9ffd62/durable-singletons?forum=AzureFunctions">support 1000's of instances</a> . If we externalize the actor's state, we will be able to query the external store as opposed to query the actors themselves to retrieve their state.</p>
 <p>Azure Durable Actors can also employ reminders and other sophisticated techniques found in Service Fabric actors such as long-running, stateful, single-threaded, location-transparent and globally addressable (taken from the overview <a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-overview">documentation page</a>). However, as stated above, Azure Functions singletons do not expose methods that can be called from the outside.</p>
 
 
