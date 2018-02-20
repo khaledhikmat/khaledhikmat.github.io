@@ -5,8 +5,8 @@
 		<link>http://khaledhikmat.github.io/</link>
 		<description>Coding Thoughts</description>
 		<copyright>2018</copyright>
-		<pubDate>Tue, 20 Feb 2018 10:10:47 GMT</pubDate>
-		<lastBuildDate>Tue, 20 Feb 2018 10:10:47 GMT</lastBuildDate>
+		<pubDate>Tue, 20 Feb 2018 10:41:39 GMT</pubDate>
+		<lastBuildDate>Tue, 20 Feb 2018 10:41:39 GMT</lastBuildDate>
 		<item>
 			<title>Kubernetes vs. Service Fabric</title>
 			<link>http://khaledhikmat.github.io/posts/2018-01-06-kubernetes-vs-service-fabric</link>
@@ -31,7 +31,7 @@
 &lt;p&gt;In 2017, k8s became an industry standard. Every Cloud vendor offers full support and some offer Kubernetes as a Service such as Azure Kubernetes Service (AKS) where the vendor takes care of the cluster creation, maintenance and management.&lt;/p&gt;
 &lt;p&gt;Given this, it became obvious that if any business is planning to adopt Microservices as a developmemt strategy, they are most likely thinking about employing Kubernetes. Managed services offered by many Cloud vendors such as Azure AKS makes this decison a lot easier as dvelopers no longer have to worry about provisioning or maintaining k8s clusters.&lt;/p&gt;
 &lt;p&gt;Besides the huge developer and industry support that it is currently receiving, K8s is a joy to work with. Deployments can be described in yaml or json and thrown at the cluster so it can make sure that the desired state is realized. Please refer to &lt;a href="2018-01-04-netpp-docker-k8s"&gt;this post&lt;/a&gt; for more information.&lt;/p&gt;
-&lt;p&gt;To be added:&lt;/p&gt;
+&lt;p&gt;Not sure about these:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Can k8s create singletons?&lt;/li&gt;
 &lt;li&gt;Can I have multiple depoyments of the same Docker instance with different enviroment variables?&lt;/li&gt;
@@ -3324,96 +3324,107 @@ gulp.task('html', function () {
 </content:encoded>
 		</item>
 		<item>
-			<title>Pass Multiple Parameters to a Web API GET</title>
-			<link>http://khaledhikmat.github.io/posts/2014-06-14-pass-multiple-parameters-to-web-api</link>
-			<description>&lt;p&gt;I needed to pass multiple query string parameters to a GET method in an ASP .NET Web API. I wanted to receive the parameters as a complex argument
-in the GET Method. This is how I wanted my Web API controller method to look like:&lt;/p&gt;</description>
+			<title>Generic Local Storage Class for Win8 Apps</title>
+			<link>http://khaledhikmat.github.io/posts/2014-07-07-generic-local-storage-win8-apps</link>
+			<description>&lt;p&gt;A class in C# that can be used to store and retrieve complex objects to/from Win8 local storage. The class requires JSON.NET Nuget library and of course it relies on the Win8 StorageFile class (hence the Windows.Storage namespace).&lt;/p&gt;</description>
 			<enclosure url="http://khaledhikmat.github.io/images/liquid.jpg" length="0" type="image" />
-			<guid>http://khaledhikmat.github.io/posts/2014-06-14-pass-multiple-parameters-to-web-api</guid>
+			<guid>http://khaledhikmat.github.io/posts/2014-07-07-generic-local-storage-win8-apps</guid>
 			<pubDate>Mon, 07 Jul 2014 00:00:00 GMT</pubDate>
-			<content:encoded>&lt;p&gt;I needed to pass multiple query string parameters to a GET method in an ASP .NET Web API. I wanted to receive the parameters as a complex argument
-in the GET Method. This is how I wanted my Web API controller method to look like:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;[Route(&amp;quot;api/outlets&amp;quot;, Name = &amp;quot;Outlets&amp;quot;)]
-public IHttpActionResult GetTry(OutletsSearchParameters params)
-{
-    try
-    {
-        // Do stuff...
-        return Ok(params); // Just to see what I am getting
-    }
-    catch (Exception e)
-    {
-        return BadRequest(e.Message);
-    }
-}
+			<content:encoded>&lt;p&gt;A class in C# that can be used to store and retrieve complex objects to/from Win8 local storage. The class requires JSON.NET Nuget library and of course it relies on the Win8 StorageFile class (hence the Windows.Storage namespace).&lt;/p&gt;
+&lt;h2 id="the-local-storage-interface"&gt;The local storage interface&lt;/h2&gt;
+&lt;p&gt;Assuming you have a complex object represented here for simplicity by a Book. But it can be anything:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;	public class Book
+	{
+        public string Title { get; set; }
+        public string Author { get; set; }
+	}
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Where the OutletsSearchParameters is defined as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;    public class OutletsSearchParameters 
+&lt;p&gt;Let us create an interface for storing and retrieving a book from the local repository:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    public interface ILocalStorageService
     {
-        public int Page { get; set; }
-        public int RecordsPerPage { get; set; }
-        public string Lang { get; set; }
-        public string City { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        Task&amp;lt;Book&amp;gt; RetrieveBook();
+        Task&amp;lt;bool&amp;gt; StoreBook(Book book);
     }
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;I found out that I can use action filer to the rescue. Here is an implementation of the custom filter:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;    public class JsonParameter : ActionFilterAttribute
+&lt;h2 id="the-local-storage-implementation"&gt;The local storage implementation&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;	public class LocalStorageService : ILocalStorageService
     {
-        Type _type;
-        string _queryStringKey;
+        const string BookFileName = &amp;quot;localBook.json&amp;quot;;
 
-        public JsonParameter(Type type, string queryStringKey)
+        public async Task&amp;lt;Book&amp;gt; RetrieveBook()
         {
-            _type = type;
-            _queryStringKey = queryStringKey;
+            return await RetrieveObject&amp;lt;Book&amp;gt;(BookFileName);
         }
 
-        public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
+        public async Task&amp;lt;bool&amp;gt; StoreBook(Book book)
         {
-            NameValueCollection qscoll = HttpUtility.ParseQueryString(actionContext.Request.RequestUri.Query);
-            if (qscoll != null)
+            return await StoreObject&amp;lt;Book&amp;gt;(book, BookFileName);
+        }
+
+        /*** PRIVATE METHODS */
+        private async Task&amp;lt;T&amp;gt; RetrieveObject&amp;lt;T&amp;gt;(string storageFileName)
+        {
+            StorageFile storageFile;
+
+            try
             {
-                var jsonParameter = qscoll[_queryStringKey];
-                if (jsonParameter != null)
-                {
-                    var jsonData = JsonConvert.DeserializeObject(jsonParameter, _type);
-                    actionContext.ActionArguments[_queryStringKey] = jsonData;
-                }
+                storageFile = await ApplicationData.Current.LocalFolder.GetFileAsync(storageFileName);
             }
+            catch (FileNotFoundException ex)
+            {
+                storageFile = null;
+            }
+
+            if (storageFile != null)
+            {
+                string data = await FileIO.ReadTextAsync(storageFile);
+                return FromJson&amp;lt;T&amp;gt;(data);
+            }
+
+            return default(T);
         }
-    }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;and here is how I decorated my Web API controller method:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;        [Route(&amp;quot;api/outlets&amp;quot;, Name = &amp;quot;Outlets&amp;quot;)]
-        [JsonParameter(typeof(OutletsSearchParameters), &amp;quot;json&amp;quot;)]
-        public IHttpActionResult GetTry(OutletsSearchParameters json)
+
+        private async Task&amp;lt;bool&amp;gt; StoreObject&amp;lt;T&amp;gt;(T requestObject, string storageFileName)
         {
             try
             {
-				// Do stuff...
-                return Ok(json); // Just to see what I am getting
+                var data = ToJson&amp;lt;T&amp;gt;(requestObject);
+                StorageFile localFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(storageFileName, CreationCollisionOption.ReplaceExisting);
+                await FileIO.WriteTextAsync(localFile, data);
+                return true;
             }
-            catch (Exception e)
+            catch (FileNotFoundException ex)
             {
-                return BadRequest(e.Message);
             }
+
+            return false;
         }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now....I can use pass the parameters as a JSON object in the query string like so:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;/api/outlets?json={&amp;quot;city&amp;quot;:&amp;quot;some city&amp;quot;,&amp;quot;lang&amp;quot;:&amp;quot;EN&amp;quot;,&amp;quot;page&amp;quot;:&amp;quot;0&amp;quot;,&amp;quot;recordsPerPage&amp;quot;:&amp;quot;10&amp;quot;}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;From a Java Script client, I can assemble an object literal like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;	var searchParameters = {
-		city: 'some nice city',
-		lang: 'EN',
-		page: 0,
-		recordsPerPage: 10
-	};
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;and use the JSON stringify method to serialize the object. To assemble the URL, we can write something like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;var url = '/api/outlets?json=' + JSON.stringify(searchParameters);
+
+        private string ToJson&amp;lt;T&amp;gt;(T requestObject)
+        {
+            var data = &amp;quot;&amp;quot;;
+
+            try
+            {
+                data = JsonConvert.SerializeObject(requestObject,
+                                                      new JsonSerializerSettings()
+                                                      {
+                                                          NullValueHandling = NullValueHandling.Ignore
+                                                      });
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return data;
+        }
+
+        private T FromJson&amp;lt;T&amp;gt;(string data)
+        {
+            T returnObject = JsonConvert.DeserializeObject&amp;lt;T&amp;gt;(data);
+            return returnObject;
+        }
+    }
 &lt;/code&gt;&lt;/pre&gt;
 </content:encoded>
 		</item>
