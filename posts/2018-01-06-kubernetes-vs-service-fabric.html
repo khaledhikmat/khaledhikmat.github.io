@@ -1,0 +1,204 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+        <title>Khaled Hikmat - Kubernetes vs. Service Fabric</title>
+        <meta name="description" content="Coding Thoughts" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+
+        <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
+                <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/highlight.css" rel="stylesheet">
+        <link href="/assets/css/clean-blog.css" rel="stylesheet" />
+        <link href="/assets/css/master.css" rel="stylesheet" />
+        <link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/override.css" rel="stylesheet" />
+
+
+        <meta name="application-name" content="Khaled Hikmat" />
+        <meta name="msapplication-tooltip" content="Khaled Hikmat" />
+        <meta name="msapplication-starturl" content="/" />
+
+        <meta property="og:title" content="Khaled Hikmat - Kubernetes vs. Service Fabric" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://khaledhikmat.github.io/posts/2018-01-06-kubernetes-vs-service-fabric" />
+        <!-- TODO: More social graph meta tags -->
+
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/highlight.pack.js"></script>   
+        <script src="/assets/js/clean-blog.js"></script>
+        <script src="/assets/js/d3.v3.min.js"></script>
+        <script src="/assets/js/trianglify.min.js"></script>
+        <script src="/assets/js/Please-compressed.js"></script>
+        <script src="/assets/js/background-check.min.js"></script>
+                
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+                <script src="/assets/js/html5shiv.js"></script>
+                <script src="/assets/js/respond.min.js"></script>
+        <![endif]-->
+        
+        
+
+
+        </head>
+        <body>
+                
+                <!-- Navigation -->
+                <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+                        <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header page-scroll">
+                                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="/">Khaled Hikmat</a>
+                                </div>
+                        
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="navbar-collapse">
+                                        <ul class="nav navbar-nav navbar-right">
+                                                        <li><a href="/posts">Archive</a></li>
+        <li><a href="/tags">Tags</a></li>
+        <li><a href="/about">About Me</a></li>
+ 
+                                        </ul>
+                                </div>
+                                <!-- /.navbar-collapse -->
+                        </div>
+                        <!-- /.container -->
+                </nav>
+                
+                <!-- Page Header -->
+                <header class="intro-header" id="intro-header" style="background-image: url(&quot;images/liquid.jpg&quot;)">
+                        <div class="container">
+                                <div class="row">
+                                        <div class="col-md-12">
+
+    
+<div class="post-heading">
+    <h1>Kubernetes vs. Service Fabric</h1>
+        <h2 class="subheading">Developer Notes</h2>
+    <div class="meta">        
+Published on Saturday, January 6, 2018<br>    </div>
+        <div class="tags">
+                    <a role="button" href="/tags/Kubernetes" class="btn btn-default btn-xs">Kubernetes</a>
+                    <a role="button" href="/tags/Service-Fabric" class="btn btn-default btn-xs">Service Fabric</a>
+        </div>     
+</div>
+                                        </div>
+                                </div>
+                        </div>
+                </header>
+                
+                <!-- Main Content -->
+                <div class="container">
+                        <div class="row">
+                                <div id="content" class="col-md-12">
+                                        
+
+<p>Having been exposed to <a href="https://kubernetes.io/">Kubernetes</a> and <a href="https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-overview">Microsoft's Service Fabric</a>, the following are some of my notes about both platforms:</p>
+<h2 id="similarities">Similarities</h2>
+<p>They are both orchestrators and pretty much can handle:</p>
+<ul>
+<li>Container Images Hosting</li>
+<li>Scaling</li>
+<li>Healing</li>
+<li>Monitoring</li>
+<li>Rolling Updates</li>
+<li>Service Location</li>
+</ul>
+<p>However, Service Fabric support for containers came recently. Initially, Azure Service Fabric was mostly an orchestrator for .NET processes running Windows only.</p>
+<h2 id="strengths">Strengths</h2>
+<h4 id="kubernetes">Kubernetes:</h4>
+<p>In 2017, k8s became an industry standard. Every Cloud vendor offers full support and some offer Kubernetes as a Service such as Azure Kubernetes Service (AKS) where the vendor takes care of the cluster creation, maintenance and management.</p>
+<p>Given this, it became obvious that if any business is planning to adopt Microservices as a developmemt strategy, they are most likely thinking about employing Kubernetes. Managed services offered by many Cloud vendors such as Azure AKS makes this decison a lot easier as dvelopers no longer have to worry about provisioning or maintaining k8s clusters.</p>
+<p>Besides the huge developer and industry support that it is currently receiving, K8s is a joy to work with. Deployments can be described in yaml or json and thrown at the cluster so it can make sure that the desired state is realized. Please refer to <a href="2018-01-04-netpp-docker-k8s">this post</a> for more information.</p>
+<p>To be added:</p>
+<ul>
+<li>Can k8s create singletons?</li>
+<li>Can I have multiple depoyments of the same Docker instance with different enviroment variables?</li>
+</ul>
+<h4 id="service-fabric">Service Fabric:</h4>
+<p>In my opinion, one of the most differentiating factor for Service Fabric is its developer-friendly programming model. It supports reliable stateless, stateful and actor models in a powerful yet abstracted way which makes programming in Service Fabric safe and easy. Please refer to earlier posts <a href="2016-12-15-service-fabric-fundamentals">here</a> and <a href="2017-01-10-service-fabric-notes">here</a> for more information.</p>
+<p>In addition, Service Fabric supports different ways to host code:</p>
+<ul>
+<li>Guest Executable i.e. unmodified Win32 applications or services</li>
+<li>Guest Windows and Linux containers</li>
+<li>Reliable stateless and stateful services in .NET C#, F# and Java</li>
+<li>Reliable actors in .NET C#, F# and Java</li>
+</ul>
+<p>The concept of app in Service Fabric is quite sophisticated allowing developers to create an app type and instantiate many copies of it making the concept work well in multi-tenant deployments.</p>
+<h2 id="weaknesses">Weaknesses</h2>
+<h4 id="kubernetes-1">Kubernetes:</h4>
+<p>I am not in a position to state any weaknesses for k8s. But, from (perhaps) a very naive perspective, I would say that:</p>
+<ul>
+<li>The lack of standard programming models is definitely something that can be improved.</li>
+<li>K8s can only work with containers! So any piece of code that must deployed to k8s must be containerized first.</li>
+<li>Currently k8s is only a Linux orchestrator. Although a beta 1.9 version is said to support Windows containers.</li>
+</ul>
+<h4 id="service-fabric-1">Service Fabric</h4>
+<p>One of the major setbacks for Service Fabric (or at least the public version that was made available) is that it was conceived at a time when k8s is burgeoning into an industry standard. It is becoming very difficult for Microsoft to convince developers and businesses to adopt this semi-proprieytary platform when they can use k8s.</p>
+<p>There are also a couple of things that can be improved:</p>
+<ul>
+<li>Service Fabric relies on XML documents to describe services and configuration.</li>
+<li>Reliance on Visual Studio although it is possible to do things in Service Fabric without Visual Studio as demonstrated <a href="2016-12-02-service-fabric-basics">here</a></li>
+</ul>
+<h2 id="future">Future</h2>
+<p>I love Service Fabric! But unfortunately (I say unfortyantely because I actually did spend a lot of time on it), I don't think it has a particularly great future given the strength and the momentum of k8s. Ideally Microsoft should continue to suppprt k8s in a strong way, perhaps port its Service Fabric programming model to work on k8s using .NET Core and eventually phase out Service Fabric.</p>
+
+
+
+                                </div>
+                        </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Footer -->
+                <footer>
+                        <div class="container">
+        <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="copyright text-muted">
+                        Copyright © 2018
+                        <br />
+                            <a href="/feed.rss"><i class="fa fa-rss"></i> RSS Feed</a>
+                        |
+                            <a href="/feed.atom"><i class="fa fa-rss"></i> Atom Feed</a>
+                        <br />
+                        <strong><a href="https://wyam.io">Generated by Wyam</a></strong>
+                    </p>
+                </div>
+        </div>
+</div>
+
+                </footer> 
+
+                
+                <script>hljs.initHighlightingOnLoad();</script>
+
+
+                <script>
+                        BackgroundCheck.init({
+                                targets: '.intro-header,.navbar',
+                                images: '.intro-header'
+                        });
+                </script>
+        </body>
+</html>
+

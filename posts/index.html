@@ -1,4 +1,4 @@
-
+﻿
 <!DOCTYPE html>
 <html lang="en">
         <head>
@@ -10,17 +10,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">        
 
         <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
-        <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+                <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
         <link href="/assets/css/highlight.css" rel="stylesheet">
         <link href="/assets/css/clean-blog.css" rel="stylesheet" />
         <link href="/assets/css/master.css" rel="stylesheet" />
-        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-        <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
         <link href="/assets/css/override.css" rel="stylesheet" />
 
 
@@ -33,20 +33,23 @@
         <meta property="og:url" content="http://khaledhikmat.github.io/posts" />
         <!-- TODO: More social graph meta tags -->
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>     
         <script src="/assets/js/highlight.pack.js"></script>   
         <script src="/assets/js/clean-blog.js"></script>
-        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/assets/js/d3.v3.min.js"></script>
         <script src="/assets/js/trianglify.min.js"></script>
         <script src="/assets/js/Please-compressed.js"></script>
+        <script src="/assets/js/background-check.min.js"></script>
                 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
-                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+                <script src="/assets/js/html5shiv.js"></script>
+                <script src="/assets/js/respond.min.js"></script>
         <![endif]-->
+        
+        
 
 
         </head>
@@ -69,9 +72,10 @@
                                 <!-- Collect the nav links, forms, and other content for toggling -->
                                 <div class="collapse navbar-collapse" id="navbar-collapse">
                                         <ul class="nav navbar-nav navbar-right">
-                                                <li><a href="/about">About</a></li>
-<li><a href="/posts">Archive</a></li>
-<li><a href="/tags">Tags</a></li> 
+                                                        <li><a href="/posts">Archive</a></li>
+        <li><a href="/tags">Tags</a></li>
+        <li><a href="/about">About Me</a></li>
+ 
                                         </ul>
                                 </div>
                                 <!-- /.navbar-collapse -->
@@ -80,7 +84,7 @@
                 </nav>
                 
                 <!-- Page Header -->
-                <header class="intro-header" id="intro-header">
+                <header class="intro-header" id="intro-header" style="background-image: url(&quot;images/liquid.jpg&quot;)">
                         <div class="container">
                                 <div class="row">
                                         <div class="col-md-12">
@@ -96,6 +100,29 @@
                         <div class="row">
                                 <div id="content" class="col-md-12">
                                         
+        <h1>2018</h1>
+        <hr />
+        <div class="post-list">
+            <a href="/posts/2018-01-06-kubernetes-vs-service-fabric">
+                <h3 class="post-title">Kubernetes vs. Service Fabric</h3>
+                    <h4 class="post-subtitle">Developer Notes</h4>
+            </a>
+            <p class="post-meta">Posted on Saturday, January 6, 2018</p>      
+        </div>   
+        <div class="post-list">
+            <a href="/posts/2018-01-04-netapp-docker-k8s">
+                <h3 class="post-title">.NET Core, Docker and Kubernetes</h3>
+                    <h4 class="post-subtitle">using Console Apps</h4>
+            </a>
+            <p class="post-meta">Posted on Thursday, January 4, 2018</p>      
+        </div>   
+        <div class="post-list">
+            <a href="/posts/2018-01-02-azure-cli-login-options">
+                <h3 class="post-title">Azure CLI Notes</h3>
+                    <h4 class="post-subtitle">Login Options</h4>
+            </a>
+            <p class="post-meta">Posted on Tuesday, January 2, 2018</p>      
+        </div>   
         <h1>2017</h1>
         <hr />
         <div class="post-list">
@@ -103,42 +130,42 @@
                 <h3 class="post-title">Actors in Serverless</h3>
                     <h4 class="post-subtitle">Using Azure Functions</h4>
             </a>
-            <p class="post-meta">Posted on Wednesday, December 27, 2017</p>            
+            <p class="post-meta">Posted on Wednesday, December 27, 2017</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2017-12-21-point-to-site-connectivity">
                 <h3 class="post-title">Point to Site Connectivity in Azure</h3>
                     <h4 class="post-subtitle">How to establish point to site connectivity</h4>
             </a>
-            <p class="post-meta">Posted on Thursday, December 21, 2017</p>            
+            <p class="post-meta">Posted on Thursday, December 21, 2017</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2017-03-30-deletes-in-docdb">
                 <h3 class="post-title">Document Deletion in Azure DocumentDB</h3>
                     <h4 class="post-subtitle">How to perform multiple-document deletions based on time in Azure DocumentDB</h4>
             </a>
-            <p class="post-meta">Posted on Thursday, March 30, 2017</p>            
+            <p class="post-meta">Posted on Thursday, March 30, 2017</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2017-02-21-service-fabric-secure-cluster">
                 <h3 class="post-title">Service Fabric Secure Cluster Deployment</h3>
                     <h4 class="post-subtitle">Service Fabric Secure Cluster Deployment</h4>
             </a>
-            <p class="post-meta">Posted on Tuesday, February 21, 2017</p>            
+            <p class="post-meta">Posted on Tuesday, February 21, 2017</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2017-02-15-web-test-thoughts">
                 <h3 class="post-title">Web Tests Thoughts</h3>
                     <h4 class="post-subtitle">Web Test Thoughts</h4>
             </a>
-            <p class="post-meta">Posted on Wednesday, February 15, 2017</p>            
+            <p class="post-meta">Posted on Wednesday, February 15, 2017</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2017-01-10-service-fabric-notes">
                 <h3 class="post-title">Service Fabric Notes</h3>
                     <h4 class="post-subtitle">Some Service Fabric Implementation Notes</h4>
             </a>
-            <p class="post-meta">Posted on Tuesday, January 10, 2017</p>            
+            <p class="post-meta">Posted on Tuesday, January 10, 2017</p>      
         </div>   
         <h1>2016</h1>
         <hr />
@@ -147,56 +174,56 @@
                 <h3 class="post-title">How to generate a static site</h3>
                     <h4 class="post-subtitle">Using Wyam</h4>
             </a>
-            <p class="post-meta">Posted on Friday, December 23, 2016</p>            
+            <p class="post-meta">Posted on Friday, December 23, 2016</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2016-12-15-service-fabric-fundamentals">
                 <h3 class="post-title">Service Fabric Fundamentals</h3>
                     <h4 class="post-subtitle">A demonstration of Service Fabric Fundamentals</h4>
             </a>
-            <p class="post-meta">Posted on Thursday, December 15, 2016</p>            
+            <p class="post-meta">Posted on Thursday, December 15, 2016</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2016-12-02-service-fabric-basics">
                 <h3 class="post-title">Service Fabric Basics</h3>
                     <h4 class="post-subtitle">A demonstration of basic but important functionality in Service Fabric</h4>
             </a>
-            <p class="post-meta">Posted on Friday, December 2, 2016</p>            
+            <p class="post-meta">Posted on Friday, December 2, 2016</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2016-11-24-presentation-evaluation">
                 <h3 class="post-title">Xamarin Forms App using VS for mac</h3>
                     <h4 class="post-subtitle">Simple example of using VS for mac to build a Xamarin Forms app to capture a picture, send to cognitive and PowerBI</h4>
             </a>
-            <p class="post-meta">Posted on Thursday, November 24, 2016</p>            
+            <p class="post-meta">Posted on Thursday, November 24, 2016</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2016-09-09-aspnet-core-file-return">
                 <h3 class="post-title">Return a file in ASP.NET Core from a Web API</h3>
                     <h4 class="post-subtitle">A tip of how to return a file in ASP.NET Core</h4>
             </a>
-            <p class="post-meta">Posted on Friday, September 9, 2016</p>            
+            <p class="post-meta">Posted on Friday, September 9, 2016</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2016-04-30-kicking-powerapps-tires">
                 <h3 class="post-title">Kicking PowerApps Tires</h3>
                     <h4 class="post-subtitle">PowerApps are meant to build LOB mobile apps. This is a small sample to kick its tires</h4>
             </a>
-            <p class="post-meta">Posted on Saturday, April 30, 2016</p>            
+            <p class="post-meta">Posted on Saturday, April 30, 2016</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2016-04-25-open-azure-vm-port">
                 <h3 class="post-title">Open Azure VM Port</h3>
                     <h4 class="post-subtitle">How to open up a port in an Azure Windows VM</h4>
             </a>
-            <p class="post-meta">Posted on Monday, April 25, 2016</p>            
+            <p class="post-meta">Posted on Monday, April 25, 2016</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2016-02-19-asp-net-api-versioning">
                 <h3 class="post-title">ASP.NET API Versioning</h3>
                     <h4 class="post-subtitle">Web API Versioning to solve different mobile app authentication schemes</h4>
             </a>
-            <p class="post-meta">Posted on Friday, February 19, 2016</p>            
+            <p class="post-meta">Posted on Friday, February 19, 2016</p>      
         </div>   
         <h1>2015</h1>
         <hr />
@@ -205,14 +232,14 @@
                 <h3 class="post-title">Azure Logic Apps Push Trigger</h3>
                     <h4 class="post-subtitle">Notes on Azure Logic Apps Push Triggers</h4>
             </a>
-            <p class="post-meta">Posted on Sunday, November 15, 2015</p>            
+            <p class="post-meta">Posted on Sunday, November 15, 2015</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2015-09-26-github-platform">
                 <h3 class="post-title">GitHub Platform</h3>
                     <h4 class="post-subtitle">Some notes on how to make a good use of the GitHub platform</h4>
             </a>
-            <p class="post-meta">Posted on Saturday, September 26, 2015</p>            
+            <p class="post-meta">Posted on Saturday, September 26, 2015</p>      
         </div>   
         <h1>2014</h1>
         <hr />
@@ -221,56 +248,56 @@
                 <h3 class="post-title">Pass Multiple Parameters to a Web API GET</h3>
                     <h4 class="post-subtitle">A good way to handle passing multiple parameters to a GET method in ASP .NET Web API</h4>
             </a>
-            <p class="post-meta">Posted on Monday, July 7, 2014</p>            
+            <p class="post-meta">Posted on Monday, July 7, 2014</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2014-07-07-generic-local-storage-win8-apps">
                 <h3 class="post-title">Generic Local Storage Class for Win8 Apps</h3>
                     <h4 class="post-subtitle">A simple C# class to handle local storage of complex objects in Windows 8 apps</h4>
             </a>
-            <p class="post-meta">Posted on Monday, July 7, 2014</p>            
+            <p class="post-meta">Posted on Monday, July 7, 2014</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2014-05-31-generic-http-repository">
                 <h3 class="post-title">Generic HTTP Repository</h3>
                     <h4 class="post-subtitle">A simple C# class to handle HTTP verbs using HttpClient</h4>
             </a>
-            <p class="post-meta">Posted on Saturday, May 31, 2014</p>            
+            <p class="post-meta">Posted on Saturday, May 31, 2014</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2014-05-22-webapi-thoughts">
                 <h3 class="post-title">Web API Thoughts</h3>
                     <h4 class="post-subtitle">A list of thoughts and recommendations gathered while working on an ASP .NET Web API Project</h4>
             </a>
-            <p class="post-meta">Posted on Thursday, May 22, 2014</p>            
+            <p class="post-meta">Posted on Thursday, May 22, 2014</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2014-02-06-git-commands">
                 <h3 class="post-title">Git Commands</h3>
                     <h4 class="post-subtitle">A list of useful &#x27;git&#x27; commands one might need on a daily basis if you work with git-based repositories</h4>
             </a>
-            <p class="post-meta">Posted on Thursday, February 6, 2014</p>            
+            <p class="post-meta">Posted on Thursday, February 6, 2014</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2014-02-02-jekyll-caveats">
                 <h3 class="post-title">Jekyll caveats</h3>
                     <h4 class="post-subtitle">Jekyll is a blog-aware platform that transforms your plain text into static websites. This post describes</h4>
             </a>
-            <p class="post-meta">Posted on Sunday, February 2, 2014</p>            
+            <p class="post-meta">Posted on Sunday, February 2, 2014</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2014-01-06-static-libraries-in-ios">
                 <h3 class="post-title">Static Libraries in iOS</h3>
                     <h4 class="post-subtitle">A sample of how to create static libraries in iOS</h4>
             </a>
-            <p class="post-meta">Posted on Monday, January 6, 2014</p>            
+            <p class="post-meta">Posted on Monday, January 6, 2014</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2014-01-05-custom-views-in-ios">
                 <h3 class="post-title">Custom Views in iOS</h3>
                     <h4 class="post-subtitle">A sample of how to create custom views in iOS</h4>
             </a>
-            <p class="post-meta">Posted on Sunday, January 5, 2014</p>            
+            <p class="post-meta">Posted on Sunday, January 5, 2014</p>      
         </div>   
         <h1>2013</h1>
         <hr />
@@ -279,106 +306,112 @@
                 <h3 class="post-title">iOS Development</h3>
                     <h4 class="post-subtitle">My first exposure to iOS development</h4>
             </a>
-            <p class="post-meta">Posted on Thursday, December 26, 2013</p>            
+            <p class="post-meta">Posted on Thursday, December 26, 2013</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2013-11-07-small-thread-lesson-in-android">
                 <h3 class="post-title">A small thread lesson in Android</h3>
                     <h4 class="post-subtitle">An easier and more efficient way to employ threads</h4>
             </a>
-            <p class="post-meta">Posted on Thursday, November 7, 2013</p>            
+            <p class="post-meta">Posted on Thursday, November 7, 2013</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2013-10-29-slide-browser-in-android">
                 <h3 class="post-title">Slide browser in Android</h3>
                     <h4 class="post-subtitle">A simple example of how to use a slide browser in Android</h4>
             </a>
-            <p class="post-meta">Posted on Tuesday, October 29, 2013</p>            
+            <p class="post-meta">Posted on Tuesday, October 29, 2013</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2013-09-20-windows8-apps-lose-internet-connection">
                 <h3 class="post-title">Windows8 Apps lose Internet conncetion</h3>
                     <h4 class="post-subtitle">A case where Windows Apps lose Internet connection</h4>
             </a>
-            <p class="post-meta">Posted on Friday, September 20, 2013</p>            
+            <p class="post-meta">Posted on Friday, September 20, 2013</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2013-09-09-typescript">
                 <h3 class="post-title">TypeScript Anamolies</h3>
                     <h4 class="post-subtitle">TypeScript and Web Essentials in VS2012</h4>
             </a>
-            <p class="post-meta">Posted on Monday, September 9, 2013</p>            
-        </div>   
-        <div class="post-list">
-            <a href="/posts/2013-09-02-thalatha-wa-thalatheen-in-arabic">
-                <h3 class="post-title">&#x62B;&#x644;&#x627;&#x62B;&#x629; &#x648;&#x62B;&#x644;&#x627;&#x62B;&#x64A;&#x646;</h3>
-                    <h4 class="post-subtitle">&#x62E;&#x627;&#x631;&#x62C; &#x627;&#x644;&#x648;&#x637;&#x646;</h4>
-            </a>
-            <p class="post-meta">Posted on Thursday, September 5, 2013</p>            
+            <p class="post-meta">Posted on Monday, September 9, 2013</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2013-09-03-wordpress-and-javascript">
                 <h3 class="post-title">WordPress and JavaScript</h3>
                     <h4 class="post-subtitle">How to embed your own JavaScript in a WordPress site</h4>
             </a>
-            <p class="post-meta">Posted on Thursday, September 5, 2013</p>            
+            <p class="post-meta">Posted on Thursday, September 5, 2013</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2013-09-05-html-to-pdf-and-then-print">
                 <h3 class="post-title">HTML to PDF and then Print</h3>
                     <h4 class="post-subtitle">A Procesing a print job from the server</h4>
             </a>
-            <p class="post-meta">Posted on Thursday, September 5, 2013</p>            
+            <p class="post-meta">Posted on Thursday, September 5, 2013</p>      
+        </div>   
+        <div class="post-list">
+            <a href="/posts/2013-09-02-thalatha-wa-thalatheen-in-arabic">
+                <h3 class="post-title">&#x62B;&#x644;&#x627;&#x62B;&#x629; &#x648;&#x62B;&#x644;&#x627;&#x62B;&#x64A;&#x646;</h3>
+                    <h4 class="post-subtitle">&#x62E;&#x627;&#x631;&#x62C; &#x627;&#x644;&#x648;&#x637;&#x646;</h4>
+            </a>
+            <p class="post-meta">Posted on Thursday, September 5, 2013</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2013-08-31-microsoft-next-ceo">
                 <h3 class="post-title">Microsoft CEO</h3>
                     <h4 class="post-subtitle">The search for the next Microsoft CEO</h4>
             </a>
-            <p class="post-meta">Posted on Saturday, August 31, 2013</p>            
-        </div>   
-        <div class="post-list">
-            <a href="/posts/2013-08-29-collaborative-white-board">
-                <h3 class="post-title">Collaborative White Board</h3>
-                    <h4 class="post-subtitle">A sample Web page that uses SignalR</h4>
-            </a>
-            <p class="post-meta">Posted on Thursday, August 29, 2013</p>            
+            <p class="post-meta">Posted on Saturday, August 31, 2013</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2013-08-29-web-vs-native-mobile-dev">
                 <h3 class="post-title">Web vs.Native Mobile Development</h3>
                     <h4 class="post-subtitle">Decisions about what platforms to target in mobile apps</h4>
             </a>
-            <p class="post-meta">Posted on Thursday, August 29, 2013</p>            
+            <p class="post-meta">Posted on Thursday, August 29, 2013</p>      
+        </div>   
+        <div class="post-list">
+            <a href="/posts/2013-08-29-collaborative-white-board">
+                <h3 class="post-title">Collaborative White Board</h3>
+                    <h4 class="post-subtitle">A sample Web page that uses SignalR</h4>
+            </a>
+            <p class="post-meta">Posted on Thursday, August 29, 2013</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2013-08-29-asp-net-web-api-deferred-execution">
                 <h3 class="post-title">ASP .NET Web API Deferred Execution</h3>
                     <h4 class="post-subtitle">Something to run after the Web API excecutes</h4>
             </a>
-            <p class="post-meta">Posted on Thursday, August 29, 2013</p>            
-        </div>   
-        <div class="post-list">
-            <a href="/posts/2013-08-28-best-in-arabic">
-                <h3 class="post-title">&#x645;&#x646; &#x623;&#x62C;&#x645;&#x644; &#x645;&#x627;&#x642;&#x64A;&#x644; &#x628;&#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629;</h3>
-                    <h4 class="post-subtitle">&#x645;&#x62C;&#x645;&#x648;&#x639;&#x629; &#x623;&#x642;&#x648;&#x627;&#x644; &#x646;&#x62B;&#x631;&#x627; &#x648;&#x634;&#x640;&#x640;&#x640;&#x640;&#x640;&#x639;&#x631;&#x627;</h4>
-            </a>
-            <p class="post-meta">Posted on Wednesday, August 28, 2013</p>            
-        </div>   
-        <div class="post-list">
-            <a href="/posts/2013-08-28-umm-al3eyal-in-arabic">
-                <h3 class="post-title">&#x623;&#x645; &#x627;&#x644;&#x639;&#x64A;&#x627;&#x644;</h3>
-                    <h4 class="post-subtitle">&#x631;&#x633;&#x640;&#x640;&#x640;&#x640;&#x627;&#x644;&#x629; &#x645;&#x646;&#x64A; &#x639;&#x646; &#x623;&#x645; &#x627;&#x644;&#x639;&#x64A;&#x627;&#x644;</h4>
-            </a>
-            <p class="post-meta">Posted on Wednesday, August 28, 2013</p>            
+            <p class="post-meta">Posted on Thursday, August 29, 2013</p>      
         </div>   
         <div class="post-list">
             <a href="/posts/2013-08-28-patience-in-arabic">
                 <h3 class="post-title">&#x644;&#x645; &#x64A;&#x639;&#x62F; &#x645;&#x646; &#x642;&#x644;&#x628;&#x64A; &#x644;&#x644;&#x635;&#x628;&#x631; &#x645;&#x642;&#x627;&#x645;</h3>
                     <h4 class="post-subtitle">&#x634;&#x640;&#x640;&#x640;&#x640;&#x640;&#x640;&#x639;&#x631; &#x639;&#x631;&#x628;&#x64A; &#x64A;&#x62C;&#x633;&#x640;&#x640;&#x640;&#x640;&#x640;&#x62F; &#x645;&#x644;&#x62D;&#x645;&#x629; &#x627;&#x646;&#x633;&#x640;&#x640;&#x640;&#x640;&#x640;&#x627;&#x646;&#x64A;&#x629; &#x628;&#x64A;&#x646; &#x639;&#x635;&#x627;&#x645; &#x648;&#x639;&#x644;&#x64A;&#x627;</h4>
             </a>
-            <p class="post-meta">Posted on Wednesday, August 28, 2013</p>            
+            <p class="post-meta">Posted on Wednesday, August 28, 2013</p>      
         </div>   
+        <div class="post-list">
+            <a href="/posts/2013-08-28-best-in-arabic">
+                <h3 class="post-title">&#x645;&#x646; &#x623;&#x62C;&#x645;&#x644; &#x645;&#x627;&#x642;&#x64A;&#x644; &#x628;&#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629;</h3>
+                    <h4 class="post-subtitle">&#x645;&#x62C;&#x645;&#x648;&#x639;&#x629; &#x623;&#x642;&#x648;&#x627;&#x644; &#x646;&#x62B;&#x631;&#x627; &#x648;&#x634;&#x640;&#x640;&#x640;&#x640;&#x640;&#x639;&#x631;&#x627;</h4>
+            </a>
+            <p class="post-meta">Posted on Wednesday, August 28, 2013</p>      
+        </div>   
+        <div class="post-list">
+            <a href="/posts/2013-08-28-umm-al3eyal-in-arabic">
+                <h3 class="post-title">&#x623;&#x645; &#x627;&#x644;&#x639;&#x64A;&#x627;&#x644;</h3>
+                    <h4 class="post-subtitle">&#x631;&#x633;&#x640;&#x640;&#x640;&#x640;&#x627;&#x644;&#x629; &#x645;&#x646;&#x64A; &#x639;&#x646; &#x623;&#x645; &#x627;&#x644;&#x639;&#x64A;&#x627;&#x644;</h4>
+            </a>
+            <p class="post-meta">Posted on Wednesday, August 28, 2013</p>      
+        </div>   
+    <ul class="pager">
+        <li class="previous">                
+        </li>
+        <li class="next">
+        </li>
+    </ul>
 
                                 </div>
                         </div>
@@ -390,53 +423,32 @@
                 <footer>
                         <div class="container">
         <div class="row">
-                <div class="col-md-12">
-                <ul class="list-inline text-center">
-                        <li>
-                        <a href="https://twitter.com/khaledhmat">
-                                <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                        </a>
-                        </li>
-                        <li>
-                        <a href="https://github.com/khaledhikmat">
-                                <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                        </a>
-                        </li>
-                </ul>
-                <p class="copyright text-muted">
-                        Copyright © 2017 by Khaled Hikmat. 
+                <div class="col-md-12 text-center">
+                    <p class="copyright text-muted">
+                        Copyright © 2018
                         <br />
-                        <strong><a href="http://wyam.io">Generated by Wyam</a></strong>
-                </p>
+                            <a href="/feed.rss"><i class="fa fa-rss"></i> RSS Feed</a>
+                        |
+                            <a href="/feed.atom"><i class="fa fa-rss"></i> Atom Feed</a>
+                        <br />
+                        <strong><a href="https://wyam.io">Generated by Wyam</a></strong>
+                    </p>
                 </div>
         </div>
 </div>
+
                 </footer> 
 
-                <script type="text/javascript">
-</script>
+                
                 <script>hljs.initHighlightingOnLoad();</script>
 
-                        <script type="text/javascript">                
-                                // Header background                        
-                                var colors = Please.make_color({
-                                        colors_returned: 3,
-                                        saturation: .6
-                                });
-                                var t = new Trianglify({
-                                        x_gradient: colors,
-                                        y_gradient: ["#FFFFFF"]
-                                });
-                                var header = document.getElementById("intro-header");
-                                var pattern = t.generate(header.clientWidth, header.clientHeight);
-                                header.setAttribute('style', 'background-image: ' + pattern.dataUrl);                        
-                        </script>
+
+                <script>
+                        BackgroundCheck.init({
+                                targets: '.intro-header,.navbar',
+                                images: '.intro-header'
+                        });
+                </script>
         </body>
 </html>
 

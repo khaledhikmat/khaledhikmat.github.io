@@ -1,4 +1,4 @@
-
+﻿
 <!DOCTYPE html>
 <html lang="en">
         <head>
@@ -10,17 +10,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">        
 
         <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
-        <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+                <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
         <link href="/assets/css/highlight.css" rel="stylesheet">
         <link href="/assets/css/clean-blog.css" rel="stylesheet" />
         <link href="/assets/css/master.css" rel="stylesheet" />
-        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-        <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
         <link href="/assets/css/override.css" rel="stylesheet" />
 
 
@@ -33,20 +33,23 @@
         <meta property="og:url" content="http://khaledhikmat.github.io/posts/2017-12-27-durable-functions" />
         <!-- TODO: More social graph meta tags -->
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>     
         <script src="/assets/js/highlight.pack.js"></script>   
         <script src="/assets/js/clean-blog.js"></script>
-        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/assets/js/d3.v3.min.js"></script>
         <script src="/assets/js/trianglify.min.js"></script>
         <script src="/assets/js/Please-compressed.js"></script>
+        <script src="/assets/js/background-check.min.js"></script>
                 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
-                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+                <script src="/assets/js/html5shiv.js"></script>
+                <script src="/assets/js/respond.min.js"></script>
         <![endif]-->
+        
+        
 
 
         </head>
@@ -69,9 +72,10 @@
                                 <!-- Collect the nav links, forms, and other content for toggling -->
                                 <div class="collapse navbar-collapse" id="navbar-collapse">
                                         <ul class="nav navbar-nav navbar-right">
-                                                <li><a href="/about">About</a></li>
-<li><a href="/posts">Archive</a></li>
-<li><a href="/tags">Tags</a></li> 
+                                                        <li><a href="/posts">Archive</a></li>
+        <li><a href="/tags">Tags</a></li>
+        <li><a href="/about">About Me</a></li>
+ 
                                         </ul>
                                 </div>
                                 <!-- /.navbar-collapse -->
@@ -80,7 +84,7 @@
                 </nav>
                 
                 <!-- Page Header -->
-                <header class="intro-header" id="intro-header">
+                <header class="intro-header" id="intro-header" style="background-image: url(&quot;images/liquid.jpg&quot;)">
                         <div class="container">
                                 <div class="row">
                                         <div class="col-md-12">
@@ -92,11 +96,11 @@
     <div class="meta">        
 Published on Wednesday, December 27, 2017<br>    </div>
         <div class="tags">
-                    <a role="button" href="/tags/net" class="btn btn-default btn-xs">.NET</a>
-                    <a role="button" href="/tags/actors" class="btn btn-default btn-xs">Actors</a>
-                    <a role="button" href="/tags/azure-functions" class="btn btn-default btn-xs">Azure Functions</a>
-                    <a role="button" href="/tags/c%23" class="btn btn-default btn-xs">C#</a>
-                    <a role="button" href="/tags/durable" class="btn btn-default btn-xs">Durable</a>
+                    <a role="button" href="/tags/NET" class="btn btn-default btn-xs">.NET</a>
+                    <a role="button" href="/tags/Actors" class="btn btn-default btn-xs">Actors</a>
+                    <a role="button" href="/tags/Azure-Functions" class="btn btn-default btn-xs">Azure Functions</a>
+                    <a role="button" href="/tags/C%23" class="btn btn-default btn-xs">C#</a>
+                    <a role="button" href="/tags/Durable" class="btn btn-default btn-xs">Durable</a>
         </div>     
 </div>
                                         </div>
@@ -118,7 +122,7 @@ Published on Wednesday, December 27, 2017<br>    </div>
 <li>When do actors get created?</li>
 <li>When do actors get terminated?</li>
 <li>Can we read the actor's internal state?</li>
-<li>What about .NET Core and .NET Standard 2.0?</li>
+<li>What about .NET Core and .NET Standard 2.0 and other stuff?</li>
 </ul>
 <h2 id="create-a-new-actor">Create a new actor:</h2>
 <p>I created an HTTP trigger that looks like this where I provide a code that can be used as an instance id for the singleton i.e. membership actor. If the membership actor status is null or not running, then I start it with a <code>StartNewAsync</code>:</p>
@@ -209,120 +213,19 @@ public static async Task&lt;HttpResponseMessage&gt; Run(
 }
 </code></pre>
 <h3 id="multiple-signals">Multiple signals</h3>
-<p>But what happens if the actor is signaled frantically via raising an external event from an HTTP trigger, for example? Well....initially I thought the event signals are actually enqueued to the instance so they should run as many  times as they are sginaled.</p>
-<p>To try this, I started the functions app and triggered the refresh 3 times in a row via an HTTP trigger. From the log, I see that the <code>E3_Membership</code> for my instance id <code>U7TTR</code> was scheduled due to <code>RaiseEvent</code> 3 times as expected but was executed only once!! The (edited) log looks like this:</p>
-<ul>
-<li>Trigger 1:</li>
-</ul>
-<pre><code>[12/27/2017 5:19:19 PM] Executing HTTP request: {
-[12/27/2017 5:19:19 PM]   &quot;requestId&quot;: null,
-[12/27/2017 5:19:19 PM]   &quot;method&quot;: &quot;POST&quot;,
-[12/27/2017 5:19:19 PM]   &quot;uri&quot;: &quot;/memberships/refresh/U7TTR&quot;
-[12/27/2017 5:19:19 PM] }
-[12/27/2017 5:19:19 PM] Function started (Id=35d4e63e-1797-4c55-abe8-40d4acb45457)
-[12/27/2017 5:19:19 PM] Executing 'HttpRefreshMemberships' (Reason='This function was programmatically called via the host APIs.', Id=35d4e63e-1797-4c55-abe8-40d4acb45457)
-[12/27/2017 5:19:19 PM] Instance running status: 'Running'.
-[12/27/2017 5:19:20 PM] U7TTR: Function 'E3_Membership (Orchestrator)', version '' scheduled. Reason: RaiseEvent:operation. IsReplay: False. State: Scheduled. HubName: SampleHubVS. AppName: . SlotName: . ExtensionVersion: 1.1.0.0.
-[12/27/2017 5:19:20 PM] Refreshed an existing membership actor with code = 'U7TTR'.
-[12/27/2017 5:19:20 PM] Function completed (Success, Id=35d4e63e-1797-4c55-abe8-40d4acb45457, Duration=968ms)
-[12/27/2017 5:19:20 PM] Executed 'HttpRefreshMemberships' (Succeeded, Id=35d4e63e-1797-4c55-abe8-40d4acb45457)
-[12/27/2017 5:19:20 PM] Executed HTTP request: {
-[12/27/2017 5:19:20 PM]   &quot;requestId&quot;: &quot;304f872e-a276-4437-b127-0a58948b8e83&quot;,
-[12/27/2017 5:19:20 PM]   &quot;method&quot;: &quot;POST&quot;,
-[12/27/2017 5:19:20 PM]   &quot;uri&quot;: &quot;/memberships/refresh/U7TTR&quot;,
-[12/27/2017 5:19:20 PM]   &quot;authorizationLevel&quot;: &quot;Anonymous&quot;
-[12/27/2017 5:19:20 PM] }
-[12/27/2017 5:19:20 PM] Response details: {
-[12/27/2017 5:19:20 PM]   &quot;requestId&quot;: &quot;304f872e-a276-4437-b127-0a58948b8e83&quot;,
-[12/27/2017 5:19:20 PM]   &quot;status&quot;: &quot;Accepted&quot;
-[12/27/2017 5:19:20 PM] }
-</code></pre>
-<ul>
-<li>Trigger 2:</li>
-</ul>
-<pre><code>[12/27/2017 5:19:20 PM] Executing HTTP request: {
-[12/27/2017 5:19:20 PM]   &quot;requestId&quot;: null,
-[12/27/2017 5:19:20 PM]   &quot;method&quot;: &quot;POST&quot;,
-[12/27/2017 5:19:20 PM]   &quot;uri&quot;: &quot;/memberships/refresh/U7TTR&quot;
-[12/27/2017 5:19:20 PM] }
-[12/27/2017 5:19:21 PM] Function started (Id=bcbe86a7-8da5-4f81-ab29-0a334f5fd88c)
-[12/27/2017 5:19:21 PM] Executing 'HttpRefreshMemberships' (Reason='This function was programmatically called via the host APIs.', Id=bcbe86a7-8da5-4f81-ab29-0a334f5fd88c)
-[12/27/2017 5:19:21 PM] Instance running status: 'Running'.
-[12/27/2017 5:19:21 PM] U7TTR: Function 'E3_Membership (Orchestrator)', version '' scheduled. Reason: RaiseEvent:operation. IsReplay: False. State: Scheduled. HubName: SampleHubVS. AppName: . SlotName: . ExtensionVersion: 1.1.0.0.
-[12/27/2017 5:19:21 PM] Refreshed an existing membership actor with code = 'U7TTR'.
-[12/27/2017 5:19:21 PM] Function completed (Success, Id=bcbe86a7-8da5-4f81-ab29-0a334f5fd88c, Duration=475ms)
-[12/27/2017 5:19:21 PM] Executed 'HttpRefreshMemberships' (Succeeded, Id=bcbe86a7-8da5-4f81-ab29-0a334f5fd88c)
-[12/27/2017 5:19:21 PM] Executed HTTP request: {
-[12/27/2017 5:19:21 PM]   &quot;requestId&quot;: &quot;542f35d6-467f-4959-9e0e-e4ac0f7b74e1&quot;,
-[12/27/2017 5:19:21 PM]   &quot;method&quot;: &quot;POST&quot;,
-[12/27/2017 5:19:21 PM]   &quot;uri&quot;: &quot;/memberships/refresh/U7TTR&quot;,
-[12/27/2017 5:19:21 PM]   &quot;authorizationLevel&quot;: &quot;Anonymous&quot;
-[12/27/2017 5:19:21 PM] }
-[12/27/2017 5:19:21 PM] Response details: {
-[12/27/2017 5:19:21 PM]   &quot;requestId&quot;: &quot;542f35d6-467f-4959-9e0e-e4ac0f7b74e1&quot;,
-[12/27/2017 5:19:21 PM]   &quot;status&quot;: &quot;Accepted&quot;
-[12/27/2017 5:19:21 PM] }
-</code></pre>
-<ul>
-<li>Trigger 3:</li>
-</ul>
-<pre><code>[12/27/2017 5:19:22 PM] Executing HTTP request: {
-[12/27/2017 5:19:22 PM]   &quot;requestId&quot;: null,
-[12/27/2017 5:19:22 PM]   &quot;method&quot;: &quot;POST&quot;,
-[12/27/2017 5:19:22 PM]   &quot;uri&quot;: &quot;/memberships/refresh/U7TTR&quot;
-[12/27/2017 5:19:22 PM] }
-[12/27/2017 5:19:22 PM] Function started (Id=c4679277-83ed-4a25-a1d3-46d558dad7d3)
-[12/27/2017 5:19:22 PM] Executing 'HttpRefreshMemberships' (Reason='This function was programmatically called via the host APIs.', Id=c4679277-83ed-4a25-a1d3-46d558dad7d3)
-[12/27/2017 5:19:22 PM] Instance running status: 'Running'.
-[12/27/2017 5:19:22 PM] U7TTR: Function 'E3_Membership (Orchestrator)', version '' scheduled. Reason: RaiseEvent:operation. IsReplay: False. State: Scheduled. HubName: SampleHubVS. AppName: . SlotName: . ExtensionVersion: 1.1.0.0.
-[12/27/2017 5:19:22 PM] Refreshed an existing membership actor with code = 'U7TTR'.
-[12/27/2017 5:19:22 PM] Function completed (Success, Id=c4679277-83ed-4a25-a1d3-46d558dad7d3, Duration=474ms)
-[12/27/2017 5:19:22 PM] Executed 'HttpRefreshMemberships' (Succeeded, Id=c4679277-83ed-4a25-a1d3-46d558dad7d3)
-[12/27/2017 5:19:22 PM] Executed HTTP request: {
-[12/27/2017 5:19:22 PM]   &quot;requestId&quot;: &quot;a330a5c7-6f2a-41d7-80c6-5ca6d2928a64&quot;,
-[12/27/2017 5:19:22 PM]   &quot;method&quot;: &quot;POST&quot;,
-[12/27/2017 5:19:22 PM]   &quot;uri&quot;: &quot;/memberships/refresh/U7TTR&quot;,
-[12/27/2017 5:19:22 PM]   &quot;authorizationLevel&quot;: &quot;Anonymous&quot;
-[12/27/2017 5:19:22 PM] }
-[12/27/2017 5:19:22 PM] Response details: {
-[12/27/2017 5:19:22 PM]   &quot;requestId&quot;: &quot;a330a5c7-6f2a-41d7-80c6-5ca6d2928a64&quot;,
-[12/27/2017 5:19:22 PM]   &quot;status&quot;: &quot;Accepted&quot;
-[12/27/2017 5:19:22 PM] }
-</code></pre>
-<ul>
-<li>Membership Actor: please note that the function is actually executed twice: once to handle the event and anoher time due to the <code>ContinueAsNew</code> which restarts the instance with a new history.</li>
-</ul>
-<pre><code>============ Received an event .....
-[12/27/2017 5:19:25 PM] Function started (Id=d676aacb-069d-4b10-869c-bb510b70d65e)
-[12/27/2017 5:19:25 PM] Executing 'E3_Membership' (Reason='', Id=d676aacb-069d-4b10-869c-bb510b70d65e)
-[12/27/2017 5:19:25 PM] U7TTR: Function 'E3_Membership (Orchestrator)', version '' started. IsReplay: True. Input: (720 bytes). State: Started. HubName: SampleHubVS. AppName: . SlotName: . ExtensionVersion: 1.1.0.0.
-[12/27/2017 5:19:25 PM] U7TTR: Function 'E3_Membership (Orchestrator)', version '' is waiting for input. Reason: WaitForExternalEvent:operation. IsReplay: True. State: Listening. HubName: SampleHubVS. AppName: . SlotName: .  ExtensionVersion: 1.1.0.0.
-[12/27/2017 5:19:25 PM] U7TTR: Function 'E3_Membership (Orchestrator)', version '' received a 'operation' event. State: ExternalEventRaised. HubName: SampleHubVS. AppName: . SlotName: . ExtensionVersion: 1.1.0.0.
-[12/27/2017 5:19:25 PM] ***** received 'refresh' event.
-[12/27/2017 5:19:25 PM] **** done refreshing 'U7TTR' &#64; 12/27/2017 09:19:25.837 PM
-[12/27/2017 5:19:25 PM] U7TTR: Function 'E3_Membership (Orchestrator)', version '' completed. ContinuedAsNew: True. IsReplay: False. Output: (236 bytes). State: Completed. HubName: SampleHubVS. AppName: . SlotName: . ExtensionVersion: 1.1.0.0.
-[12/27/2017 5:19:25 PM] U7TTR: Function 'E3_Membership (Orchestrator)', version '' received a 'operation' event. State: ExternalEventRaised. HubName: SampleHubVS. AppName: . SlotName: . ExtensionVersion: 1.1.0.0.
-[12/27/2017 5:19:25 PM] U7TTR: Function 'E3_Membership (Orchestrator)', version '' received a 'operation' event. State: ExternalEventRaised. HubName: SampleHubVS. AppName: . SlotName: . ExtensionVersion: 1.1.0.0.
-[12/27/2017 5:19:25 PM] Function completed (Success, Id=d676aacb-069d-4b10-869c-bb510b70d65e, Duration=24ms)
-[12/27/2017 5:19:25 PM] Executed 'E3_Membership' (Succeeded, Id=d676aacb-069d-4b10-869c-bb510b70d65e)
-
-============ ContinueAsNew kicking in.....
-[12/27/2017 5:19:26 PM] Function started (Id=50870a65-6d4d-4680-95a0-8dea2388e054)
-[12/27/2017 5:19:26 PM] Executing 'E3_Membership' (Reason='', Id=50870a65-6d4d-4680-95a0-8dea2388e054)
-[12/27/2017 5:19:26 PM] U7TTR: Function 'E3_Membership (Orchestrator)', version '' started. IsReplay: False. Input: (720 bytes). State: Started. HubName: SampleHubVS. AppName: . SlotName: . ExtensionVersion: 1.1.0.0.
-[12/27/2017 5:19:26 PM] U7TTR: Function 'E3_Membership (Orchestrator)', version '' is waiting for input. Reason: WaitForExternalEvent:operation. IsReplay: False. State: Listening. HubName: SampleHubVS. AppName: . SlotName: .  ExtensionVersion: 1.1.0.0.
-[12/27/2017 5:19:26 PM] Function completed (Success, Id=50870a65-6d4d-4680-95a0-8dea2388e054, Duration=9ms)
-[12/27/2017 5:19:26 PM] Executed 'E3_Membership' (Succeeded, Id=50870a65-6d4d-4680-95a0-8dea2388e054)
-[12/27/2017 5:19:26 PM] U7TTR: Function 'E3_Membership (Orchestrator)', version '' awaited. IsReplay: False. State: Awaited. HubName: SampleHubVS. AppName: . SlotName: . ExtensionVersion: 1.1.0.0.
-</code></pre>
-<p>If I try several triggers, I see different results. One thing for sure is that if the triggers arrive close to each other, the actor exceution is not very deterministic. Perhaps this is by design...not really sure.</p>
+<p>But what happens if the actor is signaled frantically via raising an external event from an HTTP trigger, for example? The event signals are actually enqueued to the instance so they should run as many  times as they are sginaled.</p>
+<p>If you are observing the actor's streaming logs when you try this, it could get very confusing. This is because durable functions manage long-term running processes in short-lived functions is by taking advantage of state retrieved in the <code>context</code> and replaying the function to resume at the next step (from <a href="https://hackernoon.com/serverless-and-bitcoin-creating-price-watchers-dynamically-beea36ef194e">this article</a>). Effectively what you will see if that functions are started, completed and re-started again to resume state.</p>
 <h3 id="code-delays">Code Delays</h3>
-<p>Singletons cannot use Task functions such as <code>task.Delay(millis)</code> to simulate code delays. This will cause run-time errors:</p>
+<p>Singletons should not use <code>Task</code> functions such as <code>Task.Delay(millis)</code> to simulate code delays. This will cause run-time errors:</p>
 <pre><code>Function 'E3_Membership (Orchestrator)', version '' failed with an error. Reason: System.InvalidOperationException: Multithreaded execution was detected. his can happen if the orchestrator function previously resumed from an unsupported async callback.
 </code></pre>
 <p>The preferred way for delays or timeouts is:</p>
 <pre><code>await context.CreateTimer(deadline, CancellationToken.None);
 </code></pre>
+<p>Where <code>deadline</code> is defined:</p>
+<pre><code>DateTime deadline = context.CurrentUtcDateTime.AddMinutes(30);
+</code></pre>
+<p>It is very important that we leverage the <code>context</code> to provide accurate timer information as opposed to <code>TimeSpan</code> and <code>DateTime.Now</code>, etc. I have seen very varying (not correct) results when I used <code>TimeSpan.FromMinutes(30)</code>, for example.</p>
 <h3 id="wait-on-multiple-events">Wait on multiple events</h3>
 <p>What if we want the actor to wait on an external event or on a internal timeout event to perhaps refresh our membership periodically? I created another membership function i.e. <code>E3_MembershipWithTimer</code> that awaits on either an operation event or a timeout event:</p>
 <pre><code>[FunctionName(&quot;E3_MembershipWithTimer&quot;)]
@@ -339,7 +242,7 @@ public static async Task&lt;dynamic&gt; RunWithTimer(
     using (var cts = new CancellationTokenSource())
     {
         var operationTask = context.WaitForExternalEvent&lt;string&gt;(&quot;operation&quot;);
-        DateTime deadline = context.CurrentUtcDateTime.Add(TimeSpan.FromSeconds(60));
+        DateTime deadline = context.CurrentUtcDateTime.AddMinutes(30);
         var timeoutTask = context.CreateTimer(deadline, cts.Token);
 
         Task winner = await Task.WhenAny(operationTask, timeoutTask);
@@ -420,6 +323,12 @@ public static async Task&lt;HttpResponseMessage&gt; Run(
 }
 </code></pre>
 <p>The Azure Durable Functions maintain a state of all running instances in a task hub which is basically a storage resource with control queues, qork-item queues, a history table and lease blobs. You can read more about this <a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-task-hubs">here</a>.</p>
+<p>Effectively, the <code>host.json</code> <code>durableTask</code> indicate the hub name:</p>
+<pre><code>&quot;durableTask&quot;: {
+    &quot;HubName&quot;: &quot;TestDurableFunctionsHub&quot;
+  }
+</code></pre>
+<p>The run-time environment stores related information about running instances in storage keyed by the hub name.</p>
 <h2 id="the-actor-state">The actor state</h2>
 <p>Each actor has an internal state! It is initially read by the singleton as an input:</p>
 <pre><code>dynamic membership = context.GetInput&lt;dynamic&gt;();
@@ -553,11 +462,50 @@ public static async Task&lt;HttpResponseMessage&gt; Run(
 }
 </code></pre>
 <p>So unlike regular actor implementation, Azure Functions singletons do not expose any method to be called from the outside! The platform only allows starting/creating, querying and terminating instances.</p>
-<h2 id="net-standard-2.0">.NET Standard 2.0</h2>
-<p>It is work in progress! It is best to use the .NET full framework with Azure Functions. Hopefully this will change soon and we will be able to use .NET Core reliably.</p>
+<h2 id="comments-anamolies">Comments &amp; Anamolies</h2>
+<h3 id="net-core-and.net-standard-2.0">.NET Core and .NET Standard 2.0</h3>
+<p>It is work in progress! It is best to use the .NET full framework with Azure Durable Functions. Hopefully this will change soon and we will be able to use .NET Core reliably.</p>
+<h3 id="local-debugging">Local Debugging</h3>
+<p>I had a very hard time with this. The symptoms that I experienced are unfortutanely not experienced by other developers who tried this as I could not see similar reported issues. I am using Vs2017 and Azure Functions Extension ...the latest at the time of writing DEC/2017.</p>
+<p>Here are my comments:</p>
+<ul>
+<li>If you want to debug locally, make sure you set both the local.setting.json and host.json file to <code>copy always</code>. You do this from the properties window.</li>
+<li>On both of my developer machines, I hit F5, it prompts me to install the Azure Functions Core tools and things look quite good. I was able to run locally.</li>
+<li>But then subsequent F5, I get very different results ranging from:
+<ul>
+<li>The CLI starts and exits on its own ...I could not find out what the reason is</li>
+<li>The CLI starts and displays the functions URls. But it also complains about some files were changed and the host needs to restart. The URls are not responsive and there is nothing you can do except to terminate and restart.</li>
+<li>The CLI statrs and actually works.....does not happen often ...but I have seen it work</li>
+<li>F5 mostly causes the CLI to start and exit. Control-F5 does not exit ...but the function URLs are not accessible due to this <code>change detected</code> message.</li>
+</ul>
+</li>
+<li>Effectively, local debugging did not work for me at all. It was a very frustrating experience. So I had to deploy everything (see deplyment below) to Azure and debug there....another frustrating experience.</li>
+</ul>
+<h3 id="deployment">Deployment</h3>
+<ul>
+<li>The only effective way I was able to find out how to deploy a Durable Functions App is via Visual Studio. I have heard some people got it to work with VSTS. But, given that this is a test run, I did not really explore this option.</li>
+<li>However, if you just click the <code>publish</code> button in VS, it will auto-create a storage account for you which names things really weird. My recommendation is to create the App Service, Service Plan, Storage and App Insights in portal or via Azure CLI and then use Visual Studio to publish into it.</li>
+<li>If you renamed a function and re-deployed, Visual Studio will publish the new functions app with the new function. But the old function will still be there (you can see it from the portal). You can then use <code>Kudo</code>, navigate to the directory and actually delete the old function folder.</li>
+<li>The local.settings.json entries are not deployed to Azure! This means you have to manually create them in the portal app settings or in Visual Studio deployment window.</li>
+</ul>
+<h3 id="storage">Storage</h3>
+<p>As mentioned, an Azure Storage is required to maintain teh durable instances. They are keyed off the hub name you specify in the host. There are entries in blob, tables, files and queues.</p>
+<h3 id="logging">Logging</h3>
+<p>Unless you turn on streaming on a function in the portal, you don't get anything (or at least, I could not find a way to do it). But watching the log from the portal is very difficult as it times out and it is not very user friendly. This is one area that requires better UX in the portal. The logs are also stored on the app's file system which you can access from <code>Kudo</code>. However, I noticed that, unless you request stream logging on a function, these files are not created.</p>
+<p>So the story of logging is a little frustrating at best! I had to use App Insights trace to see what is going on.</p>
+<h3 id="timers">Timers</h3>
+<p>As mentioned above, it is very important that we leverage the context to provide accurate timer information as opposed to <code>TimeSpan</code> and <code>DateTime.Now</code>, etc. Initially I used <code>TimeSpan.FromMinutes(30)</code> to wait for 30 minutes....but the way to do it is to always use the <code>context</code> such as <code>DateTime deadline = context.CurrentUtcDateTime.AddMinutes(30);</code>. After doing that, I started getting conistent timeout periods and things worked normally.</p>
+<h3 id="instance-termination">Instance Termination</h3>
+<p>Although <code>TerminateAsync</code> on an instance works, I am not exactly sure if it works the way it is supposed to:</p>
+<ul>
+<li>If I have a running instance and that instance is actually waiting on an external or time out event, <code>TerminateAsync</code> does not do anything. I guess because a message is enqueued to the instance but the instance is waiting on other events ....so it did not get the <code>terminate</code> signal yet.</li>
+<li>If the instance is not waiting on anything, <code>TerminateAsync</code> replays the instance which runs code that you don't necessarily want to run. For example, I had an instance that triggers a logic app once it receives an <code>end</code> operation which works. However, if I terminate the instance using <code>TerminateAync</code>, the code triggers the logic app again because it was replayed!</li>
+</ul>
+<p>Not sure if this behavior is correct and what the <code>terminate</code> signal actually do.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Reflecting on the little time that I spent with Azure Durable Functions, I think they will play an important part of my future solutions. I think they have what it takes to use as actors especially that the Azure Durable Functions are designed to <a href="https://social.msdn.microsoft.com/Forums/en-US/b6ffeae3-f62a-4e6d-a68a-e5dc6f9ffd62/durable-singletons?forum=AzureFunctions">support 1000's of instances</a> . If we externalize the actor's state, we will be able to query the external store as opposed to query the actors themselves to retrieve their state.</p>
-<p>Azure Durable Actors can also employ reminders and other sophisticated techniques found in Service Fabric actors such as long-running, stateful, single-threaded, location-transparent and globally addressable (taken from the overview <a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-overview">documentation page</a>). However, as stated above, Azure Functions singletons do not expose methods that can be called from the outside.</p>
+<p>Azure Durable Actors can also employ reminders and other sophisticated techniques found in Service Fabric actors such as long-running, stateful, single-threaded, location-transparent and globally addressable (taken from the overview <a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-overview">documentation page</a>). However, as stated above and unlike other actor implementations, Azure Functions singletons do not expose methods that can be called from the outside.</p>
+<p>In any case, the Azure Durable Functions are still in preview. So we can expect many great features to be added soon.</p>
 
 
 
@@ -571,53 +519,32 @@ public static async Task&lt;HttpResponseMessage&gt; Run(
                 <footer>
                         <div class="container">
         <div class="row">
-                <div class="col-md-12">
-                <ul class="list-inline text-center">
-                        <li>
-                        <a href="https://twitter.com/khaledhmat">
-                                <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                        </a>
-                        </li>
-                        <li>
-                        <a href="https://github.com/khaledhikmat">
-                                <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                        </a>
-                        </li>
-                </ul>
-                <p class="copyright text-muted">
-                        Copyright © 2017 by Khaled Hikmat. 
+                <div class="col-md-12 text-center">
+                    <p class="copyright text-muted">
+                        Copyright © 2018
                         <br />
-                        <strong><a href="http://wyam.io">Generated by Wyam</a></strong>
-                </p>
+                            <a href="/feed.rss"><i class="fa fa-rss"></i> RSS Feed</a>
+                        |
+                            <a href="/feed.atom"><i class="fa fa-rss"></i> Atom Feed</a>
+                        <br />
+                        <strong><a href="https://wyam.io">Generated by Wyam</a></strong>
+                    </p>
                 </div>
         </div>
 </div>
+
                 </footer> 
 
-                <script type="text/javascript">
-</script>
+                
                 <script>hljs.initHighlightingOnLoad();</script>
 
-                        <script type="text/javascript">                
-                                // Header background                        
-                                var colors = Please.make_color({
-                                        colors_returned: 3,
-                                        saturation: .6
-                                });
-                                var t = new Trianglify({
-                                        x_gradient: colors,
-                                        y_gradient: ["#FFFFFF"]
-                                });
-                                var header = document.getElementById("intro-header");
-                                var pattern = t.generate(header.clientWidth, header.clientHeight);
-                                header.setAttribute('style', 'background-image: ' + pattern.dataUrl);                        
-                        </script>
+
+                <script>
+                        BackgroundCheck.init({
+                                targets: '.intro-header,.navbar',
+                                images: '.intro-header'
+                        });
+                </script>
         </body>
 </html>
 

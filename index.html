@@ -1,4 +1,4 @@
-
+﻿
 <!DOCTYPE html>
 <html lang="en">
         <head>
@@ -10,17 +10,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">        
 
         <link type="application/rss+xml" rel="alternate" title="Khaled Hikmat" href="/feed.rss" />
-        <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
+                <link type="application/atom+xml" rel="alternate" title="Khaled Hikmat" href="/feed.atom" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
         <link href="/assets/css/highlight.css" rel="stylesheet">
         <link href="/assets/css/clean-blog.css" rel="stylesheet" />
         <link href="/assets/css/master.css" rel="stylesheet" />
-        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-        <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
         <link href="/assets/css/override.css" rel="stylesheet" />
 
 
@@ -33,20 +33,23 @@
         <meta property="og:url" content="http://khaledhikmat.github.io/" />
         <!-- TODO: More social graph meta tags -->
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>     
         <script src="/assets/js/highlight.pack.js"></script>   
         <script src="/assets/js/clean-blog.js"></script>
-        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/assets/js/d3.v3.min.js"></script>
         <script src="/assets/js/trianglify.min.js"></script>
         <script src="/assets/js/Please-compressed.js"></script>
+        <script src="/assets/js/background-check.min.js"></script>
                 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
-                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+                <script src="/assets/js/html5shiv.js"></script>
+                <script src="/assets/js/respond.min.js"></script>
         <![endif]-->
+        
+        
 
 
         </head>
@@ -69,9 +72,10 @@
                                 <!-- Collect the nav links, forms, and other content for toggling -->
                                 <div class="collapse navbar-collapse" id="navbar-collapse">
                                         <ul class="nav navbar-nav navbar-right">
-                                                <li><a href="/about">About</a></li>
-<li><a href="/posts">Archive</a></li>
-<li><a href="/tags">Tags</a></li> 
+                                                        <li><a href="/posts">Archive</a></li>
+        <li><a href="/tags">Tags</a></li>
+        <li><a href="/about">About Me</a></li>
+ 
                                         </ul>
                                 </div>
                                 <!-- /.navbar-collapse -->
@@ -88,7 +92,7 @@
     <div class="site-heading">
         <h1>Coding Thoughts</h1>
                 <hr class="small">
-        <span class="subheading">Software old timer</span>
+        <span class="subheading">Software olf timer</span>
 </div>
                                         </div>
                                 </div>
@@ -103,74 +107,75 @@
 <div class="row">
     <div class="col-sm-8 right-border">
                 <div class="post-preview">
-                    <a href="/posts/2017-12-27-durable-functions">
-                        <h2 class="post-title">Actors in Serverless</h2>
-                            <h3 class="post-subtitle">Using Azure Functions</h3>
+                    <a href="/posts/2018-01-06-kubernetes-vs-service-fabric">
+                        <h2 class="post-title">Kubernetes vs. Service Fabric</h2>
+                            <h3 class="post-subtitle">Developer Notes</h3>
                     </a>
-                    <p class="post-meta">Posted on Wednesday, December 27, 2017</p>
-                    <p>I started with this <a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-install">documentation page</a> to learn about Azure durable Functions. I wanted to know if I can build a way to implement actors in Azure Functions. Actors Programming Model is pretty interesting and I did some work on it <a href="http://khaledhikmat.github.io/posts/2016-12-15-service-fabric-fundamentals">here</a>, <a href="http://khaledhikmat.github.io/posts/2016-12-02-service-fabric-basics">here</a> and <a href="http://khaledhikmat.github.io/posts/2017-01-10-service-fabric-notes">here</a> using <a href="https://azure.microsoft.com/en-us/services/service-fabric/">Azure Service Fabric</a> before.</p>             
-                </div>       
+                    <p class="post-meta">Posted on Saturday, January 6, 2018</p>
+<p>Having been exposed to <a href="https://kubernetes.io/">Kubernetes</a> and <a href="https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-overview">Microsoft's Service Fabric</a>, the following are some of my notes about both platforms:</p>                </div>       
                     <hr /> 
                 <div class="post-preview">
-                    <a href="/posts/2017-12-21-point-to-site-connectivity">
-                        <h2 class="post-title">Point to Site Connectivity in Azure</h2>
-                            <h3 class="post-subtitle">How to establish point to site connectivity</h3>
+                    <a href="/posts/2018-01-04-netapp-docker-k8s">
+                        <h2 class="post-title">.NET Core, Docker and Kubernetes</h2>
+                            <h3 class="post-subtitle">using Console Apps</h3>
                     </a>
-                    <p class="post-meta">Posted on Thursday, December 21, 2017</p>
-                    <p>This PowerShell script creates self-signed root and client certificates, export them and import what is needed:</p>             
-                </div>       
+                    <p class="post-meta">Posted on Thursday, January 4, 2018</p>
+<p>I wanted to assess Azure Cosmos DB to see possibilities of converting some of our backend applications to use this database technology to provide a globally distributed database that we desperately need as our services now cover a bigger geographic location. However, this post is not about Cosmos DB specifically! It is mainly about notes about the architecture of the pieces that surround Cosmos and how I am thinking to implement them.</p>                </div>       
                     <hr /> 
                 <div class="post-preview">
-                    <a href="/posts/2017-03-30-deletes-in-docdb">
-                        <h2 class="post-title">Document Deletion in Azure DocumentDB</h2>
-                            <h3 class="post-subtitle">How to perform multiple-document deletions based on time in Azure DocumentDB</h3>
+                    <a href="/posts/2018-01-02-azure-cli-login-options">
+                        <h2 class="post-title">Azure CLI Notes</h2>
+                            <h3 class="post-subtitle">Login Options</h3>
                     </a>
-                    <p class="post-meta">Posted on Thursday, March 30, 2017</p>
-                    <p>I saw many posts about deleting documents in Azure DocumentDB...but none of them worked quite well for me. So I spent a few hours on this and finally got it to work. Below is my solution. The following posts helped me tremendously (thank you):</p>             
-                </div>       
+                    <p class="post-meta">Posted on Tuesday, January 2, 2018</p>
+<p>This is just a note about <a href="https://docs.microsoft.com/en-us/cli/azure/overview?view=azure-cli-latest">Azure CLI</a> login options.</p>                </div>       
+        <ul class="pager">
+            <li class="previous">                
+            </li>
+            <li class="next">
+            </li>
+        </ul>
     </div>
     <div class="col-sm-4 sidebar">
         <hr class="visible-xs-block" />
-        <h5>Tags</h5>
-        <div>
-                <a role="button" href="/tags/azure" class="btn btn-default btn-sm"> Azure (6)</a>
-                <a role="button" href="/tags/service-fabric" class="btn btn-default btn-sm"> Service Fabric (5)</a>
-                <a role="button" href="/tags/c%23" class="btn btn-default btn-sm"> C# (5)</a>
-                <a role="button" href="/tags/asp.net" class="btn btn-default btn-sm"> ASP.NET (4)</a>
-                <a role="button" href="/tags/web-api" class="btn btn-default btn-sm"> Web API (4)</a>
-                <a role="button" href="/tags/net" class="btn btn-default btn-sm"> .NET (3)</a>
-                <a role="button" href="/tags/ios" class="btn btn-default btn-sm"> iOS (3)</a>
-                <a role="button" href="/tags/azure-functions" class="btn btn-default btn-sm"> Azure Functions (2)</a>
-                <a role="button" href="/tags/win8" class="btn btn-default btn-sm"> Win8 (2)</a>
-                <a role="button" href="/tags/%D8%B4%D9%80%D9%80%D9%80%D9%80%D9%80%D9%80%D8%B9%D8%B1" class="btn btn-default btn-sm"> &#x634;&#x640;&#x640;&#x640;&#x640;&#x640;&#x640;&#x639;&#x631; (2)</a>
-        </div>
-        <ul class="pager">
-            <li class="next">
-                <a href="/tags">View All Tags &rarr;</a>
-            </li>
-        </ul>
-        <hr />
-        <h5>Older Posts</h5>
-        <ul class="list-unstyled">
-                <li><a href="/posts/2017-02-21-service-fabric-secure-cluster">Service Fabric Secure Cluster Deployment</a></li>
-                <li><a href="/posts/2017-02-15-web-test-thoughts">Web Tests Thoughts</a></li>
-                <li><a href="/posts/2017-01-10-service-fabric-notes">Service Fabric Notes</a></li>
-                <li><a href="/posts/2016-12-23-how-to-generate-this-site">How to generate a static site</a></li>
-        </ul>
-        <ul class="pager">
-            <li class="next">
-                <a href="/posts">Archive &rarr;</a>
-            </li>
-        </ul>
 
-        <hr />
-<h5>On The Interwebs</h5>
-<ul class="list-unstyled">
-    <li><a href="https://twitter.com/khaledhmat"><i class="fa fa-twitter"></i> Twitter (khaledhmat)</a></li>
-    <li><a href="https://github.com/khaledhikmat"><i class="fa fa-github"></i> GitHub (khaledhikmat)</a></li>
-</ul>
+            <h5>Tags</h5>
+            <div>
+                    <a role="button" href="/tags/Service-Fabric" class="btn btn-default btn-sm"> Service Fabric (6)</a>
+                    <a role="button" href="/tags/Azure" class="btn btn-default btn-sm"> Azure (6)</a>
+                    <a role="button" href="/tags/C%23" class="btn btn-default btn-sm"> C# (6)</a>
+                    <a role="button" href="/tags/ASPNET" class="btn btn-default btn-sm"> ASP.NET (4)</a>
+                    <a role="button" href="/tags/Web-API" class="btn btn-default btn-sm"> Web API (4)</a>
+                    <a role="button" href="/tags/iOS" class="btn btn-default btn-sm"> iOS (3)</a>
+                    <a role="button" href="/tags/NET" class="btn btn-default btn-sm"> .NET (3)</a>
+                    <a role="button" href="/tags/Android" class="btn btn-default btn-sm"> Android (2)</a>
+                    <a role="button" href="/tags/Win8" class="btn btn-default btn-sm"> Win8 (2)</a>
+                    <a role="button" href="/tags/PowerShell" class="btn btn-default btn-sm"> PowerShell (2)</a>
+            </div>
+            <ul class="pager">
+                <li class="next">
+                    <a href="/tags">View All Tags &rarr;</a>
+                </li>
+            </ul>
+
+            <hr />
+            <h5>Older Posts</h5>
+            <ul class="list-unstyled">
+                    <li><a href="/posts/2017-12-27-durable-functions">Actors in Serverless</a></li>
+                    <li><a href="/posts/2017-12-21-point-to-site-connectivity">Point to Site Connectivity in Azure</a></li>
+                    <li><a href="/posts/2017-03-30-deletes-in-docdb">Document Deletion in Azure DocumentDB</a></li>
+                    <li><a href="/posts/2017-02-21-service-fabric-secure-cluster">Service Fabric Secure Cluster Deployment</a></li>
+            </ul>
+                <ul class="pager">
+                    <li class="next">
+                        <a href="/posts">Archive &rarr;</a>
+                    </li>
+                </ul>
+
+        
     </div> 
 </div>
+
                                 </div>
                         </div>
                 </div>
@@ -181,39 +186,32 @@
                 <footer>
                         <div class="container">
         <div class="row">
-                <div class="col-md-12">
-                <ul class="list-inline text-center">
-                        <li>
-                        <a href="https://twitter.com/khaledhmat">
-                                <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                        </a>
-                        </li>
-                        <li>
-                        <a href="https://github.com/khaledhikmat">
-                                <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                        </a>
-                        </li>
-                </ul>
-                <p class="copyright text-muted">
-                        Copyright © 2017 by Khaled Hikmat. 
+                <div class="col-md-12 text-center">
+                    <p class="copyright text-muted">
+                        Copyright © 2018
                         <br />
-                        <strong><a href="http://wyam.io">Generated by Wyam</a></strong>
-                </p>
+                            <a href="/feed.rss"><i class="fa fa-rss"></i> RSS Feed</a>
+                        |
+                            <a href="/feed.atom"><i class="fa fa-rss"></i> Atom Feed</a>
+                        <br />
+                        <strong><a href="https://wyam.io">Generated by Wyam</a></strong>
+                    </p>
                 </div>
         </div>
 </div>
+
                 </footer> 
 
-                <script type="text/javascript">
-</script>
+                
                 <script>hljs.initHighlightingOnLoad();</script>
 
+
+                <script>
+                        BackgroundCheck.init({
+                                targets: '.intro-header,.navbar',
+                                images: '.intro-header'
+                        });
+                </script>
         </body>
 </html>
 
