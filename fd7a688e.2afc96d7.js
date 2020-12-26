@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[63],{133:function(o){o.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"cosmos-db","name":"cosmosdb","count":1,"permalink":"/blog/tags/cosmos-db"}')}}]);

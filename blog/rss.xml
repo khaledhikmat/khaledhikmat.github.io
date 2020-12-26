@@ -4,29 +4,127 @@
         <title>Coding Thoughts Blog</title>
         <link>https://khaledhikmat.github.io/blog</link>
         <description>Coding Thoughts Blog</description>
-        <lastBuildDate>Thu, 30 May 2019 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 06 Jan 2018 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <item>
-            <title><![CDATA[Welcome]]></title>
-            <link>https://khaledhikmat.github.io/blog/welcome</link>
-            <guid>welcome</guid>
-            <pubDate>Thu, 30 May 2019 00:00:00 GMT</pubDate>
-            <description><![CDATA[Blog features are powered by the blog plugin. Simply add files to the blog directory. It supports tags as well!]]></description>
+            <title><![CDATA[Kubernetes vs. Service Fabric]]></title>
+            <link>https://khaledhikmat.github.io/blog/2018/01/06/kubernetes-vs-service-fabric</link>
+            <guid>Kubernetes vs. Service Fabric</guid>
+            <pubDate>Sat, 06 Jan 2018 00:00:00 GMT</pubDate>
+            <description><![CDATA[Having been exposed to Kubernetes and Microsoft's Service Fabric, the following are some of my notes about both platforms:]]></description>
         </item>
         <item>
-            <title><![CDATA[Hello]]></title>
-            <link>https://khaledhikmat.github.io/blog/hello-world</link>
-            <guid>hello-world</guid>
-            <pubDate>Wed, 29 May 2019 00:00:00 GMT</pubDate>
-            <description><![CDATA[Welcome to this blog. This blog is created with Docusaurus 2 alpha.]]></description>
+            <title><![CDATA[.NET Core, Docker and Kubernetes]]></title>
+            <link>https://khaledhikmat.github.io/blog/2018/01/04/netapp-docker-k8s</link>
+            <guid>.NET Core, Docker and Kubernetes</guid>
+            <pubDate>Thu, 04 Jan 2018 00:00:00 GMT</pubDate>
+            <description><![CDATA[I wanted to assess Azure Cosmos DB to see possibilities of converting some of our backend applications to use this database technology to provide a globally distributed database that we desperately need as our services now cover a bigger geographic location. However, this post is not about Cosmos DB specifically! It is mainly about notes about the architecture of the pieces that surround Cosmos and how I am thinking to implement them.]]></description>
         </item>
         <item>
-            <title><![CDATA[Hola]]></title>
-            <link>https://khaledhikmat.github.io/blog/hola</link>
-            <guid>hola</guid>
-            <pubDate>Tue, 28 May 2019 00:00:00 GMT</pubDate>
-            <description><![CDATA[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet]]></description>
+            <title><![CDATA[Azure CLI Notes]]></title>
+            <link>https://khaledhikmat.github.io/blog/2018/01/02/azure-cli-login-options</link>
+            <guid>Azure CLI Notes</guid>
+            <pubDate>Tue, 02 Jan 2018 00:00:00 GMT</pubDate>
+            <description><![CDATA[This is just a note about Azure CLI login options.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Actors in Serverless]]></title>
+            <link>https://khaledhikmat.github.io/blog/2017/12/27/durable-functions</link>
+            <guid>Actors in Serverless</guid>
+            <pubDate>Wed, 27 Dec 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[I started with this documentation page to learn about Azure durable Functions. I wanted to know if I can build a way to implement actors in Azure Functions. Actors Programming Model is pretty interesting and I did some work on it before.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Point to Site Connectivity in Azure]]></title>
+            <link>https://khaledhikmat.github.io/blog/2017/12/21/point-to-site-connectivity</link>
+            <guid>Point to Site Connectivity in Azure</guid>
+            <pubDate>Thu, 21 Dec 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[This PowerShell script creates self-signed root and client certificates, export them and import what is needed:]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Document Deletion in Azure DocumentDB]]></title>
+            <link>https://khaledhikmat.github.io/blog/2017/03/30/deletes-in-docdb</link>
+            <guid>Document Deletion in Azure DocumentDB</guid>
+            <pubDate>Thu, 30 Mar 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[I saw many posts about deleting documents in Azure DocumentDB...but none of them worked quite well for me. So I spent a few hours on this and finally got it to work. Below is my solution. The following posts helped me tremendously (thank you):]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Service Fabric Secure Cluster Deployment]]></title>
+            <link>https://khaledhikmat.github.io/blog/2017/02/21/service-fabric-secure-cluster</link>
+            <guid>Service Fabric Secure Cluster Deployment</guid>
+            <pubDate>Tue, 21 Feb 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[In this post, I just used the Service Fabric team article https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-creation-via-arm to create a PowerShell script that will do the entire deployment. I also downloaded all the required helper PowerShell modules and placed them in one repository so it would be easier for others to work with the deployment.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Web Tests Thoughts]]></title>
+            <link>https://khaledhikmat.github.io/blog/2017/02/15/web-test-thoughts</link>
+            <guid>Web Tests Thoughts</guid>
+            <pubDate>Wed, 15 Feb 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[If a Web App is deployed on Azure, both the App Insights and Web Apps offer a utility that can hammer the app's endpoints from different regions. While this functionality is quite nice and comes bundled in, it is considered an alert-based system and is slightly rudimentary as one cannot customize the test or get access to the full results easily. This post describes an alternative approach that uses Azure Functions or Service Fabric to implement a web test that can test and endpoint and report its test to PowerBI in real time.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Service Fabric Notes]]></title>
+            <link>https://khaledhikmat.github.io/blog/2017/01/10/service-fabric-notes</link>
+            <guid>Service Fabric Notes</guid>
+            <pubDate>Tue, 10 Jan 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[I am compiling notes when working with Service Fabric from the folks at Microsoft! In this post, I will enumerate a few things that I ran into which I think might be helpful to others who are learning the environment as well. This will not be a complete list ....so I will add to it as I go along.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[How to generate a static site using Wyam]]></title>
+            <link>https://khaledhikmat.github.io/blog/2016/12/23/how-to-generate-this-site</link>
+            <guid>How to generate a static site using Wyam</guid>
+            <pubDate>Fri, 23 Dec 2016 00:00:00 GMT</pubDate>
+            <description><![CDATA[I use Wyam to statically generate this site. This is to document the steps I take to run Wyam locally, test my posts and push the site to GitHub:]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Service Fabric Fundamentals]]></title>
+            <link>https://khaledhikmat.github.io/blog/2016/12/15/service-fabric-fundamentals</link>
+            <guid>Service Fabric Fundamentals</guid>
+            <pubDate>Thu, 15 Dec 2016 00:00:00 GMT</pubDate>
+            <description><![CDATA[The Service Fabric iOT sample app is a great sample to follow for our own Service Fabric apps. In this post, I used code snippets and concepts from the iOT sample to build a small app to demonstrate some fundamentals concepts that I feel are important.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Service Fabric Basics]]></title>
+            <link>https://khaledhikmat.github.io/blog/2016/12/02/service-fabric-basics</link>
+            <guid>Service Fabric Basics</guid>
+            <pubDate>Fri, 02 Dec 2016 00:00:00 GMT</pubDate>
+            <description><![CDATA[Service Fabric is a cool technology from Microsoft! It has advanced features that allows many scenarios. But in this post, we will only cover basic concepts that are usually misunderstood by a lot of folks.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Xamarin Forms App using VS for mac]]></title>
+            <link>https://khaledhikmat.github.io/blog/2016/11/24/presentation-evaluation</link>
+            <guid>Xamarin Forms App using VS for mac</guid>
+            <pubDate>Thu, 24 Nov 2016 00:00:00 GMT</pubDate>
+            <description><![CDATA[I am new to Xamarin development and I also wanted to try the newly announced VS for mac! So I created a little Camera app that can be used to evaluate presentations. The app allows the user to take a selfie. When committed, the picture is sent to an Azure cognitive function to extract the gender, male and smile (a measure of emotion). The app then displays the taken picture and returned result in the app. It also sends the result to PowerBI real-time stream to allow the visualization of the evaluation results.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Return a file in ASP.NET Core from a Web API]]></title>
+            <link>https://khaledhikmat.github.io/blog/2016/09/09/aspnet-core-file-return</link>
+            <guid>Return a file in ASP.NET Core from a Web API</guid>
+            <pubDate>Fri, 09 Sep 2016 00:00:00 GMT</pubDate>
+            <description><![CDATA[In ASP .NET 4.x, I had this code to return a file from an ASP.NET Web API. This worked well and allowed a client-side JavaScript client to download the file with a progress indicator:]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Kicking PowerApps Tires]]></title>
+            <link>https://khaledhikmat.github.io/blog/2016/04/30/kicking-powerapps-tires</link>
+            <guid>Kicking PowerApps Tires</guid>
+            <pubDate>Sat, 30 Apr 2016 00:00:00 GMT</pubDate>
+            <description><![CDATA[PowerApps is a newly released platform/service to build Line-of-business applications from Microsoft. Reading some documentation and attending some online webcasts, I think the PowerApps product is well positioned for LOB! There is definitely a need to create LOB mobile apps at the enterprise level and distribute them seamlessly without the friction of the app stores.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Open Azure VM Port]]></title>
+            <link>https://khaledhikmat.github.io/blog/2016/04/25/open-azure-vm-port</link>
+            <guid>Open Azure VM Port</guid>
+            <pubDate>Mon, 25 Apr 2016 00:00:00 GMT</pubDate>
+            <description><![CDATA[For a project I was working on, I needed to create a Windows VS2015 VM for testing. It is quit easy to spawn a VM in Azure ...it only takes a couple of seconds to do it from the portal. The next task was to open up port 8080 on that machine as I needed to access that port for testing.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[ASP.NET API Versioning]]></title>
+            <link>https://khaledhikmat.github.io/blog/2016/02/19/asp-net-api-versioning</link>
+            <guid>ASP.NET API Versioning</guid>
+            <pubDate>Fri, 19 Feb 2016 00:00:00 GMT</pubDate>
+            <description><![CDATA[A while back, I created an ASP.NET Web API 2 to be a back-end for a mobile app. I used basic authentication to make it easier for mobile apps to consume the Web API. I now decided to provide better security so I wanted to move to a token-based authentication. The problem is that if I change the Web API to a token-based, all existing mobile apps in the field will not function as they will be refused Web API connection.]]></description>
         </item>
     </channel>
 </rss>

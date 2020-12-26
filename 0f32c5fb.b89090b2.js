@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[5],{72:function(n){n.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"azure-functions","name":"azure functions","count":1,"permalink":"/blog/tags/azure-functions"}')}}]);

@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[53],{123:function(p){p.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"power-apps","name":"powerapps","count":1,"permalink":"/blog/tags/power-apps"}')}}]);
